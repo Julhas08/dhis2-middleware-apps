@@ -1,0 +1,77 @@
+.main-area
+  .col-md-12.col-xs-12.col-lg-12.right-sidebar.padding-left-right-zero
+    .col-md-12.col-xs-12.col-lg-12.col-sm-12.padding-box-columing
+      .panel.panel-white
+        .panel-heading.clearfix
+          h3.panel-title API Settings for External and DHIS2 Sources 
+        .panel-body
+          .container
+            .row.centered-form
+              .col-xs-12.col-sm-10.col-md-10.col-sm-offset-8.col-md-offset-8
+                .panel.panel-default
+                  .panel-heading
+                    h3.panel-title
+                      | Please enter the below information for setting API
+                  .panel-body
+                    form
+                      .form-group
+                        select.form-control(id="connectionName", name="connectionName")
+                          option(value="") Select Connection Name
+                          option(value="dhis2") DHIS2 
+                          option(value="hris") HRIS
+                          option(value="elmis") eLMIS
+                      .form-group
+                        input#sourceName.form-control.input-sm(type='text', name='sourceName', placeholder='Enter Connection Source Name')
+                      .form-group
+                        input#baseUrl.form-control.input-sm(type='text', name='baseUrl', placeholder='Enter Base URL')  
+                      .form-group
+                        input#resourcePath.form-control.input-sm(type='text', name='resourcePath', placeholder='Enter API Root/ Resource Path/ End Point')        
+                      .row
+                        .col-xs-6.col-sm-6.col-md-6
+                          .form-group
+                            select.form-control(id="tokenType", name="tokenType")
+                              option(value="") Select Token Type
+                              option(value="X-Auth-Token") X-Auth-Token 
+                              option(value="X-Auth") X-Auth
+
+                        .col-xs-6.col-sm-6.col-md-6
+                          .form-group
+                            input#tokenString.form-control.input-sm(type='text', name='tokenString', placeholder='Enter Token String')
+                      
+                      .row
+                        .col-xs-6.col-sm-6.col-md-6
+                          .form-group
+                            input#username.form-control.input-sm(type='text', name='username', placeholder='API Auth Username')
+                        .col-xs-6.col-sm-6.col-md-6
+                          .form-group
+                            input#password.form-control.input-sm(type='text', name='password', placeholder='API Auth Password')
+                      .form-group
+                        input#notes.form-control.input-sm(type='text', name='notes', placeholder='Write notes')
+                      
+                        button.btn.btn-info.btn-block.api-settings-btn(type='submit' ) Register API
+
+                        div(id=apiSettingsResult)
+        table(class="table table-bordered table-hover table-header-bg")
+          thead(class="table-header-bg thead")
+            tr
+              th S/N
+              th Connection Name
+              th Source Name
+              th Base URL
+              th Token Type
+              th User Name
+              th Notes
+              th Created Date
+              th Action
+
+          tbody        
+            each api, i in apiInfo
+              tr
+                td= i=1
+                td= api.connection_name   
+                td= api.source_name   
+                td= api.base_url   
+                td= api.token_type   
+                td= api.username   
+                td= api.notes   
+                td= api.created_at      

@@ -1,0 +1,28 @@
+table(class="table table-bordered table-hover table-header-bg")
+
+	thead(class="table-header-bg thead")
+		tr
+			th S/N
+			th Division
+			th District
+			th Upazila
+			th Union
+			th Facility Name
+			th F. Code
+			th Latitude
+			th Longitude
+			th Created
+	tbody        
+		each finfo,i in createdFacilitiesList
+			tr
+				td= i
+				td= finfo.division_name +'('+ finfo.division_code+')'
+				td= finfo.district_name +'('+ finfo.district_code+')'
+				td= finfo.upazila_name +'('+ finfo.upazila_code+')'
+				td= finfo.union_name +'('+ finfo.union_code+')'
+				td= finfo.name
+				td= finfo.code
+				td= finfo.latitude
+				td= finfo.longitude
+				td= finfo.created_at
+			

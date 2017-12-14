@@ -1,0 +1,60 @@
+doctype html
+html(lang='en')
+  head
+    meta(charset='UTF-8')
+    title  DHIS Middleware Apps
+    link(rel='stylesheet', href='https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css', integrity='sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb', crossorigin='anonymous')
+    
+    style(type='text/css').
+      .login-panel {
+        border: 1px solid #eee;
+      }
+      .login-panel-body {
+        background: #fff;
+      }
+      .front-login-box {
+        background: #fff none repeat scroll 0 0;
+        border: 1px solid #e1e1e1;
+        border-radius: 5px;
+        box-shadow: 5px 9px 26px #ccc;
+        clear: both;
+        display: block;
+        margin: 145px auto;
+        max-width: 400px;
+        padding: 2px;
+        vertical-align: middle;
+      }
+      .login-box .logo-name {
+        display: block;
+        font-size: 22px;
+        font-weight: bold;
+        text-decoration: none;
+        color: #6c6c6c;
+      }
+      .login-form {
+        padding: 0 16px 20px 20px;
+      }
+      .btn.btn-success.btn-block {
+        background: #224c7c none repeat scroll 0 0;
+        cursor: pointer;
+      }
+      .logo-name.text-lg.text-center {
+        background: #214d7e none repeat scroll 0 0;
+        color: #fff;
+        padding: 13px 31px;
+        transition: all 2s;
+      }
+  body.login-panel-body
+    .container
+      .login-box.front-login-box
+        .login-panel
+          a.logo-name.text-lg.text-center(href='#') DHIS2 Middleware Apps
+          .login-form
+            p.front-warning  
+            p.text-center.m-t-md.text-message  Login into your account!
+            form(method='post', action='/dashboard', role='form')
+              .form-group
+                input.form-control(type='text', name='username', placeholder='User Name')
+              .form-group
+                input.form-control(type='password', name='password', placeholder='Password')
+              button.btn.btn-success.btn-block(type='submit') Login
