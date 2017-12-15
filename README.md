@@ -86,4 +86,7 @@ npm run lint
 
 ## Testing
 
-
+## Linguist
+Node JS
+Express JS
+AJAX
