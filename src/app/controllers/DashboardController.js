@@ -30,8 +30,8 @@ module.exports.index = function index(req, res) {
 	    });	   	
 
 	// API data from HRIS   
-		var token = "5624dd3b73fa4efee010dd9c8bdd3b8e2e1837ea276f4e6cc6c921985ce84630";
-		var apiUrl = "https://hrm.dghs.gov.bd/api/1.0/facilities/get?"+requestType+"="+dateSince+"&client_id=123551&offset=1&limit="+displayLimit;
+		var token = "token";
+		var apiUrl = "api";
 		var options = {
 			url: apiUrl,
 			method: 'GET',
@@ -74,8 +74,8 @@ exports.dashboardFacilityInfoSearch = function (req, res) {
 
 		console.log("RequestType: "+requestType+", DateSince: "+dateSince+", DisplayLimit: "+displayLimit);
 		// API data from HRIS   
-		var token = "5624dd3b73fa4efee010dd9c8bdd3b8e2e1837ea276f4e6cc6c921985ce84630";
-		var apiUrl = "https://hrm.dghs.gov.bd/api/1.0/facilities/get?"+requestType+"="+dateSince+"&client_id=123551&offset=1&limit="+displayLimit;
+		var token = "token";
+		var apiUrl = "api";
 
 		var params = {"message": "Y U No Work"};
 		var options = {
@@ -118,9 +118,8 @@ exports.dashControllerJsonPayload = function (req, res) {
 
 		console.log("RequestType: "+requestType+", DateSince: "+dateSince+", DisplayLimit: "+displayLimit);
 		// API data from HRIS   
-		var token = "5624dd3b73fa4efee010dd9c8bdd3b8e2e1837ea276f4e6cc6c921985ce84630";
-		var apiUrl = "https://hrm.dghs.gov.bd/api/1.0/facilities/get?"+requestType+"="+dateSince+"&client_id=123551&offset=1&limit="+displayLimit;
-
+		var token = "token";
+		var apiUrl = "api";
 		var options = {
 			url: apiUrl,
 			method: 'GET',
