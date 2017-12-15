@@ -1,11 +1,13 @@
 DHIS2 Middleware App
 ===================
+## Developer: Julhas Sujan, Email: julhaspustcse@gmail.com, DHIS2 Consultant, University of Oslo, Norway
+
 ## Description 
    This application will help you to create interoperability between two systems like Human Resource Management System (HRIS) and DHIS2 (District Health Information System verion 2). You need to create API for source  and destination systems, can generate JSOn payload for DHIS2 facility information management. All sub modules are: 
-   # DHIS2 Facility Management
-   # DHIS2 User Information Management
-   # DHIS2 Dataset assignment
-   
+    DHIS2 Facility Management
+    DHIS2 User Information Management
+    DHIS2 Dataset assignment
+
 ## Prerequisites
 Make sure you have at least the following versions of `node` and `npm`.
 
@@ -23,7 +25,7 @@ npm -v
 
 Clone the repository from github with the following command
 ```sh
-git clone https://github.com/Julhas08/dhis2-middleware-apps
+git clone https://github.com/
 ```
 
 Install the node dependencies
@@ -86,7 +88,4 @@ npm run lint
 
 ## Testing
 
-## Linguist
-Node JS
-Express JS
-AJAX
+
