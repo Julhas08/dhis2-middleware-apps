@@ -56,4 +56,6 @@ typings/
 
 # dotenv environment variables file
 .env
+$ cat .gitattributes
+*.rb linguist-language=node js
 
