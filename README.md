@@ -24,7 +24,7 @@ npm -v
 
 Clone the repository from github with the following command
 ```sh
-git clone https://github.com/
+git clone https://github.com/Julhas08/dhis2-middleware-apps.git
 ```
 
 Install the node dependencies

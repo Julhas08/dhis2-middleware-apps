@@ -11,10 +11,10 @@ var dbConnect    = require('./src/app/config/db-config');
 var login        = require('./routes/login');
 var dashboard    = require('./routes/dashboard');
 var dashboardFaciliInfoSearch = require('./routes/dashboard-search');
-var dashJsonPayloadGen = require('./routes/dashboard-json-payload');
-//var dashJsonSendDhis2  = require('./routes/dashboard-json-dhis2');
-var apiSettings        = require('./routes/api-settings');
-var apiSettingsCrud    = require('./routes/api-settings-crud');
+var dashJsonPayloadGen        = require('./routes/dashboard-json-payload');
+var newfacilityJsonPayload    = require('./routes/facility-create-json-payload-dhis2');
+var apiSettings               = require('./routes/api-settings');
+var apiSettingsCrud           = require('./routes/api-settings-crud');
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -33,7 +33,7 @@ app.use('/', login);
 app.use('/dashboard', dashboard);
 app.use('/dashboard-search', dashboardFaciliInfoSearch);
 app.use('/dashboard-json-payload', dashJsonPayloadGen);
-//app.use('/dashboard-json-dhis2', dashJsonSendDhis2);
+app.use('/facility-create-json-payload', newfacilityJsonPayload);
 app.use('/api-settings', apiSettings);
 app.use('/api-settings-crud', apiSettingsCrud);
 

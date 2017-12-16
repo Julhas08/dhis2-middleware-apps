@@ -122,27 +122,47 @@ $(document).ready( function() {
         	jsonPayload   = pdata.slice(3, -4);
         }
 		
-        console.log(jsonPayload);
+        //console.log(jsonPayload);
     // Loader    
         $('#loaderClass').after('<div class="loader"><img src="images/load.gif" alt="Searching......" /></div>');
-    // Base Url    
-        var base_url = "http://localhost:8080/dhis/";
-		var login = 'dhis-web-commons/security/login.action';
-		var current_user_url = 'api/users.json';
 
-	// Base64 authentication
-		function base_64_auth(username,password) { 
-	      return "Basic " + btoa( username + ":" + password ).toString( "base64" );
-	 	}
-
-	 	var auth = base_64_auth('admin','district');
 	// Ajax Posting
-		$.ajax({
+				$.ajax({
+				type: 'POST',
+				data: jsonPayload,
+		        contentType: 'application/json',
+	            url: '/facility-create-json-payload',						
+	            success: function(result) {
+	            	
+	            	console.log("JSON Payload Response: ",result);
+	            	if(result == 200 || result==201){
+	            		swal('Congratulations!','Your JSON Payload has submitted successfully.','success');
+	            	} else if(result == 409 ){
+	            		swal('Sorry!','Conflicting in posting json payload','error');
+	            	} else if(result == 500 ){
+	            		swal('Sorry!','Internal Server Error!','error');
+	            	} 
+
+	// Result print in HTML view            	
+	                $("#displayFacilityInformation").html(result);
+	                var textFieldValue = document.getElementById('displayFacilityInformationText');
+					textFieldValue.value=result;
+	// Close loader        
+	                $('#loader').slideUp(200,function(){        
+	               		$('#loader').remove();
+		            });
+		            $(".loader").fadeOut("slow"); 
+	            },
+	            error: function(err){
+	            	console.log(err);
+	            }
+	        });
+/*		$.ajax({
 			headers: { 
 		        'Accept': 'application/json',
 		        'Content-Type': 'application/json' 
 		    },
-			url : "http://localhost:8080/dhis/api/dataStore/OrgUnitManager/"+getTodayYYYYMMDD()+getRandomArbitrary(10,100000),
+			//url : "http://localhost:8080/dhis/api/dataStore/OrgUnitManager/"+getTodayYYYYMMDD()+getRandomArbitrary(10,100000),
 			data : jsonPayload,
 			type : 'POST',
 			dataType : 'json',
@@ -172,7 +192,7 @@ $(document).ready( function() {
 	            });
 	            $(".loader").fadeOut("slow");
 			}
-			}); 
+			});*/ 
 	    });
 
 // Create new api settings
