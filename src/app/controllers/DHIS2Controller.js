@@ -3,12 +3,14 @@
 * @author Julhas Sujan
 * @version 1.0.0
 */
+
 'use strict';
 var request=require('request');
 var dbConnect = require('../config/db-config');
 var fn = require('../function');
 var logger4js = require('../../logger/log4js');
-/*
+
+/**
 * JSON payload send to DHIS2
 * Create new facility request in dhis2 facility register app
 */
@@ -48,7 +50,7 @@ exports.facilityCreateJSONPayloadSendToDHIS2 = function (req, res) {
 			 	}
 
 			 	var auth = base_64_auth(username,password);
-			 	console.log("auth", auth);
+			 	//console.log("auth", auth);
 			 	var url = baseUrl+resourcePath+"3234345354";
 			 	var options = {
 				    method: 'POST',

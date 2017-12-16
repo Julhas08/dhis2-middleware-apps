@@ -3,14 +3,17 @@
 * @author Julhas Sujan
 * @version 1.0.0
 */
+
 'use strict';
 var request=require('request');
 var dbConnect = require('../config/db-config');
 var fn = require('../function');
 var logger4js = require('../../logger/log4js');
-/*
+
+/**
 * Dashboard Default Load in GET Method
 */
+
 module.exports.index = function index(req, res) {
 
         var userList = [];
@@ -30,38 +33,68 @@ module.exports.index = function index(req, res) {
 	        console.log(error); // print the error;
 	    });	   	
 
-	// API data from HRIS   
-		var token = "5624dd3b73fa4efee010dd9c8bdd3b8e2e1837ea276f4e6cc6c921985ce84630";
-		var apiUrl = "https://hrm.dghs.gov.bd/api/1.0/facilities/get?"+requestType+"="+dateSince+"&client_id=123551&offset=1&limit="+displayLimit;
-		var options = {
-			url: apiUrl,
-			method: 'GET',
-			headers: {
-			  'X-Auth-Token': token
-			},
-			from: {
-			  mimeType: 'application/json'
-			}
-		};
+	// API data from HRIS  
+	// API Information return SQL function	
+		function getApiSettingsInformation(name) {
+	    	let conName = name;
+		    return db.task('getApiSettingsInformation', t => {
+		            return t.oneOrNone('SELECT * FROM api_settings where connection_name=$1',conName)
+		                .then(apiInfo => {
+		                    return apiInfo;
+		                });
+		        });
+		}
+	// APi DB Connection String				
+			if(db){
+	// Pull all API information		
+			getApiSettingsInformation("hris").then(apiInfo => {
 
-		request(options, function(error, response, body) {
-			//console.log(error + " :: " + response + " :: " + body);
-			//console.log(body);
-			var data          = JSON.stringify(JSON.parse(body));
-			var facilityInfo1 = data.replace('[','');
-			var facilityInfo  = facilityInfo1.replace(']','');
+				let apiData      = JSON.parse(JSON.stringify(apiInfo));
+				let baseUrl 	 = apiData.base_url;
+				let resourcePath = apiData.resource_path;
+				let username     = apiData.username;
+				let password     = apiData.password;
+				let tokenType    = apiData.token_type;
+				let token        = apiData.token_string;
 
-			//var data = ('#{createdFacilitiesList}').toString();
-			var pdata = data.replace(/&quot;/g, '"');
-			var obj   = JSON.parse(pdata);
+				let apiUrl = baseUrl+resourcePath+requestType+"="+dateSince+"&client_id=123551&offset=1&limit="+displayLimit;
+				let options = {
+					url: apiUrl,
+					method: 'GET',
+					headers: {
+					  'X-Auth-Token': token
+					},
+					from: {
+					  mimeType: 'application/json'
+					}
+				};
 
-			res.render('dashboard', {
-		      users: userList,
-		      createdFacilitiesList: obj
-		   });
-		});
+				request(options, function(error, response, body) {
+					//console.log(error + " :: " + response + " :: " + body);
+					//console.log(body);
+					var data          = JSON.stringify(JSON.parse(body));
+					var facilityInfo1 = data.replace('[','');
+					var facilityInfo  = facilityInfo1.replace(']','');
+
+					//var data = ('#{createdFacilitiesList}').toString();
+					var pdata = data.replace(/&quot;/g, '"');
+					var obj   = JSON.parse(pdata);
+
+					res.render('dashboard', {
+				      users: userList,
+				      createdFacilitiesList: obj
+				   });
+				});
+
+			});
+
+		} else {
+			logger4js.getLoggerConfig().error("Database Connection Error!");
+		}			 
+		
 };
-/*
+
+/**
 * Dashboard Facility Information Search
 */
 
@@ -71,40 +104,64 @@ exports.dashboardFacilityInfoSearch = function (req, res) {
 		var dateFrom 		= req.body.dateFrom;
 		var displayLimit 	= req.body.displayLimit;
 		var date            = dateFrom.split("-");
-		var dateSince       = date[0]+date[1]+date[2];
+		var dateSince       = date[0]+date[1]+date[2];		
+		var db= dbConnect.getConnection();
+		//console.log("RequestType: "+requestType+", DateSince: "+dateSince+", DisplayLimit: "+displayLimit);
+		// API data from HRIS  
+	// API Information return SQL function	
+		function getApiSettingsInformation(name) {
+	    	let conName = name;
+		    return db.task('getApiSettingsInformation', t => {
+	            return t.oneOrNone('SELECT * FROM api_settings where connection_name=$1',conName)
+	                .then(apiInfo => {
+	                    return apiInfo;
+	                });
+	        });
+		}
+	// APi DB Connection String				
+		if(db){
+	// Pull all API information		
+			getApiSettingsInformation("hris").then(apiInfo => {
 
-		console.log("RequestType: "+requestType+", DateSince: "+dateSince+", DisplayLimit: "+displayLimit);
-		// API data from HRIS   
-		var token = "5624dd3b73fa4efee010dd9c8bdd3b8e2e1837ea276f4e6cc6c921985ce84630";
-		var apiUrl = "https://hrm.dghs.gov.bd/api/1.0/facilities/get?"+requestType+"="+dateSince+"&client_id=123551&offset=1&limit="+displayLimit;
+				let apiData      = JSON.parse(JSON.stringify(apiInfo));
+				let baseUrl 	 = apiData.base_url;
+				let resourcePath = apiData.resource_path;
+				let username     = apiData.username;
+				let password     = apiData.password;
+				let tokenType    = apiData.token_type;
+				let token        = apiData.token_string;
 
-		var params = {"message": "Y U No Work"};
-		var options = {
-			url: apiUrl,
-			method: 'GET',
-			headers: {
-			  'X-Auth-Token': token
-			},
-			from: {
-			  mimeType: 'application/json',
-			  params: params
-			}
-		};
+				let apiUrl = baseUrl+resourcePath+requestType+"="+dateSince+"&client_id=123551&offset=1&limit="+displayLimit;
+				let options = {
+					url: apiUrl,
+					method: 'GET',
+					headers: {
+					  'X-Auth-Token': token
+					},
+					from: {
+					  mimeType: 'application/json'
+					}
+				};
 
-		request(options, function(error, response, body) {
+			request(options, function(error, response, body) {
 
-			var data          = JSON.stringify(JSON.parse(body));
-			var facilityInfo1 = data.replace('[','');
-			var facilityInfo  = facilityInfo1.replace(']','');
-			var pdata         = data.replace(/&quot;/g, '"');
-			var obj           = JSON.parse(pdata);
-			logger4js.getLoggerConfig().debug("Facility info search result: ",obj);
-			logger4js.getLoggerConfig().error("Error in searching result!",error);
-			res.render('dashboard-search-result', {
-		      createdFacilitiesList: obj
-		    });
+				var data          = JSON.stringify(JSON.parse(body));
+				var facilityInfo1 = data.replace('[','');
+				var facilityInfo  = facilityInfo1.replace(']','');
+				var pdata         = data.replace(/&quot;/g, '"');
+				var obj           = JSON.parse(pdata);
+				logger4js.getLoggerConfig().debug("Facility info search result: ",obj);
+				logger4js.getLoggerConfig().error("Error in searching result!",error);
+				res.render('dashboard-search-result', {
+			      createdFacilitiesList: obj
+			    });
 
-		});	
+			});	
+		});
+
+		} else {
+			logger4js.getLoggerConfig().error("Database Connection Error!");
+		}	
 	};	
 
 /**
@@ -117,21 +174,43 @@ exports.dashControllerJsonPayload = function (req, res) {
 		var date            = dateFrom.split("-");
 		var dateSince       = date[0]+date[1]+date[2];
 
-		console.log("RequestType: "+requestType+", DateSince: "+dateSince+", DisplayLimit: "+displayLimit);
+		var db= dbConnect.getConnection();
+		//console.log("RequestType: "+requestType+", DateSince: "+dateSince+", DisplayLimit: "+displayLimit);
 		// API data from HRIS   
-		var token = "5624dd3b73fa4efee010dd9c8bdd3b8e2e1837ea276f4e6cc6c921985ce84630";
-		var apiUrl = "https://hrm.dghs.gov.bd/api/1.0/facilities/get?"+requestType+"="+dateSince+"&client_id=123551&offset=1&limit="+displayLimit;
+		// API Information return SQL function	
+		function getApiSettingsInformation(name) {
+	    	let conName = name;
+		    return db.task('getApiSettingsInformation', t => {
+	            return t.oneOrNone('SELECT * FROM api_settings where connection_name=$1',conName)
+	                .then(apiInfo => {
+	                    return apiInfo;
+	                });
+	        });
+		}
+	// APi DB Connection String				
+		if(db){
+	// Pull all API information		
+			getApiSettingsInformation("hris").then(apiInfo => {
 
-		var options = {
-			url: apiUrl,
-			method: 'GET',
-			headers: {
-			  'X-Auth-Token': token
-			},
-			from: {
-			  mimeType: 'application/json'
-			}
-		};
+				let apiData      = JSON.parse(JSON.stringify(apiInfo));
+				let baseUrl 	 = apiData.base_url;
+				let resourcePath = apiData.resource_path;
+				let username     = apiData.username;
+				let password     = apiData.password;
+				let tokenType    = apiData.token_type;
+				let token        = apiData.token_string;
+
+				let apiUrl = baseUrl+resourcePath+requestType+"="+dateSince+"&client_id=123551&offset=1&limit="+displayLimit;
+				let options = {
+					url: apiUrl,
+					method: 'GET',
+					headers: {
+					  'X-Auth-Token': token
+					},
+					from: {
+					  mimeType: 'application/json'
+					}
+				};
 
 		request(options, function(error, response, body) {
 
@@ -173,6 +252,10 @@ exports.dashControllerJsonPayload = function (req, res) {
 		    	createdFacilitiesList: JSON.stringify(jsonArr)
 		    });
 
-		});	
-		
+			});	
+			});
+
+		} else {
+			logger4js.getLoggerConfig().error("Database Connection Error!");
+		}
 	};		

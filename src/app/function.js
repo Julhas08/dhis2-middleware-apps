@@ -28,7 +28,18 @@ module.exports = {
 		date.getDate()      // 29
 		date.getFullYear()  // 2011
 		return date.getFullYear()+''+date.getMonth()+''+date.getDate();
-    }
+    },
+
+    getApiSettingsInformation: function () {
+    	
+    	let conName = name;
+	    return db.task('getApiSettingsInformation', t => {
+            return t.oneOrNone('SELECT * FROM api_settings where connection_name=$1',conName)
+                .then(apiInfo => {
+                    return apiInfo;
+                });
+        });
+    },
 
 
 };

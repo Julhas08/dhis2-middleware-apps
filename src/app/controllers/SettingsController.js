@@ -47,7 +47,7 @@ module.exports.index = function index(req, res) {
     });
 };
 
-/*
+/**
 * Create new api settings
 */
 exports.apiCrudPOST = function (req, res) {
