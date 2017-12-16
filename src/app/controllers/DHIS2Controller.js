@@ -20,7 +20,7 @@ exports.facilityCreateJSONPayloadSendToDHIS2 = function (req, res) {
 		var jsonPayload   = JSON.stringify(req.body);
 
 	// API Information return SQL function	
-			function getApiSettingsInformation(name) {
+		function getApiSettingsInformation(name) {
 	    	let conName = name;
 		    return db.task('getApiSettingsInformation', t => {
 		            return t.oneOrNone('SELECT * FROM api_settings where connection_name=$1',conName)
@@ -28,15 +28,13 @@ exports.facilityCreateJSONPayloadSendToDHIS2 = function (req, res) {
 		                    return apiInfo;
 		                });
 		        });
-			}
+		}
 	
 	// APi Connection String		
 		let db= dbConnect.getConnection();		
-		if(db){
-
+			if(db){
 	// Pull all API information		
-			getApiSettingsInformation("dhis2")
-		    .then(apiInfo => {
+			getApiSettingsInformation("dhis2").then(apiInfo => {
 
 				let apiData      = JSON.parse(JSON.stringify(apiInfo));
 				let baseUrl 	 = apiData.base_url;
