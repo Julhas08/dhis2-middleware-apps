@@ -2,7 +2,7 @@ DHIS2 Middleware App
 ====================
 
 ## Description 
-   This application will help you to create interoperability between two systems like Human Resource Management System (HRIS) and DHIS2 (District Health Information System version 2). For integration of both systems, you need to create API for source and destination. It can generate JSON payload for DHIS2 facility information management. All the sub modules are: 
+   This application will help you to create interoperability between two systems like Human Resource Management System (HRIS) and DHIS2 (District Health Information System version 2). For integrating two systems, you need to setup api access authentications for source and destination application in this middleware app. It can generate JSON payload for DHIS2 facility information management. All the sub modules are: 
     # DHIS2 Facility Management,
     # DHIS2 User Information Management,
     # DHIS2 Dataset assignment
