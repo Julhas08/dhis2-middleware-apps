@@ -5,6 +5,22 @@
 */
 module.exports = {
 
+//  DHIS2 base authentication
+	base_64_auth: function (username,password) { 
+        return "Basic " + new Buffer(username + ':' + password).toString( "base64" );
+ 	},
+ 	/*getApiSettingsInformation: function (name) {
+    	let conName = name;
+	    return db.task('getApiSettingsInformation', t => {
+            return t.oneOrNone('SELECT * FROM api_settings where connection_name=$1',conName)
+                .then(apiInfo => {
+                    return apiInfo;
+                });
+	    });
+	},*/
+
+
+// Today's date return  	
 	getTodayYYYYMMDD: function () {
     	var today = new Date();
 		var dd    = today.getDate();
@@ -19,7 +35,11 @@ module.exports = {
 		} 
 		return yyyy+''+mm+''+dd;
     },
-
+// Return Arbitary number     
+    getRandomArbitrary: function(min, max) {
+	  	return Math.random() * (max - min) + min;
+	},
+// Return Year month day 
     getDateYearMonthDay: function () {
     	date =  new Date();
 		date.toDateString() // "Thu Dec 29 2011"

@@ -18,7 +18,6 @@ var logger4js = require('../../logger/log4js');
 exports.facilityCreateJSONPayloadSendToDHIS2 = function (req, res) {
 
 	// Receive JSON Payload
-		//console.log("JSON Payload Received in Controller: ",req.body);
 		var jsonPayload   = JSON.stringify(req.body);
 
 	// API Information return SQL function	
@@ -42,16 +41,17 @@ exports.facilityCreateJSONPayloadSendToDHIS2 = function (req, res) {
 				let baseUrl 	 = apiData.base_url;
 				let resourcePath = apiData.resource_path;
 				let username     = apiData.username;
-				let password     = apiData.password;
+				let password     = apiData.password;				
 
-	// Base64 authentication
-				function base_64_auth(username,password) { 
-			      return "Basic " + new Buffer(username + ':' + password).toString( "base64" );
-			 	}
+	// Date and random arbitary function call from function.js		 	
+			 	let rootResource = fn.getTodayYYYYMMDD()+''+fn.getRandomArbitrary(100,1000000);
 
-			 	var auth = base_64_auth(username,password);
-			 	//console.log("auth", auth);
-			 	var url = baseUrl+resourcePath+"3234345354";
+	// Base64 authentication, call from function.js		 	
+			 	var auth = fn.base_64_auth(username,password);
+
+	// Base url development for data handling		 	
+			 	var url = baseUrl+resourcePath+rootResource;
+	// JSON Payload options development		 	
 			 	var options = {
 				    method: 'POST',
 				    url: url,
@@ -65,6 +65,7 @@ exports.facilityCreateJSONPayloadSendToDHIS2 = function (req, res) {
 					  mimeType: 'application/json'
 					}
 				};
+	// Posting JSON payload to DHIS2			
 				request(options, function(error, response, body) {
 
 					if(response.statusCode == 409){
@@ -79,10 +80,9 @@ exports.facilityCreateJSONPayloadSendToDHIS2 = function (req, res) {
 						logger4js.getLoggerConfig().debug("Successfully submitted json payload! ",response.statusCode);
 						console.log("success");
 						res.end('201');
-					}	
+					}
 					
 				});
-
 		    })
 		    .catch(error => {
 		        console.log(error);

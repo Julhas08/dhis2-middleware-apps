@@ -1,5 +1,5 @@
 /**
-* @app-name dhis2-middleware-apps
+* @name dhis2-middleware-apps
 * @author Julhas Sujan
 * @version 1.0.0
 * @since 2017
