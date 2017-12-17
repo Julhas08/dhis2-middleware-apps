@@ -2,10 +2,10 @@ DHIS2 Middleware App
 ====================
 
 ## Description 
-   This application will help you to create interoperability between two systems like Human Resource Management System (HRIS) and DHIS2 (District Health Information System verion 2). You need to create API for source  and destination systems, can generate JSOn payload for DHIS2 facility information management. All sub modules are: 
-    DHIS2 Facility Management,
-    DHIS2 User Information Management,
-    DHIS2 Dataset assignment
+   This application will help you to create interoperability between two systems like Human Resource Management System (HRIS) and DHIS2 (District Health Information System version 2). For integration of both systems, you need to create API for source and destination. It can generate JSON payload for DHIS2 facility information management. All the sub modules are: 
+    # DHIS2 Facility Management,
+    # DHIS2 User Information Management,
+    # DHIS2 Dataset assignment
 
 ## Prerequisites
 Make sure you have at least the following versions of `node` and `npm`.
@@ -78,7 +78,7 @@ npm run lint
 # Tools etc.
 
 ## Frameworks... and libraries
-
+	Node JS, Express JS, PUG Engine, AJAX, Log4JS, CSS3 and HTML 5.
 
 ## Workflow
 

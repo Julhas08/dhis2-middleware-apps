@@ -6,5 +6,5 @@
 var express = require('express');
 var router = express.Router();
 var dashboardController = require('../src/app/controllers/DashboardController');
-router.get('/', dashboardController.index);
+router.all('/', dashboardController.index);
 module.exports = router;

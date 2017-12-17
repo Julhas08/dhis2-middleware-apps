@@ -52,8 +52,6 @@ module.exports.index = function index(req, res) {
 				let apiData      = JSON.parse(JSON.stringify(apiInfo));
 				let baseUrl 	 = apiData.base_url;
 				let resourcePath = apiData.resource_path;
-				let username     = apiData.username;
-				let password     = apiData.password;
 				let tokenType    = apiData.token_type;
 				let token        = apiData.token_string;
 
@@ -126,8 +124,6 @@ exports.dashboardFacilityInfoSearch = function (req, res) {
 				let apiData      = JSON.parse(JSON.stringify(apiInfo));
 				let baseUrl 	 = apiData.base_url;
 				let resourcePath = apiData.resource_path;
-				let username     = apiData.username;
-				let password     = apiData.password;
 				let tokenType    = apiData.token_type;
 				let token        = apiData.token_string;
 
@@ -195,8 +191,6 @@ exports.dashControllerJsonPayload = function (req, res) {
 				let apiData      = JSON.parse(JSON.stringify(apiInfo));
 				let baseUrl 	 = apiData.base_url;
 				let resourcePath = apiData.resource_path;
-				let username     = apiData.username;
-				let password     = apiData.password;
 				let tokenType    = apiData.token_type;
 				let token        = apiData.token_string;
 
