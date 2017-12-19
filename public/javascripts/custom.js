@@ -111,7 +111,7 @@ $(document).ready( function() {
    $('.sends-json-dhis-btn').click(function(e){
         e.preventDefault();
 
-    // JSOn payload ready    
+    // JSON payload ready    
         var data =$("#displayFacilityInformationText").val();
         var pdata = data.replace(/&quot;/g, '"');
         var displayLimit = $('#displayLimit').val();
@@ -131,7 +131,8 @@ $(document).ready( function() {
 				type: 'POST',
 				data: jsonPayload,
 		        contentType: 'application/json',
-	            url: '/facility-create-json-payload',						
+	            //url: '/facility-create-json-payload',						
+	            url: '/shcedular-json-payload-send-dhis2',						
 	            success: function(result) {
 	            	
 	            	console.log("JSON Payload Response: ",result);

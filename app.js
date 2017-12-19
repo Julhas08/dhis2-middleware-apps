@@ -15,10 +15,11 @@ var bodyParser   = require('body-parser');
 // Route location
 var dbConnect    = require('./src/app/config/db-config');
 var login        = require('./routes/login');
-var dashboard    = require('./routes/dashboard');
+var dashboard    = require('./routes/dashboard'); 
 var dashboardFaciliInfoSearch = require('./routes/dashboard-search');
 var dashJsonPayloadGen        = require('./routes/dashboard-json-payload');
 var newfacilityJsonPayload    = require('./routes/facility-create-json-payload-dhis2');
+var schedularFacilityJsonPayload    = require('./routes/shcedular-json-payload-send-dhis2');
 var apiSettings               = require('./routes/api-settings');
 var apiSettingsCrud           = require('./routes/api-settings-crud');
 
@@ -40,6 +41,7 @@ app.use('/dashboard', dashboard);
 app.use('/dashboard-search', dashboardFaciliInfoSearch);
 app.use('/dashboard-json-payload', dashJsonPayloadGen);
 app.use('/facility-create-json-payload', newfacilityJsonPayload);
+app.use('/shcedular-json-payload-send-dhis2', schedularFacilityJsonPayload);
 app.use('/api-settings', apiSettings);
 app.use('/api-settings-crud', apiSettingsCrud);
 

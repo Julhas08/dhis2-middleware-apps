@@ -4,6 +4,38 @@
 * @version 1.0.0
 */
 module.exports = {
+// DHIS2 Duplicate JSON object 
+//return an array of objects according to key, value, or key and value matching
+
+
+	/*//return an array of values that match on a certain key
+	getValues: function (obj, key) {
+	    var objects = [];
+	    for (var i in obj) {
+	        if (!obj.hasOwnProperty(i)) continue;
+	        if (typeof obj[i] == 'object') {
+	            objects = objects.concat(getValues(obj[i], key));
+	        } else if (i == key) {
+	            objects.push(obj[i]);
+	        }
+	    }
+	    return objects;
+	},
+
+	//return an array of keys that match on a certain value
+	getKeys: function(obj, val) {
+	    var objects = [];
+	    for (var i in obj) {
+	        if (!obj.hasOwnProperty(i)) continue;
+	        if (typeof obj[i] == 'object') {
+	            objects = objects.concat(getKeys(obj[i], val));
+	        } else if (obj[i] == val) {
+	            objects.push(i);
+	        }
+	    }
+	    return objects;
+	},*/
+
 
 //  DHIS2 base authentication
 	base_64_auth: function (username,password) { 
