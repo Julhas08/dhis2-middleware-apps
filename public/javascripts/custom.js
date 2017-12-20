@@ -131,8 +131,8 @@ $(document).ready( function() {
 				type: 'POST',
 				data: jsonPayload,
 		        contentType: 'application/json',
-	            //url: '/facility-create-json-payload',						
-	            url: '/shcedular-json-payload-send-dhis2',						
+	            url: '/facility-create-json-payload',						
+	            //url: '/shcedular-json-payload-send-dhis2',						
 	            success: function(result) {
 	            	
 	            	console.log("JSON Payload Response: ",result);
@@ -157,43 +157,7 @@ $(document).ready( function() {
 	            error: function(err){
 	            	console.log(err);
 	            }
-	        });
-/*		$.ajax({
-			headers: { 
-		        'Accept': 'application/json',
-		        'Content-Type': 'application/json' 
-		    },
-			//url : "http://localhost:8080/dhis/api/dataStore/OrgUnitManager/"+getTodayYYYYMMDD()+getRandomArbitrary(10,100000),
-			data : jsonPayload,
-			type : 'POST',
-			dataType : 'json',
-			crossDomain : true,
-			xhrFields : {
-			  'withCredentials':true
-			},
-			beforeSend : function(req) {
-			  req.setRequestHeader('Authorization',auth);
-			},
-			success : function(data){
-			  swal('Congratulations!','Your JSON Payload has submitted successfully.','success');
-			  //userInfo();
-	// Close loader        
-                $('#loader').slideUp(200,function(){        
-               		$('#loader').remove();
-	            });
-	            $(".loader").fadeOut("slow"); 
-			},error : function(xhr,type,msg) {
-			  console.log(xhr.responseText);
-			  //console.log(type);
-			  //console.log(msg);
-			  swal('Sorry!',"Conflicting on JSON data.",'error');
-			// Close loader        
-                $('#loader').slideUp(200,function(){        
-               		$('#loader').remove();
-	            });
-	            $(".loader").fadeOut("slow");
-			}
-			});*/ 
+	        }); 
 	    });
 
 // Create new api settings
@@ -254,6 +218,62 @@ $('.api-settings-btn').click(function(e){
 
     });			
 
+// Create new Schedular Information
+$('.schedular-settings-btn').click(function(e){
+        e.preventDefault();
+            // Requested data from API settings form posting    
+        var name           = $('#name').val();
+        var short_code 	   = $('#short_code').val();
+        var is_enable      = $('#is_enable').val();			
+        var schedular_type = $('#schedular_type').val();		
+        var start_time     = $('#start_time').val();		
+        var end_time       = $('#end_time').val();		
+        var duration       = $('#duration').val();		
+        var notes          = $('#notes').val();	
+
+        var paramInfo = '&name=' + name +'&short_code='+short_code+'&is_enable='+is_enable+'&schedular_type=' + schedular_type+'&start_time='+start_time+'&end_time='+end_time+'&duration='+duration+'&notes='+notes;  
+		console.log(paramInfo);
+
+		if(name==''){
+			swal("Sorry!", "Please select Schedular name.","error");
+		}/* else if(short_code==''){
+			swal("Sorry!", "Please enter short code.","error");
+		} */else{
+
+	// Loader		
+			 $('.schedular-settings-btn').after('<div class="loader"><img src="images/load.gif" alt="Searching......" /></div>');
+	// Ajax posting 
+			$.ajax({
+				type: 'POST',
+				cache: false,
+				data: paramInfo,
+		        //contentType: 'application/json',
+	            url: '/schedular-settings-crud',						
+	            success: function(data) {
+	            	if(data=='success'){
+	            		swal("Success!", "Your Schedular settings has completed","success");
+	            	} else {
+	            		swal("Sorry!", "Your Schedular settings has not been completed.","error");
+	            	}
+	// Close loader        
+	                $('#loader').slideUp(200,function(){        
+	               		$('#loader').remove();
+		            });
+		            $(".loader").fadeOut("slow"); 
+	            },
+	            error: function(err){
+	            	console.log(err);
+	// Close loader        
+	                $('#loader').slideUp(200,function(){        
+	               		$('#loader').remove();
+		            });
+		            $(".loader").fadeOut("slow");
+	            }
+	        });
+		}
+	
+
+    });	
 
 });				
     			

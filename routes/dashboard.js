@@ -6,5 +6,14 @@
 var express = require('express');
 var router = express.Router();
 var dashboardController = require('../src/app/controllers/DashboardController');
-router.all('/', dashboardController.index);
+// Dashboard Default Load
+router.all('/dashboard', dashboardController.index);
+
+// Dashboard Searching
+router.post('/dashboard-search',dashboardController.dashboardFacilityInfoSearch);
+
+// Dashboard JSON Payload generates
+router.post('/dashboard-json-payload',dashboardController.dashControllerJsonPayload);
+
+
 module.exports = router;

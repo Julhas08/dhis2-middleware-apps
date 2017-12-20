@@ -1,0 +1,86 @@
+.main-area
+  .col-md-12.col-xs-12.col-lg-12.right-sidebar.padding-left-right-zero
+    .col-md-12.col-xs-12.col-lg-12.col-sm-12.padding-box-columing
+      .panel.panel-white
+        .panel-heading.clearfix
+          h3.panel-title Auto data syncronization settings 
+        .panel-body
+          .container
+            .row.centered-form
+              .col-xs-12.col-sm-10.col-md-10.col-sm-offset-8.col-md-offset-8
+                .panel.panel-default
+                  .panel-heading
+                    h3.panel-title
+                      | Schedular On/ Off
+                  .panel-body
+                    form
+                      .row
+                        .col-xs-6.col-sm-6.col-md-6
+                          .form-group
+                            label.switch
+                              input(type='checkbox', name='is_enable', id='is_enable',checked='')
+                              span.slider.round
+                        
+                .panel.panel-default
+                  .panel-heading
+                    h3.panel-title
+                      | Please enter the below information for setting the schedular
+                  .panel-body
+                    form
+                      .row
+                        .col-xs-6.col-sm-6.col-md-6
+                          .form-group
+                            input#name.form-control.input-sm(type='text', name='name', placeholder='Cron Job Name')
+                        .col-xs-6.col-sm-6.col-md-6
+                          .form-group
+                            input#short_code.form-control.input-sm(type='text', name='short_code', placeholder='Short Code')
+                      .row
+                        .col-xs-6.col-sm-6.col-md-6
+                          .form-group
+                            input#duration.form-control.input-sm(type='text', name='duration', placeholder='Duration')
+                        .col-xs-6.col-sm-6.col-md-6
+                          .form-group
+                            select.form-control(id="schedular_type", name="schedular_type")
+                              option(value="") Select Schedular Type
+                              option(value="daily") Daily 
+                              option(value="monthly") Monthly
+                              option(value="weekly") Weekly
+                      .row
+                        .col-xs-6.col-sm-6.col-md-6
+                          .form-group
+                            input#start_time.form-control.input-sm(type='text', name='start_time', placeholder='Starting Time')
+                        .col-xs-6.col-sm-6.col-md-6
+                          .form-group
+                            input#end_time.form-control.input-sm(type='text', name='end_time', placeholder='Ending Time')
+                      
+                      .form-group
+                        input#notes.form-control.input-sm(type='text', name='notes', placeholder='Write notes')
+                      
+                        button.btn.btn-info.btn-block.schedular-settings-btn(type='submit' ) Register Now!
+
+        table(class="table table-bordered table-hover table-header-bg")
+          thead(class="table-header-bg thead")
+            tr
+              th S/N
+              th Name
+              th Short Code
+              th Enable/Disable
+              th Schedular Type
+              th Start Time
+              th End Time
+              th Duration
+              th Created Date
+              th Action
+
+          tbody        
+            each api, i in cronJobInfo
+              tr
+                td= i=1
+                td= api.name   
+                td= api.short_code   
+                td= api.is_enable   
+                td= api.schedular_type   
+                td= api.start_time   
+                td= api.end_time   
+                td= api.duration      
+                td= api.created_at      
