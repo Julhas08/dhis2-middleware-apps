@@ -83,9 +83,9 @@ module.exports = {
 				var pdata         = data.replace(/&quot;/g, '"');
 				var json          = JSON.parse(pdata);
 				var jsonArr       = [];
-
+				var i;
 				//console.log("JSON Length: ",json.length)
-				for(var i = 0; i < json.length; i++) {
+				for(i = 0; i < json.length; i++) {
 
 						jsonArr.push({
 					        code       	:  json[i].code,
@@ -112,6 +112,7 @@ module.exports = {
 
 					let jsonData   = jsonArr;
 					let orgCode	   = json[i].code;
+					let orgName    = json[i].name;
 					let parentCode = json[i].division_code+''+json[i].district_code+''+json[i].upazila_code;
 					
 		/********************************************************************
@@ -155,19 +156,32 @@ module.exports = {
 					// Posting JSON payload to DHIS2			
 						request(options, function(error, response, body) {
 
+							let message = null;
+							let logType = null;	
 							if(response.statusCode == 409){
 								logger4js.getLoggerConfig().error("Conflicting in data posting! ",response.statusCode);
 								console.log("conflict");
 								//res.end('409');
+								message = "Conflicting in data posting!";
+								logType ="conflict";
 							} else if(response.statusCode == 500){
 								logger4js.getLoggerConfig().error("Internal server error!",response.statusCode);
 								//res.end('500');
-								console.log("internal");
+								console.log("internal error");
+								message = "Internal server error!";
+								logType ="internal error";
 							} else if(response.statusCode == 200 || response.statusCode == 201){
 								logger4js.getLoggerConfig().debug("Successfully submitted json payload! ",response.statusCode);
 								console.log("success");
 								//res.end('201');
+								message = "Successfully submitted json payload!";
+								logType ="success";
 							}
+					// System log table updates
+							db.query("INSERT into system_log (module_name,table_name,log_type,message,created_date,status_code) VALUES('DHIS2 Data Send','schedular_info','"+logType+"','"+message+''+parentCode+','+orgName+"','"+fn.getDateYearMonthDayMinSeconds()+"','"+response.statusCode+"')").then(info => {
+						    })
+						    .catch(error => {
+						    });			
 							
 						});
 					}).catch(error => {
@@ -177,7 +191,7 @@ module.exports = {
 					jsonArr = [];
 					
 				} // end if 		
-				}
+				} // End loop 
 
 			});	// End Request body 
 		});// End APi Settings info	   		

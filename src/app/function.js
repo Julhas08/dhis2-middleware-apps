@@ -81,7 +81,11 @@ module.exports = {
 		date.getFullYear()  // 2011
 		return date.getFullYear()+''+date.getMonth()+''+date.getDate();
     },
-
+// Return Year month day with seconds
+    getDateYearMonthDayMinSeconds: function () {
+    	
+		return new Date().toLocaleString(); //2017-12-22 00:05:01
+    },
     getApiSettingsInformation: function () {
     	
     	let conName = name;

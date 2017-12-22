@@ -275,5 +275,94 @@ $('.schedular-settings-btn').click(function(e){
 
     });	
 
+// Enable or disable cron job 
+$('#is_enable').on('change',function(e){
+
+        var is_enable = $('#is_enable').val();	
+        var paramInfo = '&is_enable='+is_enable;
+
+	// Loader		
+			$('#is_enable').after('<div class="loader"><img src="images/load.gif" alt="Searching......" /></div>');
+	// Ajax posting 
+			$.ajax({
+				type: 'POST',
+				cache: false,
+				data: paramInfo,
+		        //contentType: 'application/json',
+	            url: '/schedular-enable-disable',						
+	            success: function(data) {
+	            	if(data=='success'){
+	            		swal("Success!", "Now your schedular has enabled.","success");
+	            		$('#is_enable').val(' ');	
+	            	} else {
+	            		swal("Sorry!", "Your Schedular settings has not been completed.","error");
+	            		$('#is_enable').val(' ');	
+	            	}
+	// Close loader        
+	                $('#loader').slideUp(200,function(){        
+	               		$('#loader').remove();
+		            });
+		            $(".loader").fadeOut("slow"); 
+	            },
+	            error: function(err){
+	            	console.log(err);
+	// Close loader        
+	                $('#loader').slideUp(200,function(){        
+	               		$('#loader').remove();
+		            });
+		            $(".loader").fadeOut("slow");
+	            }
+	        });
+
+    });	
+/****************************************************************
+***************************Reports Area**************************
+*****************************************************************/
+
+	
+// Searching Facility	
+   $('.log-history-search').click(function(e){
+        e.preventDefault();
+
+    // Requested data for posting    
+        var logType  = $('#logType').val();
+        var dateFrom     = $('#dateFrom').val();
+        var displayLimit = $('#displayLimit').val();		
+		var find_info = '&logType=' + logType+'&dateFrom='+dateFrom+'&displayLimit='+displayLimit;  
+		console.log(find_info);
+
+		if(logType==''){
+			swal("Sorry!", "Please select searching type.","error");
+		} else if(dateFrom==''){
+			swal("Sorry!", "Please select your searching date.","error");
+		} else{
+
+			 $('.log-history-search').after('<div class="loader"><img src="images/load.gif" alt="Searching......" /></div>');
+	// Ajax posting 
+			$.ajax({
+				type: 'POST',
+				data: find_info,
+		        //contentType: 'application/json',
+	            url: '/log-history-search',						
+	            success: function(data) {
+	                console.log('success');
+	                //console.log(data);
+	                //console.log(JSON.stringify(data));
+	                $("#displayLogInformation").html(data);
+	// Close loader        
+	                $('#loader').slideUp(200,function(){        
+	               		$('#loader').remove();
+		            });
+		            $(".loader").fadeOut("slow"); 
+	            },
+	            error: function(err){
+	            	console.log(err);
+	            }
+	        });
+		}
+
+    });	
+
+
 });				
     			

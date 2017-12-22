@@ -1459,6 +1459,9 @@ a > .img-responsive.hover-image {
 .schedular-settings-btn{
   cursor: pointer;
 }
+.log-history-search{
+  cursor: pointer;
+}
 /****Switch Start*******/
 .switch {
   position: relative;

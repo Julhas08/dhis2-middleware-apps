@@ -12,14 +12,24 @@
                   .panel-heading
                     h3.panel-title
                       | Schedular On/ Off
+                    
                   .panel-body
                     form
                       .row
                         .col-xs-6.col-sm-6.col-md-6
                           .form-group
-                            label.switch
-                              input(type='checkbox', name='is_enable', id='is_enable',checked='')
-                              span.slider.round
+                          each info in cronJobInfo 
+                            if(info.is_enable==0)                                       
+                              label.switch
+                                input(type='checkbox',id='is_enable')
+                                span.slider.round  
+                              
+                            if(info.is_enable==1)
+                              label.switch
+                                input(type='checkbox',id='is_enable', checked='')
+                                span.slider.round 
+                                                 
+                                
                         
                 .panel.panel-default
                   .panel-heading
@@ -75,7 +85,7 @@
           tbody        
             each api, i in cronJobInfo
               tr
-                td= i=1
+                td= i = 1
                 td= api.name   
                 td= api.short_code   
                 td= api.is_enable   
@@ -83,4 +93,5 @@
                 td= api.start_time   
                 td= api.end_time   
                 td= api.duration      
-                td= api.created_at      
+                td= api.created_at
+

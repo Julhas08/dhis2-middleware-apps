@@ -20,5 +20,7 @@ router.get('/schedular-setup', settings.settingsFormIndex);
 
 // Schedular setting CURD
 router.post('/schedular-settings-crud', settings.schedularCrudPOST);
+// Schedular eenable/ disabled
+router.post('/schedular-enable-disable', settings.schedularEnableDisable);
 
 module.exports = router;

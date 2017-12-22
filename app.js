@@ -18,6 +18,7 @@ var login          = require('./routes/login');
 var dashboard      = require('./routes/dashboard'); 
 var dhis2          = require('./routes/dhis2');
 var settingsRoutes = require('./routes/settings');
+var reports        = require('./routes/reports');
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -36,6 +37,7 @@ app.use('/', login);
 app.use('/', dashboard);
 app.use('/', dhis2);
 app.use('/', settingsRoutes);
+app.use('/', reports);
 
 // Logger
 var logger4js = require('./src/logger/log4js');

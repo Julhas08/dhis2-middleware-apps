@@ -1,0 +1,60 @@
+html
+    head
+      meta(charset='UTF-8')
+      meta(name='viewport', content='width=device-width, initial-scale=1')
+      title DHIS2 Middleware Apps || Schedular Settings
+      link(rel='stylesheet', href='/stylesheets/bootstrap.min.css') 
+      link(rel='stylesheet', href='/stylesheets/style.css')    
+      script(type='text/javascript' src='/javascripts/jquery-3.2.1.min.js')    
+      script(type='text/javascript' src='/javascripts/bootstrap.min.js')  
+        
+    body
+        div
+        include ./header.pug
+        .main-area
+          .col-md-12.col-xs-12.col-lg-12.right-sidebar.padding-left-right-zero
+            .col-md-12.col-xs-12.col-lg-12.col-sm-12.padding-box-columing
+              .panel.panel-white
+                .panel-heading.clearfix
+                  h3.panel-title Auto data syncronization settings 
+                .panel-body
+                  form.form-horizontal.search-facility
+                  .control-group.inline
+                    .controls
+                      select.form-control(id="logType", name="logType")
+                        option(value="") Select Log Type
+                        option(value="success" selected) All Success
+                        option(value="error") All Error
+                        option(value="conflict") All Conflict   
+                  .control-group.inline
+                    .controls
+                      input#dateFrom.form-control(type='date', placeholder='Date From' name='dateFrom')
+                  .control-group.inline
+                    .controls
+                      input#dateTo.form-control(type='date', placeholder='Date To' name='dateTo')
+                  
+                  .control-group.inline
+                    .controls
+                      select.form-control(id="displayLimit", name="displayLimit")
+                        option(value="") Display Limit
+                        option(value="1" selected) 1
+                        option(value="2") 2
+                        option(value="5") 5
+                        option(value="10") 10
+                        option(value="20" ) 20
+                        option(value="50") 50
+                        option(value="100") 100
+                        option(value="150") 150
+                        option(value="200") 200
+                  .control-group.inline
+                    .controls
+                      button.btn.btn-primary.log-history-search(type='submit' ) Search Log History
+                    p#displayLogInformation            
+                  include ./system-log-detail.pug             
+
+        
+    
+link(rel='stylesheet', href='/javascripts/sweetalert/sweetalert.css')
+script(type='text/javascript' src='/javascripts/sweetalert/sweetalert.min.js')     
+script(type='text/javascript' src='/javascripts/custom.js')     
+  

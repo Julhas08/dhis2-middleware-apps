@@ -15,7 +15,7 @@ module.exports.index = function index(req, res) {
 
     var apiInfoList = [];
 	 
-	db.query('SELECT * FROM api_settings order by id asc limit 1').then(apiInfo => {
+	db.query('SELECT * FROM api_settings order by id asc limit 2').then(apiInfo => {
 
 	// Iterate Data	
 		for (var i = 0; i < apiInfo.length; i++) {
@@ -97,7 +97,8 @@ module.exports.settingsFormIndex = function index(req, res) {
 		//console.log(apiInfoList);
 		logger4js.getLoggerConfig().debug("API Data: ",cronJobInformation);	
 	    res.render('schedular-setup',{
-	   		cronJobInfo: cronJobInformation
+	   		cronJobInfo: cronJobInformation,
+	   		is_enable  : info[0].is_enable	
 	    })
 
 	}).catch(error => {		
@@ -105,7 +106,7 @@ module.exports.settingsFormIndex = function index(req, res) {
         console.log(error); // print the error;
     });
 };
-
+// Setup new schedular information
 exports.schedularCrudPOST = function (req, res) {
 
 	db.query("INSERT into schedular_info (name,short_code,is_enable,schedular_type,start_time,end_time,duration,notes) VALUES('"+req.body.name+"','"+req.body.short_code+"','"+req.body.is_enable+"','"+req.body.schedular_type+"','"+req.body.start_time+"','"+req.body.end_time+"','"+req.body.duration+"','"+req.body.notes+"')").then(user => {
@@ -118,4 +119,33 @@ exports.schedularCrudPOST = function (req, res) {
         console.log(error); // print the error;
         res.send('error');
     });	
+};
+// Enable or disable schedular information
+exports.schedularEnableDisable = function (req, res) {
+
+	var isEnable;
+	if(req.body.is_enable==""){
+		isEnable = 0;		
+		console.log("Is enable in controller-0: ",req.body.is_enable);
+	} else if(req.body.is_enable=="on"){
+		isEnable = 1;
+		console.log("Is enable in controller-1: ",req.body.is_enable);
+	}
+
+    db.tx(t => {
+        // this.ctx = transaction config + state context;
+        return t.batch([
+            t.none('UPDATE schedular_info SET is_enable = $1 where short_code = $2', [isEnable,"hris"])
+        ]);
+    })
+    .then(data => {
+        console.log("Schedular Setup Success: ",data); // print success;
+        res.send('success');
+        logger4js.getLoggerConfig().info("SUCCESS!");	
+    })
+    .catch(error => {
+       logger4js.getLoggerConfig().error("ERROR! ",error);
+        console.log(error); // print the error;
+        res.send('error');
+    });
 };
