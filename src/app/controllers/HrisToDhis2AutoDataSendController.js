@@ -36,9 +36,9 @@ module.exports = {
 
 		//let requestType 	= "createdSince";
 		//let dateFrom 		= req.body.dateFrom;
-		let displayLimit 	= 3;
+		let displayLimit 	= 10;
 		//let date            = dateFrom.split("-");
-		let dateSince       = "20171101";
+		let dateSince       = "20171201";
 
 
 		/********************************************************************
@@ -167,14 +167,28 @@ module.exports = {
 						request(options, function(error, response, body) {
 
 							let message = null;
-							let logType = null;	
+							let logType = null;	/*
+							console.log("error:",error);
+							console.log("response:",response);
+							console.log("body:",body);*/
+							console.log("response:",response);
+							/*console.log("response:",response.statusCode);
+							console.log("body-httpStatusCode:",body.httpStatusCode);
+							console.log("Body-Message:",body.message);
+							console.log("Body-Status COde:",body.httpStatus);*/
 							if(response.statusCode == 409){
 								logger4js.getLoggerConfig().error("Conflicting in data posting! ",response.statusCode);
 								console.log("conflict");
 								//res.end('409');
 								message = "Conflicting in data posting!";
 								logType ="conflict";
-							} else if(response.statusCode == 500){
+							} else if (response.statusCode == 'undefined'){
+								logger4js.getLoggerConfig().error("Internal server error!",response.statusCode);
+								//res.end('500');
+								console.log("internal error");
+								message = "Internal server error!";
+								logType ="internal error";
+							}else if(response.statusCode == 500){
 								logger4js.getLoggerConfig().error("Internal server error!",response.statusCode);
 								//res.end('500');
 								console.log("internal error");
