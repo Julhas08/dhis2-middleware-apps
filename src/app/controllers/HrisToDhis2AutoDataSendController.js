@@ -23,22 +23,22 @@ module.exports = {
 		getApiSettingsInformation: function(name) {
 	    	let conName = name;
 		    return db.task('getApiSettingsInformation', t => {
-		            return t.oneOrNone('SELECT * FROM api_settings where connection_name=$1',conName)
-		                .then(apiInfo => {
-		                    return apiInfo;
-		                });
-		        });
+	            return t.oneOrNone('SELECT * FROM api_settings where connection_name=$1',conName)
+	                .then(apiInfo => {
+	                    return apiInfo;
+	            	});
+	        });
 		},	
 		
-		facilityCreateJSONPayloadSendToDHIS2: function(){
+		facilityCreateJSONPayloadSendToDHIS2: function(requestType){
 
 	// Receive JSON Payload		
 
-		let requestType 	= "createdSince";
+		//let requestType 	= "createdSince";
 		//let dateFrom 		= req.body.dateFrom;
-		let displayLimit 	= 10;
+		let displayLimit 	= 3;
 		//let date            = dateFrom.split("-");
-		let dateSince       = "20171201";
+		let dateSince       = "20171101";
 
 
 		/********************************************************************
@@ -84,7 +84,17 @@ module.exports = {
 				var json          = JSON.parse(pdata);
 				var jsonArr       = [];
 				var i;
+				var status;
+		// Status Management 
+				if(requestType=="createdSince") {
+					status = 0;
+				} else if(requestType=="updatedSince") {
+					status = 1;
+				} if(requestType=="deletedSince") {
+					status = 2;
+				}		
 				//console.log("JSON Length: ",json.length)
+		// JSON Payload Generate		
 				for(i = 0; i < json.length; i++) {
 
 						jsonArr.push({
@@ -102,7 +112,7 @@ module.exports = {
 					        upazilaName	:  json[i].upazila_name,
 					        latitude   	:  json[i].latitude,
 					        longitude  	:  json[i].longitude,
-					        status     	:  0,
+					        status     	:  status,
 					        parentCode 	:  json[i].division_code+''+json[i].district_code+''+json[i].upazila_code
 					        
 					    });

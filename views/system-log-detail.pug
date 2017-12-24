@@ -1,7 +1,6 @@
 table(class="table table-bordered table-hover table-header-bg")
   thead(class="table-header-bg thead")
     tr
-      th S/N
       th Module Name
       th Table Name
       th Log Type
@@ -12,7 +11,6 @@ table(class="table table-bordered table-hover table-header-bg")
   tbody
     each data, i in logInfo          
       tr
-        td= i = 1
         td= data.module_name
         td= data.table_name
         td= data.log_type

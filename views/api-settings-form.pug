@@ -54,24 +54,20 @@
         table(class="table table-bordered table-hover table-header-bg")
           thead(class="table-header-bg thead")
             tr
-              th S/N
               th Connection Name
               th Source Name
               th Base URL
               th Token Type
               th User Name
-              th Notes
               th Created Date
               th Action
 
           tbody        
             each api, i in apiInfo
               tr
-                td= i=1
                 td= api.connection_name   
                 td= api.source_name   
                 td= api.base_url   
                 td= api.token_type   
-                td= api.username   
-                td= api.notes   
+                td= api.username  
                 td= api.created_at      

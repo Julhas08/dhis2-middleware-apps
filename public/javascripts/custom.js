@@ -333,9 +333,9 @@ $('#is_enable').on('change',function(e){
 
 		if(logType==''){
 			swal("Sorry!", "Please select searching type.","error");
-		} else if(dateFrom==''){
+		} /*else if(dateFrom==''){
 			swal("Sorry!", "Please select your searching date.","error");
-		} else{
+		}*/ else{
 
 			 $('.log-history-search').after('<div class="loader"><img src="images/load.gif" alt="Searching......" /></div>');
 	// Ajax posting 
@@ -346,6 +346,9 @@ $('#is_enable').on('change',function(e){
 	            url: '/log-history-search',						
 	            success: function(data) {
 	                console.log('success');
+	                if(window != undefined){
+	                	console.log("Sorry in error log!");
+	                }
 	                //console.log(data);
 	                //console.log(JSON.stringify(data));
 	                $("#displayLogInformation").html(data);

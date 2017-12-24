@@ -33,12 +33,16 @@ getCronJobSettingsInformation("hris").then(info => {
 	let startTime = data.start_time;
 	let duration  = data.duration;
 	console.log("Cron job status: ",isEnable);
+	var schedularTask = ["createdSince","updatedSince","deletedSince"];
 	// if Schedular settings is on
 	if(isEnable==1){
 		// Running the cron job in every five minutes 
 		cron.schedule('* * * * *', function(){
 		  //console.log('running a task every minute');
-		  jsonPayload.facilityCreateJSONPayloadSendToDHIS2();
+		  for (var i = 0; i < schedularTask.length; i++) {		  	
+		  	jsonPayload.facilityCreateJSONPayloadSendToDHIS2(schedularTask[i]);
+		  }
+		  
 		});
 	}
 

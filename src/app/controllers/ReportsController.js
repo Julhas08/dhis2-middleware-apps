@@ -3,7 +3,7 @@
 * @author Julhas Sujan
 * @version 1.0.0
 */
-var request=require('request');
+//var request=require('request');
 var dbConnect = require('../config/db-config');
 var fn = require('../function');
 var logger4js = require('../../logger/log4js');
@@ -15,12 +15,23 @@ var db = dbConnect.getConnection();
 exports.index = function index(req, res) {	 
 	let logInfoArray = [];
 	var query;
-	if(req.body.logType){
-		query = 'SELECT * FROM system_log order by id desc limit '+req.body.displayLimit;
+	if(req.body.logType && !req.body.dateTo){
+		query = 'SELECT * FROM system_log where log_type=$1 order by id desc limit '+req.body.displayLimit;
+
+	} else if ( req.body.logType && req.body.dateFrom && req.body.dateTo){
+		query = 'SELECT * FROM system_log where log_type='+req.body.logType+' and created_date between '+req.body.dateFrom+' and '+req.body.dateTo+'order by id desc limit '+req.body.displayLimit;
 	} else {
-		query = 'SELECT * FROM system_log order by id desc limit 1';
+		query = 'SELECT * FROM system_log order by id desc limit 20';
 	}
-	db.query(query).then(info => {
+	function getSystemLogDetail() {
+	    return db.task('getApiSettingsInformation', t => {
+            return t.many(query,[req.body.logType])
+                .then(info => {
+                    return info;
+                });
+	        });
+	}
+	getSystemLogDetail().then(info => {
 		for (var i = 0; i < info.length; i++) {
 			// Create an object to save current row's data
 			var dataArray = {
@@ -38,18 +49,18 @@ exports.index = function index(req, res) {
 		}
 		if(req.body.logType){
 			res.render('system-log-detail',{
-	   			logInfo: logInfoArray
+	   			logInfo: JSON.parse(JSON.stringify(logInfoArray))
 	    	})
 		} else {
 			res.render('system-log',{
-	   			logInfo: logInfoArray
+	   			logInfo: JSON.parse(JSON.stringify(logInfoArray))
 	    	})
 		}
-	    
-	    console.log(logInfoArray);
+	    //setTimeout(function(){console.log('from timeout');},0);
+	    //console.log(JSON.stringify(logInfoArray));
+	}).catch(error => {
+	    console.log(error);
+	});
 
-	}).catch(error => {		
-		logger4js.getLoggerConfig().error("ERROR! ",error);
-        console.log(error); // print the error;
-    });
+
 };
