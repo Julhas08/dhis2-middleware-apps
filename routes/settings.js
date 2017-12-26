@@ -4,10 +4,10 @@
 * @return api setting form    
 */
 
-var express = require('express');
-var router = express.Router();
+let express = require('express');
+let router = express.Router();
 // APi Settings Controller Import
-var settings = require('../src/app/controllers/SettingsController');
+let settings = require('../src/app/controllers/SettingsController');
 
 // API Setting form load
 router.get('/api-settings', settings.index);

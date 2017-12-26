@@ -5,10 +5,10 @@
 */
 
 'use strict';
-var request=require('request');
-var dbConnect = require('../config/db-config');
-var fn = require('../function');
-var logger4js = require('../../logger/log4js');
+let request=require('request');
+let dbConnect = require('../config/db-config');
+let fn = require('../function');
+let logger4js = require('../../logger/log4js');
 
 /**
 * JSON payload send to DHIS2
@@ -77,14 +77,14 @@ module.exports = {
 		// Request send to DHIS2 Data Store Manager				
 			request(options, function(error, response, body) {
 
-				var data          = JSON.stringify(JSON.parse(body));
-				var facilityInfo1 = data.replace('[','');
-				var facilityInfo  = facilityInfo1.replace(']','');
-				var pdata         = data.replace(/&quot;/g, '"');
-				var json          = JSON.parse(pdata);
-				var jsonArr       = [];
-				var i;
-				var status;
+				let data          = JSON.stringify(JSON.parse(body));
+				let facilityInfo1 = data.replace('[','');
+				let facilityInfo  = facilityInfo1.replace(']','');
+				let pdata         = data.replace(/&quot;/g, '"');
+				let json          = JSON.parse(pdata);
+				let jsonArr       = [];
+				let i;
+				let status;
 		// Status Management 
 				if(requestType=="createdSince") {
 					status = 0;
@@ -148,9 +148,9 @@ module.exports = {
 					// Base64 authentication, call from function.js		 	
 					 	let auth = fn.base_64_auth(username,password);
 					// Base url development for data handling		 	
-					 	var url  = baseUrl+resourcePath+orgCode+'_'+parentCode;
+					 	let url  = baseUrl+resourcePath+orgCode+'_'+parentCode;
 					// JSON Payload options development		 	
-					 	var options = {
+					 	let options = {
 						    method: 'POST',
 						    url: url,
 						    body: jsonPayload,
@@ -171,7 +171,7 @@ module.exports = {
 							console.log("error:",error);
 							console.log("response:",response);
 							console.log("body:",body);*/
-							console.log("response:",response);
+							//console.log("response:",response);
 							/*console.log("response:",response.statusCode);
 							console.log("body-httpStatusCode:",body.httpStatusCode);
 							console.log("Body-Message:",body.message);

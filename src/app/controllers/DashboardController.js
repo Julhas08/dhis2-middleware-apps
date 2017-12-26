@@ -5,10 +5,10 @@
 */
 
 'use strict';
-var request=require('request');
-var dbConnect = require('../config/db-config');
-var fn = require('../function');
-var logger4js = require('../../logger/log4js');
+let request=require('request');
+let dbConnect = require('../config/db-config');
+let fn = require('../function');
+let logger4js = require('../../logger/log4js');
 
 /**
 * Dashboard Default Load in GET Method
@@ -16,16 +16,16 @@ var logger4js = require('../../logger/log4js');
 
 module.exports.index = function index(req, res) {
 
-        var userList = [];
-		var createdFacilities=[];
-		var db= dbConnect.getConnection();
+        let userList = [];
+		let createdFacilities=[];
+		let db= dbConnect.getConnection();
 	// Searching Parameters	
-		var dateSince 		= fn.getTodayYYYYMMDD();
-		var displayLimit	= 50;
-		var requestType		= "createdSince";
+		let dateSince 		= fn.getTodayYYYYMMDD();
+		let displayLimit	= 50;
+		let requestType		= "createdSince";
 
 	//  Database user table data
-		var user;
+		let user;
 		db.query('SELECT * FROM users').then(user => {
 			userList.push(user);
 	    }).catch(error => {
@@ -70,13 +70,13 @@ module.exports.index = function index(req, res) {
 				request(options, function(error, response, body) {
 					//console.log(error + " :: " + response + " :: " + body);
 					//console.log(body);
-					var data          = JSON.stringify(JSON.parse(body));
-					var facilityInfo1 = data.replace('[','');
-					var facilityInfo  = facilityInfo1.replace(']','');
+					let data          = JSON.stringify(JSON.parse(body));
+					let facilityInfo1 = data.replace('[','');
+					let facilityInfo  = facilityInfo1.replace(']','');
 
-					//var data = ('#{createdFacilitiesList}').toString();
-					var pdata = data.replace(/&quot;/g, '"');
-					var obj   = JSON.parse(pdata);
+					//let data = ('#{createdFacilitiesList}').toString();
+					let pdata = data.replace(/&quot;/g, '"');
+					let obj   = JSON.parse(pdata);
 
 					res.render('dashboard', {
 				      users: userList,
@@ -98,12 +98,12 @@ module.exports.index = function index(req, res) {
 
 exports.dashboardFacilityInfoSearch = function (req, res) {
 
-		var requestType 	= req.body.requestType;
-		var dateFrom 		= req.body.dateFrom;
-		var displayLimit 	= req.body.displayLimit;
-		var date            = dateFrom.split("-");
-		var dateSince       = date[0]+date[1]+date[2];		
-		var db= dbConnect.getConnection();
+		let requestType 	= req.body.requestType;
+		let dateFrom 		= req.body.dateFrom;
+		let displayLimit 	= req.body.displayLimit;
+		let date            = dateFrom.split("-");
+		let dateSince       = date[0]+date[1]+date[2];		
+		let db= dbConnect.getConnection();
 		//console.log("RequestType: "+requestType+", DateSince: "+dateSince+", DisplayLimit: "+displayLimit);
 		// API data from HRIS  
 	// API Information return SQL function	
@@ -141,11 +141,11 @@ exports.dashboardFacilityInfoSearch = function (req, res) {
 
 			request(options, function(error, response, body) {
 
-				var data          = JSON.stringify(JSON.parse(body));
-				var facilityInfo1 = data.replace('[','');
-				var facilityInfo  = facilityInfo1.replace(']','');
-				var pdata         = data.replace(/&quot;/g, '"');
-				var obj           = JSON.parse(pdata);
+				let data          = JSON.stringify(JSON.parse(body));
+				let facilityInfo1 = data.replace('[','');
+				let facilityInfo  = facilityInfo1.replace(']','');
+				let pdata         = data.replace(/&quot;/g, '"');
+				let obj           = JSON.parse(pdata);
 				logger4js.getLoggerConfig().debug("Facility info search result: ",obj);
 				logger4js.getLoggerConfig().error("Error in searching result!",error);
 				res.render('dashboard-search-result', {
@@ -164,13 +164,13 @@ exports.dashboardFacilityInfoSearch = function (req, res) {
 * JSON Payload Generate
 */
 exports.dashControllerJsonPayload = function (req, res) {
-		var requestType 	= req.body.requestType;
-		var dateFrom 		= req.body.dateFrom;
-		var displayLimit 	= req.body.displayLimit;
-		var date            = dateFrom.split("-");
-		var dateSince       = date[0]+date[1]+date[2];
+		let requestType 	= req.body.requestType;
+		let dateFrom 		= req.body.dateFrom;
+		let displayLimit 	= req.body.displayLimit;
+		let date            = dateFrom.split("-");
+		let dateSince       = date[0]+date[1]+date[2];
 
-		var db= dbConnect.getConnection();
+		let db= dbConnect.getConnection();
 		//console.log("RequestType: "+requestType+", DateSince: "+dateSince+", DisplayLimit: "+displayLimit);
 		// API data from HRIS   
 		// API Information return SQL function	
@@ -208,14 +208,14 @@ exports.dashControllerJsonPayload = function (req, res) {
 
 		request(options, function(error, response, body) {
 
-			var data          = JSON.stringify(JSON.parse(body));
-			var facilityInfo1 = data.replace('[','');
-			var facilityInfo  = facilityInfo1.replace(']','');
-			var pdata         = data.replace(/&quot;/g, '"');
-			var json          = JSON.parse(pdata);
-			var jsonArr       = [];
+			let data          = JSON.stringify(JSON.parse(body));
+			let facilityInfo1 = data.replace('[','');
+			let facilityInfo  = facilityInfo1.replace(']','');
+			let pdata         = data.replace(/&quot;/g, '"');
+			let json          = JSON.parse(pdata);
+			let jsonArr       = [];
 
-			for(var i = 0; i < json.length; i++) {
+			for(let i = 0; i < json.length; i++) {
 
 				jsonArr.push({
 			        code       :  json[i].code,

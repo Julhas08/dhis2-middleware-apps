@@ -1,7 +1,7 @@
 /**
 * @Logger Management
 */
-var log4js = require('log4js');
+let log4js = require('log4js');
 
 module.exports = {
 

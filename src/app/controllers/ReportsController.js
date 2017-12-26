@@ -3,18 +3,18 @@
 * @author Julhas Sujan
 * @version 1.0.0
 */
-//var request=require('request');
-var dbConnect = require('../config/db-config');
-var fn = require('../function');
-var logger4js = require('../../logger/log4js');
-var db = dbConnect.getConnection();
+//let request=require('request');
+let dbConnect = require('../config/db-config');
+let fn = require('../function');
+let logger4js = require('../../logger/log4js');
+let db = dbConnect.getConnection();
 /**
 * Default load  
 */
 'use strict';
 exports.index = function index(req, res) {	 
 	let logInfoArray = [];
-	var query;
+	let query;
 	if(req.body.logType && !req.body.dateTo){
 		query = 'SELECT * FROM system_log where log_type=$1 order by id desc limit '+req.body.displayLimit;
 
@@ -32,9 +32,9 @@ exports.index = function index(req, res) {
 	        });
 	}
 	getSystemLogDetail().then(info => {
-		for (var i = 0; i < info.length; i++) {
+		for (let i = 0; i < info.length; i++) {
 			// Create an object to save current row's data
-			var dataArray = {
+			let dataArray = {
 				'id'           : info[i].id,
 				'module_name'  : info[i].module_name,
 				'table_name'   : info[i].table_name,

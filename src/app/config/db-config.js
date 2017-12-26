@@ -1,21 +1,21 @@
 /**
 * pg-promise import
 */
-var pgp = require('pg-promise')({
+let pgp = require('pg-promise')({
    noWarnings: true
 });
 
 module.exports = {
 
 	getConnection: function () {
-    	var connection = {
+    	let connection = {
 		    host:     'localhost', // server name or IP address;
 		    port: 	  5432,
 		    database: 'middleware',
 		    user:     'postgres',
 		    password: ''
 		};
-		var db = pgp(connection);
+		let db = pgp(connection);
 
 		// Database connection error handling 
 		db.connect()

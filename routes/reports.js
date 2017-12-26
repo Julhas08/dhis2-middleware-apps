@@ -3,10 +3,10 @@
 * @return api setting form    
 */
 
-var express = require('express');
-var router = express.Router();
+let express = require('express');
+let router = express.Router();
 // APi Settings Controller Import
-var reports = require('../src/app/controllers/ReportsController');
+let reports = require('../src/app/controllers/ReportsController');
 
 // System Log
 router.get('/system-log', reports.index);

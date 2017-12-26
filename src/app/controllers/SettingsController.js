@@ -3,25 +3,25 @@
 * @author Julhas Sujan
 * @version 1.0.0
 */
-var request=require('request');
-var dbConnect = require('../config/db-config');
-var fn = require('../function');
-var logger4js = require('../../logger/log4js');
-var db = dbConnect.getConnection();
+let request=require('request');
+let dbConnect = require('../config/db-config');
+let fn = require('../function');
+let logger4js = require('../../logger/log4js');
+let db = dbConnect.getConnection();
 /**
 * Default load api information 
 */
 module.exports.index = function index(req, res) {
 
-    var apiInfoList = [];
+    let apiInfoList = [];
 	 
 	db.query('SELECT * FROM api_settings order by id asc limit 2').then(apiInfo => {
 
 	// Iterate Data	
-		for (var i = 0; i < apiInfo.length; i++) {
+		for (let i = 0; i < apiInfo.length; i++) {
 
 			// Create an object to save current row's data
-			var apiInfoArray = {
+			let apiInfoArray = {
 				'id':apiInfo[i].id,
 				'connection_name':apiInfo[i].connection_name,
 				'source_name':apiInfo[i].source_name,
@@ -71,15 +71,15 @@ exports.apiCrudPOST = function (req, res) {
 
 module.exports.settingsFormIndex = function index(req, res) {
 
-    var cronJobInformation = [];
+    let cronJobInformation = [];
 	 
 	db.query('SELECT * FROM schedular_info').then(info => {
 
 	// Iterate Data	
-		for (var i = 0; i < info.length; i++) {
+		for (let i = 0; i < info.length; i++) {
 
 			// Create an object to save current row's data
-			var infoArray = {
+			let infoArray = {
 				'id':info[i].id,
 				'name':info[i].name,
 				'short_code':info[i].short_code,
@@ -123,7 +123,7 @@ exports.schedularCrudPOST = function (req, res) {
 // Enable or disable schedular information
 exports.schedularEnableDisable = function (req, res) {
 
-	var isEnable;
+	let isEnable;
 	if(req.body.is_enable==""){
 		isEnable = 0;		
 		console.log("Is enable in controller-0: ",req.body.is_enable);
