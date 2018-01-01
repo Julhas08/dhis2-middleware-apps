@@ -85,9 +85,11 @@ module.exports.settingsFormIndex = function index(req, res) {
 				'short_code':info[i].short_code,
 				'is_enable':info[i].is_enable,
 				'schedular_type':info[i].schedular_type,
-				'start_time':info[i].start_time,
-				'end_time':info[i].end_time,
-				'duration':info[i].duration,
+				'minutes':info[i].minutes,
+				'hours':info[i].hours,
+				'day_of_month':info[i].day_of_month,
+				'month_of_year':info[i].month_of_year,
+				'day_of_week':info[i].day_of_week,
 				'created_at':info[i].created_at,
 			}
 			// Add object into array
@@ -95,11 +97,20 @@ module.exports.settingsFormIndex = function index(req, res) {
 
 		}
 		//console.log(apiInfoList);
-		logger4js.getLoggerConfig().debug("API Data: ",cronJobInformation);	
-	    res.render('schedular-setup',{
-	   		cronJobInfo: cronJobInformation,
-	   		is_enable  : info[0].is_enable	
-	    })
+		logger4js.getLoggerConfig().debug("API Data: ",cronJobInformation);
+
+		if(info[0].is_enable){
+			res.render('schedular-setup',{
+	   			cronJobInfo: cronJobInformation,
+	   			is_enable  : info[0].is_enable	
+	    	})
+		} else {
+			res.render('schedular-setup',{
+	   			cronJobInfo: cronJobInformation,
+	   			is_enable  : 0	
+	    	})
+		}
+	    
 
 	}).catch(error => {		
 		logger4js.getLoggerConfig().error("ERROR! ",error);
@@ -109,7 +120,7 @@ module.exports.settingsFormIndex = function index(req, res) {
 // Setup new schedular information
 exports.schedularCrudPOST = function (req, res) {
 
-	db.query("INSERT into schedular_info (name,short_code,is_enable,schedular_type,start_time,end_time,duration,notes) VALUES('"+req.body.name+"','"+req.body.short_code+"','"+req.body.is_enable+"','"+req.body.schedular_type+"','"+req.body.start_time+"','"+req.body.end_time+"','"+req.body.duration+"','"+req.body.notes+"')").then(user => {
+	db.query("INSERT into schedular_info (name,short_code,is_enable,schedular_type,minutes,hours,day_of_month,month_of_year,day_of_week,notes) VALUES('"+req.body.name+"','"+req.body.short_code+"','"+req.body.is_enable+"','"+req.body.schedular_type+"','"+req.body.minutes+"','"+req.body.hours+"','"+req.body.dayOfMonth+"','"+req.body.monthOfYear+"','"+req.body.dayOfWeek+"','"+req.body.notes+"')").then(user => {
         console.log("Schedular Setup Success"); // print success;
         res.send('success');
         logger4js.getLoggerConfig().info("SUCCESS! ");	
@@ -123,17 +134,16 @@ exports.schedularCrudPOST = function (req, res) {
 // Enable or disable schedular information
 exports.schedularEnableDisable = function (req, res) {
 
-	let isEnable;
-	if(req.body.is_enable==""){
+	let isEnable = req.body.is_enable;
+	/*if(req.body.is_enable==" "){
 		isEnable = 0;		
 		console.log("Is enable in controller-0: ",req.body.is_enable);
 	} else if(req.body.is_enable=="on"){
 		isEnable = 1;
 		console.log("Is enable in controller-1: ",req.body.is_enable);
-	}
+	}*/
 
     db.tx(t => {
-        // this.ctx = transaction config + state context;
         return t.batch([
             t.none('UPDATE schedular_info SET is_enable = $1 where short_code = $2', [isEnable,"hris"])
         ]);

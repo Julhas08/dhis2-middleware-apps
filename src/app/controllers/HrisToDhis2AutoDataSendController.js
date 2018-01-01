@@ -87,11 +87,11 @@ module.exports = {
 				let status;
 		// Status Management 
 				if(requestType=="createdSince") {
-					status = 0;
-				} else if(requestType=="updatedSince") {
 					status = 1;
-				} if(requestType=="deletedSince") {
+				} else if(requestType=="updatedSince") {
 					status = 2;
+				} if(requestType=="deletedSince") {
+					status = 3;
 				}		
 				//console.log("JSON Length: ",json.length)
 		// JSON Payload Generate		

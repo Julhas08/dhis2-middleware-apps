@@ -221,17 +221,25 @@ $('.api-settings-btn').click(function(e){
 // Create new Schedular Information
 $('.schedular-settings-btn').click(function(e){
         e.preventDefault();
-            // Requested data from API settings form posting    
+            // Requested data from API settings form posting  
+        var is_enable;      
         var name           = $('#name').val();
         var short_code 	   = $('#short_code').val();
-        var is_enable      = $('#is_enable').val();			
-        var schedular_type = $('#schedular_type').val();		
-        var start_time     = $('#start_time').val();		
-        var end_time       = $('#end_time').val();		
-        var duration       = $('#duration').val();		
-        var notes          = $('#notes').val();	
+        if($('#is_enable:checked').val()=='1'){
+        	is_enable = 1;
+        } else {
+        	is_enable = 0;
+        }			
+        var schedular_type = $('#schedular_type').val();
 
-        var paramInfo = '&name=' + name +'&short_code='+short_code+'&is_enable='+is_enable+'&schedular_type=' + schedular_type+'&start_time='+start_time+'&end_time='+end_time+'&duration='+duration+'&notes='+notes;  
+        var minutes     = $('#minutes').val();		
+        var hours       = $('#hours').val();		
+        var dayOfMonth  = $('#dayOfMonth').val();		
+        var monthOfYear = $('#monthOfYear').val();		
+        var dayOfWeek   = $('#dayOfWeek').val();		
+        var notes       = $('#notes').val();	
+
+        var paramInfo = '&name=' + name +'&short_code='+short_code+'&is_enable='+is_enable+'&schedular_type=' + schedular_type+'&minutes='+minutes+'&hours='+hours+'&dayOfMonth='+dayOfMonth+'&monthOfYear='+monthOfYear+'&dayOfWeek='+dayOfWeek+'&notes='+notes;  
 		console.log(paramInfo);
 
 		if(name==''){
@@ -278,7 +286,15 @@ $('.schedular-settings-btn').click(function(e){
 // Enable or disable cron job 
 $('#is_enable').on('change',function(e){
 
-        var is_enable = $('#is_enable').val();	
+		var is_enable;
+		if($('#is_enable:checked').val()=='1'){
+			is_enable = 1; 
+
+		} else if($('#is_enable:checked').val()=='on') {
+			is_enable = 1;
+		} else {
+			is_enable = 0;
+		}
         var paramInfo = '&is_enable='+is_enable;
 
 	// Loader		
@@ -298,19 +314,26 @@ $('#is_enable').on('change',function(e){
 	            		swal("Sorry!", "Your Schedular settings has not been completed.","error");
 	            		$('#is_enable').val(' ');	
 	            	}
-	// Close loader        
-	                $('#loader').slideUp(200,function(){        
-	               		$('#loader').remove();
-		            });
-		            $(".loader").fadeOut("slow"); 
+	// Close loader and set timeout callback function 
+					setTimeout(function(){	       
+		                $('#loader').slideUp(200,function(){        
+		               		$('#loader').remove();	   
+			            });
+			            $(".loader").fadeOut("slow"); 
+			             window.location.reload();
+		            }, 1000);            		
+
 	            },
 	            error: function(err){
 	            	console.log(err);
-	// Close loader        
-	                $('#loader').slideUp(200,function(){        
-	               		$('#loader').remove();
-		            });
-		            $(".loader").fadeOut("slow");
+	// Close loader and set timeout callback function         
+	                setTimeout(function(){	       
+		                $('#loader').slideUp(200,function(){        
+		               		$('#loader').remove();	   
+			            });
+			            $(".loader").fadeOut("slow"); 
+			             window.location.reload();
+		            }, 3000);
 	            }
 	        });
 
