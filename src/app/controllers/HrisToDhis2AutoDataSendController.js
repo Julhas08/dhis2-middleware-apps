@@ -97,13 +97,14 @@ module.exports = {
 		// JSON Payload Generate		
 				for(i = 0; i < json.length; i++) {
 
+						let openingDate = (json[i].created_at).split(" "); 
 						jsonArr.push({
 					        code       	:  json[i].code,
 					        name       	:  json[i].name,
 					        shortName  	:  json[i].name,
 					        displayName	:  json[i].name,
 					        displayShortName: json[i].name,
-					        openingDate	:  json[i].created_at,
+					        openingDate	:  openingDate[0],
 					        divisionId 	:  json[i].division_code,
 					        divisionName:  json[i].division_name,
 					        districtId 	:  json[i].district_code,
