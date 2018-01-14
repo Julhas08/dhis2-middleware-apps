@@ -23,4 +23,8 @@ router.post('/schedular-settings-crud', settings.schedularCrudPOST);
 // Schedular eenable/ disabled
 router.post('/schedular-enable-disable', settings.schedularEnableDisable);
 
+// Data Sync Mode Management 
+router.get('/data-sync-mode', settings.dataTransactionMode);
+router.post('/data-transaction-mode-enable', settings.dataTransactionModeUpdate);
+
 module.exports = router;

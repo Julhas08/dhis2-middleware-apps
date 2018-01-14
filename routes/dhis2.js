@@ -10,7 +10,12 @@ let logger4js = require('../src/logger/log4js');
 let express = require('express');
 let router  = express.Router();
 let cron    = require('node-cron');
-let jsonPayload = require('../src/app/controllers/HrisToDhis2AutoDataSendController');
+
+// Transaction Automatic Mode
+let transactionAutomaticMode = require('../src/app/controllers/DataTransactionAutomaticMode');
+
+// Transaction Manual mode that means all operations will be based on DHIS2 Facility Register App
+let transactionManualMode = require('../src/app/controllers/DataTransactionManualMode');
 let dhis2Contorller     = require('../src/app/controllers/DHIS2Controller');
 
 // Send JSON Payload from Dashboard to DHIS2
@@ -30,6 +35,19 @@ function getCronJobSettingsInformation(name) {
     });
 }
 
+// Data Transaction mode (Automatic or Manual)
+function getDataTrasactionMode() {
+
+    return db.task('getApiSettingsInformation', t => {
+        return t.oneOrNone('SELECT mode_type FROM data_transaction_mode')
+            .then(info => {
+            	return info;                
+            }).catch(error=> {
+        		console.log("Information not found");
+        		logger4js.getLoggerConfig().error("Data transaction mode  Information not found.");
+    		});
+    });
+}
 getCronJobSettingsInformation("hris").then(info => {
 
 	let data      = JSON.parse(JSON.stringify(info));
@@ -55,7 +73,7 @@ getCronJobSettingsInformation("hris").then(info => {
 			minutes   = data.minutes;
 			hours     = data.hours;
 
-			console.log("Cron job status: ",isEnable);
+			console.log("Cron job is running! System Status: ", isEnable);
 			logger4js.getLoggerConfig().error("Cron job status:",isEnable);
 			let schedularTask = ["createdSince","updatedSince","deletedSince"];
 			// if Schedular settings is on
@@ -71,14 +89,52 @@ getCronJobSettingsInformation("hris").then(info => {
 			0 0 * * * *   Daily at midnight
 			*/
 			if(isEnable==1){
-				// Running the cron job in every five minutes 
-				cron.schedule(''+minutes+' '+hours+' * * *', function(){ // 14:59 
-				  //console.log('running a task every minute');
-				  for (let i = 0; i < schedularTask.length; i++) {	  	
-				  	jsonPayload.facilityCreateJSONPayloadSendToDHIS2(schedularTask[i]);
-				  }
-				  
-				});
+				// Get Data Transaction mode 
+				let mode_type;
+				getDataTrasactionMode().then(info => {
+					let transactionMode = JSON.parse(JSON.stringify(info));
+					
+					if(transactionMode == null){
+						mode_type = 0;
+						console.log("Mode Type: Manual",transactionMode.mode_type);
+
+					} else {
+						if(transactionMode.mode_type==null){
+
+							console.log("Sorry! No Setup data in transaction mode table.");
+							logger4js.getLoggerConfig().error("Sorry! No Setup data in transaction mode table.");
+
+						} else {
+				/****** Automatic Transaction Mode is in seperate method *****/
+							if(transactionMode.mode_type==1){
+								console.log("Mode Type: Automatic",transactionMode.mode_type);
+								let modeType = transactionMode.mode_type;
+							// Running the cron job in every five minutes 
+								cron.schedule(''+minutes+' '+hours+' * * *', function(){ // 14:59 
+								  //console.log('running a task every minute');
+								  for (let i = 0; i < schedularTask.length; i++) {	  	
+								  	transactionAutomaticMode.sendInformationInDHISAutomaticMode(schedularTask[i], modeType);
+								  }
+								  
+								});
+				/*** Manual Transaction Mode ****/				
+							} else {
+								console.log("Mode Type: Manual",transactionMode.mode_type);
+								let modeType = transactionMode.mode_type;
+							// Running the cron job in every five minutes 
+								cron.schedule(''+minutes+' '+hours+' * * *', function(){ // 14:59 
+								  //console.log('running a task every minute');
+								  for (let i = 0; i < schedularTask.length; i++) {	  	
+								  	transactionManualMode.facilityCreateJSONPayloadSendToDHIS2(schedularTask[i], modeType);
+								  }
+								  
+								});
+							}
+							
+						}
+					}
+				});	
+				
 			}
 		}
 			

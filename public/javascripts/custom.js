@@ -338,6 +338,65 @@ $('#is_enable').on('change',function(e){
 	        });
 
     });	
+
+/***Data Syncronization or Transaction mode Automatic/ Manual Setup***/
+// Enable or disable cron job 
+$('#isEnableSynMode').on('change',function(e){
+
+		var is_enable;
+		if($('#isEnableSynMode:checked').val()=='1'){
+			is_enable = 1; 
+
+		} else if($('#isEnableSynMode:checked').val()=='on') {
+			is_enable = 1;
+		} else {
+			is_enable = 0;
+		}
+        var paramInfo = '&is_enable='+is_enable;
+
+	// Loader		
+			$('#isEnableSynMode').after('<div class="loader"><img src="images/load.gif" alt="Searching......" /></div>');
+	// Ajax posting 
+			$.ajax({
+				type: 'POST',
+				cache: false,
+				data: paramInfo,
+		        //contentType: 'application/json',
+	            url: '/data-transaction-mode-enable',						
+	            success: function(data) {
+	            	if(data=='success'){
+	            		swal("Success!", "Data transaction mode has enabled.","success");
+	            		$('#isEnableSynMode').val(' ');	
+	            	} else {
+	            		swal("Sorry!", "Your transaction mode has not been completed.","error");
+	            		$('#isEnableSynMode').val(' ');	
+	            	}
+	// Close loader and set timeout callback function 
+					setTimeout(function(){	       
+		                $('#loader').slideUp(200,function(){        
+		               		$('#loader').remove();	   
+			            });
+			            $(".loader").fadeOut("slow"); 
+			             window.location.reload();
+		            }, 1000);            		
+
+	            },
+	            error: function(err){
+	            	console.log(err);
+	// Close loader and set timeout callback function         
+	                setTimeout(function(){	       
+		                $('#loader').slideUp(200,function(){        
+		               		$('#loader').remove();	   
+			            });
+			            $(".loader").fadeOut("slow"); 
+			             window.location.reload();
+		            }, 3000);
+	            }
+	        });
+
+    });	
+
+
 /****************************************************************
 ***************************Reports Area**************************
 *****************************************************************/

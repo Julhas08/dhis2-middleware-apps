@@ -159,3 +159,72 @@ exports.schedularEnableDisable = function (req, res) {
         res.send('error');
     });
 };
+
+/**
+* Data Transaction Mode Setup
+*/
+
+module.exports.dataTransactionMode = function index(req, res) {
+
+    let transactionModeInfo = [];
+	 
+	db.query('SELECT * FROM data_transaction_mode').then(info => {
+
+	// Iterate Data	
+		for (let i = 0; i < info.length; i++) {
+
+			// Create an object to save current row's data
+			let infoArray = {
+				'id'        : info[i].id,
+				'mode_type' : info[i].mode_type,
+				'is_enable' : info[i].is_enable,
+				'notes'     : info[i].notes,
+				'created_at': info[i].created_at,
+			}
+			// Add object into array
+			transactionModeInfo.push(infoArray);
+
+		}
+		//console.log(apiInfoList);
+		logger4js.getLoggerConfig().debug("API Data: ",transactionModeInfo);
+
+		if(info[0].is_enable){
+			res.render('data-sync-mode',{
+	   			resultInfo: transactionModeInfo,
+	   			is_enable  : info[0].is_enable	
+	    	})
+		} else {
+			res.render('data-sync-mode',{
+	   			resultInfo: transactionModeInfo,
+	   			is_enable  : 0	
+	    	})
+		}
+	    
+
+	}).catch(error => {		
+		logger4js.getLoggerConfig().error("ERROR! ",error);
+        console.log(error); // print the error;
+    });
+};
+
+// Transaction Mode Updates
+exports.dataTransactionModeUpdate = function (req, res) {
+
+	let isEnable = req.body.is_enable;
+
+    db.tx(t => {
+        return t.batch([
+            t.none('UPDATE data_transaction_mode SET mode_type = $1', [isEnable])
+        ]);
+    })
+    .then(data => {
+        console.log("Transaction Mode Setup has success: ",data); // print success;
+        res.send('success');
+        logger4js.getLoggerConfig().info("SUCCESS!");	
+    })
+    .catch(error => {
+       logger4js.getLoggerConfig().error("ERROR! ",error);
+        console.log(error); // print the error;
+        res.send('error');
+    });
+};
