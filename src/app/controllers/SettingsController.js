@@ -120,7 +120,7 @@ module.exports.settingsFormIndex = function index(req, res) {
 // Setup new schedular information
 exports.schedularCrudPOST = function (req, res) {
 
-	db.query("INSERT into schedular_info (name,short_code,is_enable,schedular_type,minutes,hours,day_of_month,month_of_year,day_of_week,notes) VALUES('"+req.body.name+"','"+req.body.short_code+"','"+req.body.is_enable+"','"+req.body.schedular_type+"','"+req.body.minutes+"','"+req.body.hours+"','"+req.body.dayOfMonth+"','"+req.body.monthOfYear+"','"+req.body.dayOfWeek+"','"+req.body.notes+"')").then(user => {
+	db.query("INSERT into schedular_info (name,short_code,is_enable,schedular_type,minutes,hours,day_of_month,month_of_year,day_of_week,exported_date_limit,export_from_days, notes) VALUES('"+req.body.name+"','"+req.body.short_code+"','"+req.body.is_enable+"','"+req.body.schedular_type+"','"+req.body.minutes+"','"+req.body.hours+"','"+req.body.dayOfMonth+"','"+req.body.monthOfYear+"','"+req.body.dayOfWeek+"','"+req.body.exportedDataLimit+"','"+req.body.exportFromDays+"','"+req.body.notes+"')").then(user => {
         console.log("Schedular Setup Success"); // print success;
         res.send('success');
         logger4js.getLoggerConfig().info("SUCCESS! ");	

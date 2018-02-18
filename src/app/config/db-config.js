@@ -23,7 +23,7 @@ module.exports = {
 	        obj.done(); // success, release connection;
 	    })
 	    .catch(function (error) {
-	    	logger.error("DB CONNECTION ERROR:", error.message);
+	    	//logger.error("DB CONNECTION ERROR:", error.message);
 	        console.log("ERROR DB Connection: ", error.message);
 	    });	
 		

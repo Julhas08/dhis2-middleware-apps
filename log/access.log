@@ -1,5 +1,106 @@
-[2017-12-16T20:13:04.621] [ERROR] accesslog - null
-[2017-12-16T20:13:06.672] [ERROR] accesslog - Conflicting in data posting!  409
-[2017-12-16T20:13:19.595] [ERROR] accesslog - null
-[2017-12-16T20:13:21.415] [ERROR] accesslog - Conflicting in data posting!  409
-[2017-12-16T20:14:34.890] [ERROR] accesslog - null
+[2018-02-18T16:05:32.601] [ERROR] accesslog - Cron job status: 1
+[2018-02-18T16:06:08.520] [ERROR] accesslog - Cron job status: 1
+[2018-02-18T16:07:01.358] [ERROR] accesslog - null
+[2018-02-18T16:07:01.360] [ERROR] accesslog - null
+[2018-02-18T16:07:01.360] [ERROR] accesslog - null
+[2018-02-18T16:07:01.361] [ERROR] accesslog - null
+[2018-02-18T16:07:01.363] [ERROR] accesslog - null
+[2018-02-18T16:07:01.364] [ERROR] accesslog - null
+[2018-02-18T16:07:01.365] [ERROR] accesslog - null
+[2018-02-18T16:07:01.366] [ERROR] accesslog - null
+[2018-02-18T16:07:01.366] [ERROR] accesslog - null
+[2018-02-18T16:07:01.367] [ERROR] accesslog - null
+[2018-02-18T16:07:01.394] [ERROR] accesslog - null
+[2018-02-18T16:07:01.400] [ERROR] accesslog - null
+[2018-02-18T16:07:01.406] [ERROR] accesslog - null
+[2018-02-18T16:07:01.412] [ERROR] accesslog - null
+[2018-02-18T16:07:01.414] [ERROR] accesslog - null
+[2018-02-18T16:07:01.417] [ERROR] accesslog - null
+[2018-02-18T16:07:01.420] [ERROR] accesslog - null
+[2018-02-18T16:07:01.423] [ERROR] accesslog - null
+[2018-02-18T16:07:01.425] [ERROR] accesslog - null
+[2018-02-18T16:07:01.429] [ERROR] accesslog - null
+[2018-02-18T16:07:01.492] [ERROR] accesslog - null
+[2018-02-18T16:07:01.493] [ERROR] accesslog - null
+[2018-02-18T16:07:20.761] [ERROR] accesslog - Conflicting in data posting!  409
+[2018-02-18T16:07:21.708] [ERROR] accesslog - Conflicting in data posting!  409
+[2018-02-18T16:07:21.711] [ERROR] accesslog - Conflicting in data posting!  409
+[2018-02-18T16:07:21.713] [ERROR] accesslog - Conflicting in data posting!  409
+[2018-02-18T16:07:21.715] [ERROR] accesslog - Conflicting in data posting!  409
+[2018-02-18T16:07:21.717] [ERROR] accesslog - Conflicting in data posting!  409
+[2018-02-18T16:07:21.718] [ERROR] accesslog - Conflicting in data posting!  409
+[2018-02-18T16:07:21.720] [ERROR] accesslog - Conflicting in data posting!  409
+[2018-02-18T16:07:21.722] [ERROR] accesslog - Conflicting in data posting!  409
+[2018-02-18T16:07:21.724] [ERROR] accesslog - Conflicting in data posting!  409
+[2018-02-18T16:07:21.727] [ERROR] accesslog - Conflicting in data posting!  409
+[2018-02-18T16:07:21.728] [ERROR] accesslog - Conflicting in data posting!  409
+[2018-02-18T16:07:21.730] [ERROR] accesslog - Conflicting in data posting!  409
+[2018-02-18T16:07:21.732] [ERROR] accesslog - Conflicting in data posting!  409
+[2018-02-18T16:11:22.294] [ERROR] accesslog - Cron job status: 1
+[2018-02-18T16:13:00.955] [ERROR] accesslog - null
+[2018-02-18T16:13:00.957] [ERROR] accesslog - null
+[2018-02-18T16:13:00.959] [ERROR] accesslog - null
+[2018-02-18T16:13:00.960] [ERROR] accesslog - null
+[2018-02-18T16:13:00.961] [ERROR] accesslog - null
+[2018-02-18T16:13:00.962] [ERROR] accesslog - null
+[2018-02-18T16:13:00.964] [ERROR] accesslog - null
+[2018-02-18T16:13:00.965] [ERROR] accesslog - null
+[2018-02-18T16:13:00.963] [ERROR] accesslog - null
+[2018-02-18T16:13:00.964] [ERROR] accesslog - null
+[2018-02-18T16:13:01.169] [ERROR] accesslog - null
+[2018-02-18T16:13:01.170] [ERROR] accesslog - null
+[2018-02-18T16:13:01.312] [ERROR] accesslog - null
+[2018-02-18T16:13:01.314] [ERROR] accesslog - null
+[2018-02-18T16:13:01.317] [ERROR] accesslog - null
+[2018-02-18T16:13:01.319] [ERROR] accesslog - null
+[2018-02-18T16:13:01.320] [ERROR] accesslog - null
+[2018-02-18T16:13:01.321] [ERROR] accesslog - null
+[2018-02-18T16:13:01.322] [ERROR] accesslog - null
+[2018-02-18T16:13:01.318] [ERROR] accesslog - null
+[2018-02-18T16:13:01.313] [ERROR] accesslog - null
+[2018-02-18T16:13:01.315] [ERROR] accesslog - null
+[2018-02-18T16:49:36.977] [ERROR] accesslog - Cron job status: 1
+[2018-02-18T16:49:47.646] [ERROR] accesslog - { Error: Not Found
+    at E:\DHIS2 Apps\middleware-apps-v1\app.js:47:16
+    at Layer.handle [as handle_request] (E:\DHIS2 Apps\middleware-apps-v1\node_modules\express\lib\router\layer.js:95:5)
+    at trim_prefix (E:\DHIS2 Apps\middleware-apps-v1\node_modules\express\lib\router\index.js:317:13)
+    at E:\DHIS2 Apps\middleware-apps-v1\node_modules\express\lib\router\index.js:284:7
+    at Function.process_params (E:\DHIS2 Apps\middleware-apps-v1\node_modules\express\lib\router\index.js:335:12)
+    at next (E:\DHIS2 Apps\middleware-apps-v1\node_modules\express\lib\router\index.js:275:10)
+    at E:\DHIS2 Apps\middleware-apps-v1\node_modules\express\lib\router\index.js:635:15
+    at next (E:\DHIS2 Apps\middleware-apps-v1\node_modules\express\lib\router\index.js:260:14)
+    at Function.handle (E:\DHIS2 Apps\middleware-apps-v1\node_modules\express\lib\router\index.js:174:3)
+    at router (E:\DHIS2 Apps\middleware-apps-v1\node_modules\express\lib\router\index.js:47:12) status: 404 }
+[2018-02-18T16:49:47.784] [ERROR] accesslog - { Error: Not Found
+    at E:\DHIS2 Apps\middleware-apps-v1\app.js:47:16
+    at Layer.handle [as handle_request] (E:\DHIS2 Apps\middleware-apps-v1\node_modules\express\lib\router\layer.js:95:5)
+    at trim_prefix (E:\DHIS2 Apps\middleware-apps-v1\node_modules\express\lib\router\index.js:317:13)
+    at E:\DHIS2 Apps\middleware-apps-v1\node_modules\express\lib\router\index.js:284:7
+    at Function.process_params (E:\DHIS2 Apps\middleware-apps-v1\node_modules\express\lib\router\index.js:335:12)
+    at next (E:\DHIS2 Apps\middleware-apps-v1\node_modules\express\lib\router\index.js:275:10)
+    at E:\DHIS2 Apps\middleware-apps-v1\node_modules\express\lib\router\index.js:635:15
+    at next (E:\DHIS2 Apps\middleware-apps-v1\node_modules\express\lib\router\index.js:260:14)
+    at Function.handle (E:\DHIS2 Apps\middleware-apps-v1\node_modules\express\lib\router\index.js:174:3)
+    at router (E:\DHIS2 Apps\middleware-apps-v1\node_modules\express\lib\router\index.js:47:12) status: 404 }
+[2018-02-18T16:49:47.841] [ERROR] accesslog - { Error: Not Found
+    at E:\DHIS2 Apps\middleware-apps-v1\app.js:47:16
+    at Layer.handle [as handle_request] (E:\DHIS2 Apps\middleware-apps-v1\node_modules\express\lib\router\layer.js:95:5)
+    at trim_prefix (E:\DHIS2 Apps\middleware-apps-v1\node_modules\express\lib\router\index.js:317:13)
+    at E:\DHIS2 Apps\middleware-apps-v1\node_modules\express\lib\router\index.js:284:7
+    at Function.process_params (E:\DHIS2 Apps\middleware-apps-v1\node_modules\express\lib\router\index.js:335:12)
+    at next (E:\DHIS2 Apps\middleware-apps-v1\node_modules\express\lib\router\index.js:275:10)
+    at E:\DHIS2 Apps\middleware-apps-v1\node_modules\express\lib\router\index.js:635:15
+    at next (E:\DHIS2 Apps\middleware-apps-v1\node_modules\express\lib\router\index.js:260:14)
+    at Function.handle (E:\DHIS2 Apps\middleware-apps-v1\node_modules\express\lib\router\index.js:174:3)
+    at router (E:\DHIS2 Apps\middleware-apps-v1\node_modules\express\lib\router\index.js:47:12) status: 404 }
+[2018-02-18T16:49:47.842] [ERROR] accesslog - { Error: Not Found
+    at E:\DHIS2 Apps\middleware-apps-v1\app.js:47:16
+    at Layer.handle [as handle_request] (E:\DHIS2 Apps\middleware-apps-v1\node_modules\express\lib\router\layer.js:95:5)
+    at trim_prefix (E:\DHIS2 Apps\middleware-apps-v1\node_modules\express\lib\router\index.js:317:13)
+    at E:\DHIS2 Apps\middleware-apps-v1\node_modules\express\lib\router\index.js:284:7
+    at Function.process_params (E:\DHIS2 Apps\middleware-apps-v1\node_modules\express\lib\router\index.js:335:12)
+    at next (E:\DHIS2 Apps\middleware-apps-v1\node_modules\express\lib\router\index.js:275:10)
+    at E:\DHIS2 Apps\middleware-apps-v1\node_modules\express\lib\router\index.js:635:15
+    at next (E:\DHIS2 Apps\middleware-apps-v1\node_modules\express\lib\router\index.js:260:14)
+    at Function.handle (E:\DHIS2 Apps\middleware-apps-v1\node_modules\express\lib\router\index.js:174:3)
+    at router (E:\DHIS2 Apps\middleware-apps-v1\node_modules\express\lib\router\index.js:47:12) status: 404 }

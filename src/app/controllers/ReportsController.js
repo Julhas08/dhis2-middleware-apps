@@ -35,13 +35,15 @@ exports.index = function index(req, res) {
 		for (let i = 0; i < info.length; i++) {
 			// Create an object to save current row's data
 			let dataArray = {
-				'id'           : info[i].id,
-				'module_name'  : info[i].module_name,
-				'table_name'   : info[i].table_name,
-				'log_type'     : info[i].log_type,
-				'message'      : info[i].message,
-				'status_code'  : info[i].status_code,
-				'created_date' : info[i].created_date,
+				'id'           	: info[i].id,
+				'module_name'  	: info[i].module_name,
+				'table_name'   	: info[i].table_name,
+				'operation_mode': info[i].operation_mode,
+				'operation_type': info[i].operation_type,
+				'log_type'     	: info[i].log_type,
+				'message'      	: info[i].message,
+				'status_code'  	: info[i].status_code,
+				'created_date' 	: info[i].created_date,
 			}
 			// Add object into array
 			logInfoArray.push(dataArray);

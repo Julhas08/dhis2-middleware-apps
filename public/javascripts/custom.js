@@ -237,9 +237,13 @@ $('.schedular-settings-btn').click(function(e){
         var dayOfMonth  = $('#dayOfMonth').val();		
         var monthOfYear = $('#monthOfYear').val();		
         var dayOfWeek   = $('#dayOfWeek').val();		
+        var exportedDataLimit   = $('#exportedDataLimit').val();	
+        var exportFromDays      = $('#exportFromDays').val();		
         var notes       = $('#notes').val();	
 
-        var paramInfo = '&name=' + name +'&short_code='+short_code+'&is_enable='+is_enable+'&schedular_type=' + schedular_type+'&minutes='+minutes+'&hours='+hours+'&dayOfMonth='+dayOfMonth+'&monthOfYear='+monthOfYear+'&dayOfWeek='+dayOfWeek+'&notes='+notes;  
+        //alert(exportedDataLimit+exportedDataLimit);
+
+        var paramInfo = '&name=' + name +'&short_code='+short_code+'&is_enable='+is_enable+'&schedular_type=' + schedular_type+'&minutes='+minutes+'&hours='+hours+'&dayOfMonth='+dayOfMonth+'&monthOfYear='+monthOfYear+'&dayOfWeek='+dayOfWeek+'&exportedDataLimit='+exportedDataLimit+'&exportFromDays='+exportFromDays+'&notes='+notes;  
 		console.log(paramInfo);
 
 		if(name==''){

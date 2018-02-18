@@ -5,11 +5,11 @@
 */
 // Database Cooneciton String
 let dbConnect = require('../src/app/config/db-config');
-let db = dbConnect.getConnection();
+let db        = dbConnect.getConnection();
 let logger4js = require('../src/logger/log4js');
-let express = require('express');
-let router  = express.Router();
-let cron    = require('node-cron');
+let express   = require('express');
+let router    = express.Router();
+let cron      = require('node-cron');
 
 // Transaction Automatic Mode
 let transactionAutomaticMode = require('../src/app/controllers/DataTransactionAutomaticMode');
@@ -51,7 +51,7 @@ function getDataTrasactionMode() {
 getCronJobSettingsInformation("hris").then(info => {
 
 	let data      = JSON.parse(JSON.stringify(info));
-	let isEnable, minutes, hours, dayOfMonth, monthOfYear, dayOfWeek, year;
+	let isEnable, minutes, hours, dayOfMonth, monthOfYear, dayOfWeek, year,exportLimit,exportFromDays;
 
 	if(data==null){
 		isEnable  = 0;
@@ -72,6 +72,8 @@ getCronJobSettingsInformation("hris").then(info => {
 			// Schedular core parameters
 			minutes   = data.minutes;
 			hours     = data.hours;
+			exportLimit        = data.exported_date_limit;
+			exportFromDays     = data.export_from_days;
 
 			console.log("Cron job is running! System Status: ", isEnable);
 			logger4js.getLoggerConfig().error("Cron job status:",isEnable);
@@ -96,7 +98,7 @@ getCronJobSettingsInformation("hris").then(info => {
 					
 					if(transactionMode == null){
 						mode_type = 0;
-						console.log("Mode Type: Manual",transactionMode.mode_type);
+						console.log("Sorry! Transaction mode setup is null.");
 
 					} else {
 						if(transactionMode.mode_type==null){
@@ -113,19 +115,19 @@ getCronJobSettingsInformation("hris").then(info => {
 								cron.schedule(''+minutes+' '+hours+' * * *', function(){ // 14:59 
 								  //console.log('running a task every minute');
 								  for (let i = 0; i < schedularTask.length; i++) {	  	
-								  	transactionAutomaticMode.sendInformationInDHISAutomaticMode(schedularTask[i], modeType);
+								  	transactionAutomaticMode.sendInformationInDHISAutomaticMode(schedularTask[i], modeType,exportLimit,exportFromDays);
 								  }
 								  
 								});
 				/*** Manual Transaction Mode ****/				
 							} else {
-								console.log("Mode Type: Manual",transactionMode.mode_type);
+								console.log("Mode Type - Manual: ",transactionMode.mode_type);
 								let modeType = transactionMode.mode_type;
 							// Running the cron job in every five minutes 
 								cron.schedule(''+minutes+' '+hours+' * * *', function(){ // 14:59 
 								  //console.log('running a task every minute');
 								  for (let i = 0; i < schedularTask.length; i++) {	  	
-								  	transactionManualMode.facilityCreateJSONPayloadSendToDHIS2(schedularTask[i], modeType);
+								  	transactionManualMode.facilityCreateJSONPayloadSendToDHIS2(schedularTask[i], modeType,exportLimit,exportFromDays);
 								  }
 								  
 								});
@@ -135,6 +137,10 @@ getCronJobSettingsInformation("hris").then(info => {
 					}
 				});	
 				
+			} else {
+
+				console.log("Sorry! Your scheduar is not enable.  Please enable middleware schedular.");
+				logger4js.getLoggerConfig().error("Sorry! Your scheduar is not enable.  Please enable middleware schedular.");
 			}
 		}
 			

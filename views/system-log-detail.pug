@@ -3,6 +3,8 @@ table(class="table table-bordered table-hover table-header-bg")
     tr
       th Module Name
       th Table Name
+      th Operation Mode
+      th Operation Type
       th Log Type
       th Log Detail
       th Status Code
@@ -13,6 +15,8 @@ table(class="table table-bordered table-hover table-header-bg")
       tr
         td= data.module_name
         td= data.table_name
+        td= data.operation_mode
+        td= data.operation_type
         td= data.log_type
         td= data.message
         td= data.status_code

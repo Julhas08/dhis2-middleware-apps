@@ -71,7 +71,14 @@
                             input#monthOfYear.form-control.input-sm(type='number', name='monthOfYear', placeholder='Month of the Year (range: 1-12)')
                         .col-xs-6.col-sm-6.col-md-6
                           .form-group
-                            input#dayOfWeek.form-control.input-sm(type='number', name='dayOfWeek', placeholder='Day of the Week   (range: 1-7, 1 standing for Monday)')            
+                            input#dayOfWeek.form-control.input-sm(type='number', name='dayOfWeek', placeholder='Day of the Week   (range: 1-7, 1 standing for Monday)')
+                      .row
+                        .col-xs-6.col-sm-6.col-md-6
+                          .form-group
+                            input#exportedDataLimit.form-control.input-sm(type='number', name='exportedDataLimit', placeholder='Exported data limit from Source(Ex: 10)')
+                        .col-xs-6.col-sm-6.col-md-6
+                          .form-group
+                            input#exportFromDays.form-control.input-sm(type='number', name='exportFromDays', placeholder='Export days from last date(max 31 days)')                   
                       
                       .form-group
                         input#notes.form-control.input-sm(type='text', name='notes', placeholder='Write notes')
