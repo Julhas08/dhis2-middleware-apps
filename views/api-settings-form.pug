@@ -17,9 +17,8 @@
                       .form-group
                         select.form-control(id="connectionName", name="connectionName")
                           option(value="") Select Connection Name
-                          option(value="dhis2") DHIS2 
-                          option(value="hris") HRIS
-                          option(value="elmis") eLMIS
+                          each info in instanceInfo 
+                            option(value=info.instance_short_code) #{info.instance_name} 
                       .form-group
                         input#sourceName.form-control.input-sm(type='text', name='sourceName', placeholder='Enter Connection Source Name')
                       .form-group
@@ -47,7 +46,7 @@
                             input#password.form-control.input-sm(type='text', name='password', placeholder='API Auth Password')
                       .form-group
                         input#notes.form-control.input-sm(type='text', name='notes', placeholder='Write notes')
-                      
+                        br
                         button.btn.btn-info.btn-block.api-settings-btn(type='submit' ) Register API
 
                         div(id=apiSettingsResult)

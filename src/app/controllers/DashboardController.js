@@ -17,6 +17,8 @@ let logger4js = require('../../logger/log4js');
 module.exports.index = function index(req, res) {
 
         let userList = [];
+        let notificationSummary = [];
+        let summaryList = [];
 		let createdFacilities=[];
 		let db= dbConnect.getConnection();
 	// Searching Parameters	
@@ -32,6 +34,23 @@ module.exports.index = function index(req, res) {
 	    	logger4js.error("Users Information retriving issue: ",error);
 	        console.log(error); // print the error;
 	    });	   	
+
+	//  Notification center data load
+		let notify;
+		db.query("select operation_type, count(id) from system_log where operation_type != '' and log_type= 'success' group by operation_type")
+		.then(notify => {
+
+			notificationSummary.push(notify);
+			let str0 = JSON.stringify(notificationSummary);
+			let str1 = str0.replace('[','');
+			let str2 = str1.replace(']','');
+			summaryList= str2;
+
+		}).catch(error => {
+	    	logger4js.error("Notification center summary data query issue: ",error);
+	        console.log(error); // print the error;
+	    });	
+	    
 
 	// API data from HRIS  
 	// API Information return SQL function	
@@ -77,9 +96,10 @@ module.exports.index = function index(req, res) {
 					//let data = ('#{createdFacilitiesList}').toString();
 					let pdata = data.replace(/&quot;/g, '"');
 					let obj   = JSON.parse(pdata);
-
+					//console.log("summaryList:",JSON.parse(summaryList));
 					res.render('dashboard', {
 				      users: userList,
+				      summaryList:  JSON.parse(summaryList),
 				      createdFacilitiesList: obj
 				   });
 				});

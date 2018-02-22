@@ -74,7 +74,7 @@ getCronJobSettingsInformation("hris").then(info => {
 			hours     = data.hours;
 			exportLimit        = data.exported_date_limit;
 			exportFromDays     = data.export_from_days;
-
+			console.log("Server is running.");
 			console.log("Cron job is running! System Status: ", isEnable);
 			logger4js.getLoggerConfig().error("Cron job status:",isEnable);
 			let schedularTask = ["createdSince","updatedSince","deletedSince"];

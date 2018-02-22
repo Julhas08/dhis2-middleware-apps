@@ -7,6 +7,12 @@ body {
   color: hsl(0, 0%, 40%);
   font-size: 13px;
 }
+#scheduleMonitorChartcontainer {
+  min-width: 610px;
+  max-width: 1400px;
+  height: 400px;
+  margin: 0 auto
+}
 a {
   text-decoration: none;
 }
@@ -44,7 +50,9 @@ ul {
   position: relative;
 }
 
-
+.middleware-instances-setup-btn, .multiple-instances-configure-btn{
+  cursor: pointer;
+}
 .header-botom-area.container-fulid {
   border-bottom: 1px solid #e2e2e2;
   height: 51px;

@@ -18,7 +18,120 @@ $(document).ready( function() {
 	function getRandomArbitrary(min, max) {
 	  	return Math.random() * (max - min) + min;
 	}	
+// Middleware Instance Setup
+$('.middleware-instances-setup-btn').click(function(e){
+        e.preventDefault();
+    // Requested data    
+        var instanceName      = $('#instanceName').val();
+        var instanceShortName = $('#instanceShortName').val();     
+        var facilityLevels	  = $('#facilityLevels').val();
+        var minLevel 	      = $('#minLevel').val();		
+        var maxLevel          = $('#maxLevel').val();			
+        var instanceType      = $('#instanceType').val();			
+        var notes             = $('#notes').val();	
+
+        var paramInfo = '&instanceName=' + instanceName+'&instanceShortName=' + instanceShortName+'&facilityLevels='+facilityLevels+'&minLevel='+minLevel+'&maxLevel=' + maxLevel+'&instanceType='+instanceType+'&notes='+notes; 		 
+
+		if(instanceName==''){
+			swal("Sorry!", "Please enter Middleware Instance name.","error");
+		} else if(instanceShortName==''){
+			swal("Sorry!", "Please enter middleware instance short name.","error");
+		} else if(facilityLevels==''){
+			swal("Sorry!", "Please enter facility levels.","error");
+		} else if(minLevel==''){
+			swal("Sorry!", "Please select facility minimum level.","error");
+		} else if(maxLevel==''){
+			swal("Sorry!", "Please select facility maximum level.","error");
+		} else if(minLevel > maxLevel){
+			swal("Sorry!", "Change your facility levels. Min level can't be greater than max level.","error");
+		} else if(instanceType == ''){
+			swal("Sorry!", "Please select instance type.","error");
+		} else{
+
+	// Loader		
+		$('.middleware-instances-setup-btn').after('<div class="loader"><img src="images/load.gif" alt="Searching......" /></div>');
+	// Ajax posting 
+			$.ajax({
+				type: 'POST',
+				cache: false,
+				data: paramInfo,
+		        //contentType: 'application/json',
+	            url: '/middleware-instances-crud',						
+	            success: function(data) {
+	            	if(data=='success'){
+	            		swal("Success!", "New instance has added successfully","success");
+	            	} else {
+	            		swal("Sorry!", "New instance creation problem","error");
+	            	}
+	// Close loader        
+	                $('#loader').slideUp(200,function(){        
+	               		$('#loader').remove();
+		            });
+		            $(".loader").fadeOut("slow"); 
+	            },
+	            error: function(err){
+	            	console.log(err);
+	// Close loader        
+	                $('#loader').slideUp(200,function(){        
+	               		$('#loader').remove();
+		            });
+		            $(".loader").fadeOut("slow");
+	            }
+	        });
+		}
 	
+
+    });
+// Multiple Instances Configure
+$('.multiple-instances-configure-btn').click(function(e){
+        e.preventDefault();
+    // Requested data    
+        var source      = $('#source').val();
+        var destination = $('#destination').val();  			
+        var notes       = $('#notes').val();	
+
+        var paramInfo = '&source=' +source+'&destination='+destination+'&notes='+notes; 		 
+
+		if(source==''){
+			swal("Sorry!", "Source is required.");
+		} else if(destination==''){
+			swal("Sorry!", "Destination is required.","error");
+		} else{
+
+	// Loader		
+		$('.multiple-instances-configure-btn').after('<div class="loader"><img src="images/load.gif" alt="Searching......" /></div>');
+	// Ajax posting 
+			$.ajax({
+				type: 'POST',
+				cache: false,
+				data: paramInfo,
+		        //contentType: 'application/json',
+	            url: '/multiple-instances-create',						
+	            success: function(data) {
+	            	if(data=='success'){
+	            		swal("Success!", "New configuration has added successfully","success");
+	            	} else {
+	            		swal("Sorry!", "New configuration creation problem","error");
+	            	}
+	// Close loader        
+	                $('#loader').slideUp(200,function(){        
+	               		$('#loader').remove();
+		            });
+		            $(".loader").fadeOut("slow"); 
+	            },
+	            error: function(err){
+	            	console.log(err);
+	// Close loader        
+	                $('#loader').slideUp(200,function(){        
+	               		$('#loader').remove();
+		            });
+		            $(".loader").fadeOut("slow");
+	            }
+	        });
+		}
+	
+
+    });	    		
 // Searching Facility	
    $('.facility-search-btn').click(function(e){
         e.preventDefault();

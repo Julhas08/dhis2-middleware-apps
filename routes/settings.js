@@ -9,6 +9,14 @@ let router = express.Router();
 // APi Settings Controller Import
 let settings = require('../src/app/controllers/SettingsController');
 
+// DHIS2 Instances Setup
+router.get('/middleware-instances-setup', settings.instancesSetup);
+router.post('/middleware-instances-crud', settings.middlewareInstancesCreate);
+
+// Multiple instances configure
+router.get('/multiple-instances-configure', settings.multipleInstancesFormDisplay);
+router.post('/multiple-instances-create', settings.multipleInstancesCreate);
+
 // API Setting form load
 router.get('/api-settings', settings.index);
 
