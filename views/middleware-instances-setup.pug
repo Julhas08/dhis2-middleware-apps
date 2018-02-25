@@ -1,0 +1,102 @@
+html
+    head
+      meta(charset='UTF-8')
+      title DHIS2 Middleware Apps
+      link(rel='stylesheet', href='/stylesheets/bootstrap.min.css') 
+      link(rel='stylesheet', href='/stylesheets/style.css')    
+      script(type='text/javascript' src='/javascripts/jquery-3.2.1.min.js')    
+      script(type='text/javascript' src='/javascripts/bootstrap.min.js')   
+        
+    body
+        div
+        include ./header.pug 
+        .main-area
+          .col-md-12.col-xs-12.col-lg-12.right-sidebar.padding-left-right-zero
+            .col-md-12.col-xs-12.col-lg-12.col-sm-12.padding-box-columing
+              .panel.panel-white
+                .panel-heading.clearfix
+                  h3.panel-title Multiple Instances Setup 
+                .panel-body
+                  .container
+                    .row.centered-form
+                      .col-xs-12.col-sm-10.col-md-10.col-sm-offset-8.col-md-offset-8
+                        .panel.panel-default
+                          .panel-heading
+                            h3.panel-title
+                              | Please enter the below information 
+                          .panel-body
+                            form
+                              .form-group
+                                input#instanceName.form-control.input-sm(type='text', name='instanceName', placeholder='Enter DHIS Instance Name (Ex. DHIS2 Central Server)')
+                              .form-group
+                                input#instanceShortName.form-control.input-sm(type='text', name='instanceShortName', placeholder='Enter DHIS Instance Short Name (Ex. dhis_central/ dhis_community/ hris/ elmis/ equiest)')  
+                              .form-group
+                                input#facilityLevels.form-control.input-sm(type='text', name='facilityLevels', placeholder='Enter Facilties Level Name (Ex: CSO, DH)')         
+                              
+                              .row
+                                .col-xs-6.col-sm-6.col-md-6
+                                  .form-group
+                                    select.form-control(id="minLevel", name="minLevel")
+                                      option(value="") Select Minimum Facility Level
+                                      option(value="1") Level - 1   
+                                      option(value="2") Level - 2   
+                                      option(value="3") Level - 3   
+                                      option(value="4") Level - 4   
+                                      option(value="5") Level - 5   
+                                      option(value="6") Level - 6 
+                                .col-xs-6.col-sm-6.col-md-6
+                                  .form-group
+                                    select.form-control(id="maxLevel", name="maxLevel")
+                                      option(value="") Select Maximum Facility Level
+                                      option(value="1") Level - 1   
+                                      option(value="2") Level - 2   
+                                      option(value="3") Level - 3   
+                                      option(value="4") Level - 4   
+                                      option(value="5") Level - 5   
+                                      option(value="6") Level -  6 
+                              .row
+                                .col-xs-12.col-sm-12.col-md-12
+                                  .form-group
+                                    select.form-control(id="instanceType", name="instanceType")
+                                      option(value="") Select Instance Type
+                                      option(value="source") Source    
+                                      option(value="destination") Destination               
+                              .form-group
+                                input#notes.form-control.input-sm(type='text', name='notes', placeholder='Write notes')
+                                br
+                                button.btn.btn-info.btn-block.middleware-instances-setup-btn(type='submit' ) Add New Instance
+
+                                div(id=apiSettingsResult)
+                table(class="table table-bordered table-hover table-header-bg")
+                  thead(class="table-header-bg thead")
+                    tr
+                      th Instance Name
+                      th Short Code
+                      th Facility Level
+                      th Min Facility Level
+                      th Max Facility Level
+                      th Instance Type
+                      th Notes
+                      th Created Date
+                      th Action
+
+                  tbody             
+                    each info, i in infoList
+                      tr
+                        td= info.instance_name   
+                        td= info.instance_short_code   
+                        td= info.facility_levels   
+                        td= info.min_level   
+                        td= info.max_level   
+                        td= info.instance_type   
+                        td= info.notes  
+                        td= info.created_at      
+       
+     
+
+        
+    
+link(rel='stylesheet', href='/javascripts/sweetalert/sweetalert.css')
+script(type='text/javascript' src='/javascripts/sweetalert/sweetalert.min.js')     
+script(type='text/javascript' src='/javascripts/custom.js')     
+  

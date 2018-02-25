@@ -1,0 +1,69 @@
+html
+    head
+      meta(charset='UTF-8')
+      title DHIS2 Middleware Apps
+      link(rel='stylesheet', href='/stylesheets/bootstrap.min.css') 
+      link(rel='stylesheet', href='/stylesheets/style.css')    
+      script(type='text/javascript' src='/javascripts/jquery-3.2.1.min.js')    
+      script(type='text/javascript' src='/javascripts/bootstrap.min.js')   
+        
+    body
+        div
+        include ./header.pug 
+        .main-area
+          .col-md-12.col-xs-12.col-lg-12.right-sidebar.padding-left-right-zero
+            .col-md-12.col-xs-12.col-lg-12.col-sm-12.padding-box-columing
+              .panel.panel-white
+                .panel-heading.clearfix
+                  h3.panel-title Multiple Instances Configure
+                .panel-body
+                  .container
+                    .row.centered-form
+                      .col-xs-12.col-sm-10.col-md-10.col-sm-offset-8.col-md-offset-8
+                        .panel.panel-default
+                          .panel-heading
+                            h3.panel-title
+                              | Please enter the below information
+                          .panel-body
+                            form
+                              .form-group
+                                select.form-control(id="source", name="source")
+                                  option(value="") Select Source Instance
+                                  each info in sourceInfo 
+                                    option(value=info.id) #{info.instance_name}
+                              .form-group
+                                select.form-control(id="destination", name="destination")
+                                  option(value="") Select Destination Instance
+                                  each info in destinationInfo 
+                                    option(value=info.id) #{info.instance_name}        
+                              
+                              .form-group
+                                input#notes.form-control.input-sm(type='text', name='notes', placeholder='Write notes')
+                                br
+                                button.btn.btn-info.btn-block.multiple-instances-configure-btn(type='submit' ) Register Instance
+
+                                div(id=apiSettingsResult)
+                table(class="table table-bordered table-hover table-header-bg")
+                  thead(class="table-header-bg thead")
+                    tr
+                      th Instance Type
+                      th Connection Name
+                      th Short Code
+                      th Facility Levels
+                      th Notes
+
+                  tbody 
+                    each info in listOfInstances
+                      tr  
+                        td= info.instance_type     
+                        td= info.instance_name   
+                        td= info.instance_short_code     
+                        td= info.facility_levels         
+                        td= info.notes         
+
+        
+    
+link(rel='stylesheet', href='/javascripts/sweetalert/sweetalert.css')
+script(type='text/javascript' src='/javascripts/sweetalert/sweetalert.min.js')     
+script(type='text/javascript' src='/javascripts/custom.js')     
+  

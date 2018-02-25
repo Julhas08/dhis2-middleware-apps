@@ -1,0 +1,62 @@
+.main-area
+  .col-md-12.col-xs-12.col-lg-12.right-sidebar.padding-left-right-zero
+    .col-md-12.col-xs-12.col-lg-12.col-sm-12.padding-box-columing
+      .panel.panel-white
+        .panel-heading.clearfix
+          h3.panel-title Data Transaction (Manual/ Automatic) 
+        .panel-body
+          .container
+            .row.centered-form
+              .col-xs-12.col-sm-10.col-md-10.col-sm-offset-8.col-md-offset-8
+                .panel.panel-default
+                  .panel-heading
+                    h3.panel-title
+                      | Transaction Mode || Manual(Off State) / Automatic(On State)
+                    
+                  .panel-body
+                    form
+                      .row
+                        .col-xs-6.col-sm-6.col-md-6
+                          .form-group
+                          each info in resultInfo 
+                            if(info.mode_type==0)                                       
+                              label.switch
+                                input(type='checkbox',id='isEnableSynMode')
+                                span.slider.round  
+                              
+                            if(info.mode_type==1)
+                              label.switch
+                                input(type='checkbox',id='isEnableSynMode', checked='')
+                                span.slider.round                               
+                        
+                .panel.panel-default
+                  .panel-heading
+                    h3.panel-title
+                      | Data Transaction Mode
+                  .panel-body
+                    form
+                      table(class="table table-bordered table-hover table-header-bg")
+                        thead(class="table-header-bg thead")
+                          tr
+                            th Mode Type
+                            th Notes
+                            th Created Date
+                            th Action
+
+                        tbody        
+                          each api, i in resultInfo
+                            if(api.mode_type == 1)
+                              tr
+                              td= "Automatic"    
+                              td= api.notes        
+                              td= api.created_at
+                            else 
+                              tr
+                              td= "Manual"    
+                              td= api.notes         
+                              td= api.created_at 
+                            
+                      
+
+        
+

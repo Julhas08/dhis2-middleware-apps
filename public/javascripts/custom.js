@@ -524,7 +524,7 @@ $('#isEnableSynMode').on('change',function(e){
         e.preventDefault();
 
     // Requested data for posting    
-        var logType  = $('#logType').val();
+        var logType      = $('#logType').val();
         var dateFrom     = $('#dateFrom').val();
         var displayLimit = $('#displayLimit').val();		
 		var find_info = '&logType=' + logType+'&dateFrom='+dateFrom+'&displayLimit='+displayLimit;  
@@ -536,7 +536,7 @@ $('#isEnableSynMode').on('change',function(e){
 			swal("Sorry!", "Please select your searching date.","error");
 		}*/ else{
 
-			 $('.log-history-search').after('<div class="loader"><img src="images/load.gif" alt="Searching......" /></div>');
+			 $('.log-history-search').after('<div class="loader"><img src="images/loading-small.gif" alt="Searching......" /></div>');
 	// Ajax posting 
 			$.ajax({
 				type: 'POST',
@@ -564,7 +564,295 @@ $('#isEnableSynMode').on('change',function(e){
 		}
 
     });	
+/************************************************
+******************Facility Blank Fields**********
+*************************************************/
 
+$('#facilityLevel2').change(function(){
+	$('#facilityLevel3').html('');
+	var facilityId = $('#facilityLevel2').val();
+	var level = 3;	
+	var findInfo = '&facilityId=' + facilityId+'&level=' + level; 
 
-});				
+	$('#facilityLevel2').after('<div class="loader"><img src="images/loading-small.gif" alt="Searching......" /></div>');
+	// Ajax posting 
+	$.ajax({
+		type: 'POST',
+		data: findInfo,
+        url: '/facility-blank-fields-dropdown',						
+        success: function(data) {
+            var dataJSON = $.parseJSON(JSON.stringify(data));
+	         $('#facilityLevel3').append('<option value="">Select District</option>');
+	         for (i=0; i < dataJSON.children.length; i++){
+	         	var id=dataJSON.children[i].id;
+	         	var displayName=dataJSON.children[i].displayName;
+	         	$('#facilityLevel3').append('<option value='+id+'>'+displayName+'</option>');
+	         	$('#facilityLevel3').trigger("chosen:updated");	         	
+	         }
+// Close loader        
+            $('#loader').slideUp(200,function(){        
+           		$('#loader').remove();
+            });
+            $(".loader").fadeOut("slow"); 
+        },
+        error: function(err){
+        	console.log(err);
+        }
+    });
+});   
+
+$('#facilityLevel3').change(function(){
+	$('#facilityLevel4').html('');
+	var facilityId = $('#facilityLevel3').val();
+	var level = 4;	
+	var findInfo = '&facilityId=' + facilityId+'&level=' + level;  
+	$('#facilityLevel3').after('<div class="loader"><img src="images/loading-small.gif" alt="Searching......" /></div>');
+	// Ajax posting 
+	$.ajax({
+		type: 'POST',
+		data: findInfo,
+        url: '/facility-blank-fields-dropdown',						
+        success: function(data) {
+            var dataJSON = $.parseJSON(JSON.stringify(data));
+
+	         $('#facilityLevel4').append('<option value="">Select Upazila</option>');
+	         for (i=0; i < dataJSON.children.length; i++){
+	         	var id=dataJSON.children[i].id;
+	         	var displayName=dataJSON.children[i].displayName;
+	         	$('#facilityLevel4').append('<option value='+id+'>'+displayName+'</option>');
+	         	$('#facilityLevel4').trigger("chosen:updated");	         	
+	         }
+// Close loader        
+            $('#loader').slideUp(200,function(){        
+           		$('#loader').remove();
+            });
+            $(".loader").fadeOut("slow"); 
+        },
+        error: function(err){
+        	console.log(err);
+        }
+    });
+}); 
+
+$('#facilityLevel4').change(function(){
+	$('#facilityLevel5').html('');
+	var facilityId = $('#facilityLevel4').val();
+	var level = 5;	
+	var findInfo = '&facilityId=' + facilityId+'&level=' + level;   
+	$('#facilityId').after('<div class="loader"><img src="images/loading-small.gif" alt="Searching......" /></div>');
+	// Ajax posting 
+	$.ajax({
+		type: 'POST',
+		data: findInfo,
+        url: '/facility-blank-fields-dropdown',						
+        success: function(data) {
+            var dataJSON = $.parseJSON(JSON.stringify(data));
+
+	         $('#facilityLevel5').append('<option value="">Select Union</option>');
+	         for (i=0; i < dataJSON.children.length; i++){
+	         	var id=dataJSON.children[i].id;
+	         	var displayName=dataJSON.children[i].displayName;
+	         	$('#facilityLevel5').append('<option value='+id+'>'+displayName+'</option>');
+	         	$('#facilityLevel5').trigger("chosen:updated");	         	
+	         }
+// Close loader        
+            $('#loader').slideUp(200,function(){        
+           		$('#loader').remove();
+            });
+            $(".loader").fadeOut("slow"); 
+        },
+        error: function(err){
+        	console.log(err);
+        }
+    });
+}); 
+// Search blank fields in DHIS2 
+
+$('.search-blank-fields').click(function(e){
+	e.preventDefault();
+	var facilityId = null;
+	var level2 = $('#facilityLevel2').val(); // division
+	var level3 = $('#facilityLevel3').val(); // district
+	var level4 = $('#facilityLevel4').val(); // upazila
+	var level5 = $('#facilityLevel5').val(); // Union
+
+	
+	if(level2 !='' && level3 !='' && level4 !='' && level5 !='') {
+		facilityId = level5;
+
+	} else if(level2 !='' && level3 !='' && level4 !='' && level5 ==''){
+		facilityId = level4;
+
+	} else if(level2 !='' && level3 !='' && level4=='' && level5==''){
+		facilityId = level3;
+
+	} else if(level2 !='' && level3 =='' && level4 =='' && level5 ==''){
+		facilityId = level2;
+	} 	
+	var findInfo = '&facilityId=' + facilityId; 
+
+	$('.search-blank-fields').after('<div class="loader"><img src="images/loading-small.gif" alt="Searching......" /></div>');
+	// Ajax posting 
+	$.ajax({
+		type: 'POST',
+		data: findInfo,
+        url: '/facility-blank-fields-search',						
+        success: function(data) {
+            var dataJSON = $.parseJSON(JSON.stringify(data));
+            let fieldsInfoArray = [];
+            let sn =1;
+            for (i=0; i < dataJSON.children.length; i++){
+
+            	let editFacility = "<a href='http://localhost:8082/blank-facility-update?uid="+dataJSON.children[i].id+"' target='_blank'><button class='btn btn-primary' style='cursor:pointer' id="+dataJSON.children[i].id+">Edit</button></a>";
+
+            	let editFacilityInDHIS = "<a href='https://centraldhis.mohfw.gov.bd/dhismohfw/dhis-web-maintenance/#/edit/organisationUnitSection/organisationUnit/"+dataJSON.children[i].id+"' target='_blank'><button class='btn btn-primary' style='cursor:pointer' id="+dataJSON.children[i].id+">Edit in DHIS</button></a>";
+
+            	
+            	//let coordinates = dataJSON.children[i].coordinates;
+            	let coordinates = code = address= contactPerson =phoneNumber = email = null;
+            	if(dataJSON.children[i].code == null || dataJSON.children[i].code ==''){
+            		code = '';
+            	} else {
+            		code = dataJSON.children[i].code;
+            	}
+
+            	if(dataJSON.children[i].address == null || dataJSON.children[i].address ==''){
+            		address = '';
+
+            	} else {
+            		address = dataJSON.children[i].address;
+            	}
+            	if(dataJSON.children[i].contactPerson == null || dataJSON.children[i].contactPerson ==''){
+            		contactPerson = '';
+            	} else {
+            		contactPerson = dataJSON.children[i].contactPerson;
+            	}
+
+            	if(dataJSON.children[i].phoneNumber == null || dataJSON.children[i].phoneNumber ==''){
+            		phoneNumber = '';
+            	} else {
+            		phoneNumber = dataJSON.children[i].phoneNumber;
+            	}
+
+            	if(dataJSON.children[i].email == null || dataJSON.children[i].email ==''){
+            		email = '';
+            	} else {
+            		email = dataJSON.children[i].email;
+            	}
+
+            	if(level5 !='' && dataJSON.children[i].coordinates !=''){
+            		coordinates = dataJSON.children[i].coordinates;
+            	} /*else if(level5 !='' && dataJSON.children[i].coordinates ==''){
+            		coordinates = '';
+            	}*/ else {
+            		coordinates = '';
+            	}
+            	
+            	fieldsInfoArray.push([
+            		sn++, 
+            		dataJSON.children[i].displayName,
+            		code,
+            		address,
+            		contactPerson,
+            		phoneNumber,
+            		email,
+            		coordinates, 
+            		editFacility,
+            		editFacilityInDHIS
+            	]);	         	
+	         		         	
+	         }
+	        
+
+            if(dataJSON==null){
+
+			swal({   title: "Sorry!",   text: "There is no data in your selection parameter.",   type: "error",confirmButtonText: "Cool" });
+
+			$('#loader').slideUp(200,function(){		
+			$('#loader').remove();});
+			$(".loader").fadeOut("slow");
+			var dataTable = $('#displayFacilityBlankFieldsInfo').DataTable(); 
+				dataTable.clear();
+			    dataTable.row.add([
+			        '',
+			        '',
+			        '',
+			        '',
+			        '',
+			        '',
+			        '',
+			        '',
+			        '',
+			        ''
+			    ]).draw();
+		}
+		$('#displayFacilityBlankFieldsInfo').DataTable( {
+		        data: fieldsInfoArray,
+		        columns: [
+		            
+		            { title: "S/N" },
+		            { title: "Facility Name" },
+		            { title: "Code" },
+		            { title: "Address" },
+		            { title: "Contact Person" },
+		            { title: "Email" },
+		            { title: "Mobile" },
+		            { title: "Co-ordinates" },
+		            { title: "Edit" },
+		            { title: "DHIS Edit" }
+		        ],
+		        destroy: true, 
+		        "pageLength": 30,
+		        className: "dt-specialColorTH"
+		} );
+// Close loader        
+            $('#loader').slideUp(200,function(){        
+           		$('#loader').remove();
+            });
+            $(".loader").fadeOut("slow"); 
+        },
+        error: function(err){
+        	console.log(err);
+        }
+    });
+});
+});
+// Update facility Information
+$('.blank-facility-info-update-btn').click(function(e){
+	e.preventDefault();
+
+	var code 		= $('#code').val();  
+	var description = $('#description').val();  
+	var closedDate 	= $('#closeDate').val();  
+	var comment 	= $('#comment').val();  
+	var url 		= $('#url').val();  
+	var address 	= $('#address').val();  
+	var email 		= $('#email').val();  
+	var phoneNumber = $('#phoneNumber').val();  
+	var latitude 	= $('#latitude').val();  
+	var longitude 	= $('#longitude').val();
+
+	var findInfo = '&facilityId=' + code+'&description=' + description+'&closedDate=' + closeDate+'&comment=' + comment+'&url=' + url+'&address=' + address+'&email=' + email+'&phoneNumber=' + phoneNumber+'&latitude=' + latitude+'&longitude=' + longitude;
+
+	$('.blank-facility-info-update-btn').after('<div class="loader"><img src="images/loading-small.gif" alt="Searching......" /></div>');
+	// Ajax posting 
+	$.ajax({
+		type: 'POST',
+		data: findInfo,
+        url: '/blank-fields-facility-update',						
+        success: function(data) {
+            var dataJSON = $.parseJSON(JSON.stringify(data));
+// Close loader        
+            $('#loader').slideUp(200,function(){        
+           		$('#loader').remove();
+            });
+            $(".loader").fadeOut("slow"); 
+        },
+        error: function(err){
+        	console.log(err);
+        }
+    });
+});
+
+				
     			
