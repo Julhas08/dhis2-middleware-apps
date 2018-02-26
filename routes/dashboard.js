@@ -7,7 +7,7 @@ let express = require('express');
 let router = express.Router();
 let dashboardController = require('../src/app/controllers/DashboardController');
 // Dashboard Default Load
-router.all('/dashboard', dashboardController.index);
+router.all('/dashboard', dashboardController.login);
 
 // Dashboard Searching
 router.post('/dashboard-search',dashboardController.dashboardFacilityInfoSearch);

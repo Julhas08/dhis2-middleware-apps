@@ -28,50 +28,50 @@ html
                             form
                                 .form-group
                                   input#facilityName.form-control.input-sm(type='text', name='facilityName', 
-                                  value='#{code}', placeholder='Facility Name(*)')
+                                  value={displayName}, placeholder='Facility Name(*)')
 
                                 .row
                                   .col-xs-6.col-sm-6.col-md-6
                                     .form-group
-                                      input#code.form-control.input-sm(type='text', name='code', placeholder='Code')
+                                      input#code.form-control.input-sm(type='text',value={code}, name='code', placeholder='Code')
                                   .col-xs-6.col-sm-6.col-md-6
                                     .form-group
-                                      input#description.form-control.input-sm(type='text', name='description', placeholder='Description') 
+                                      input#description.form-control.input-sm(type='text', name='description',value={description}, placeholder='Description') 
                                 .row
                                   .col-xs-6.col-sm-6.col-md-6
                                     .form-group
-                                      input#closeDate.form-control.input-sm(type='text', name='closeDate', placeholder='Closed Date')
+                                      input#closeDate.form-control.input-sm(type='date', name='closeDate',value={closedDate}, placeholder='Closed Date')
                                   .col-xs-6.col-sm-6.col-md-6
                                     .form-group
-                                      input#comment.form-control.input-sm(type='text', name='comment', placeholder='Comment')        
+                                      input#comment.form-control.input-sm(type='text', name='comment',value={comment}, placeholder='Comment')        
                                 
                                 .row
                                   .col-xs-6.col-sm-6.col-md-6
                                     .form-group
-                                      input#url.form-control.input-sm(type='text', name='url', placeholder='URL')
+                                      input#url.form-control.input-sm(type='text',value={url}, name='url', placeholder='URL')
                                   .col-xs-6.col-sm-6.col-md-6
                                     .form-group
-                                      input#contactPerson.form-control.input-sm(type='text', name='contactPerson', placeholder='Contact Person')
+                                      input#contactPerson.form-control.input-sm(type='text', name='contactPerson',value={contactPerson}, placeholder='Contact Person')
                                 .row
                                   .col-xs-12.col-sm-12.col-md-12
                                     .form-group
-                                      input#address.form-control.input-sm(type='text', name='address', placeholder='Address')
+                                      input#address.form-control.input-sm(type='text', name='address', value={address},placeholder='Address')
                                   
                                 .row
                                   .col-xs-6.col-sm-6.col-md-6
                                     .form-group
-                                      input#email.form-control.input-sm(type='text', name='email', placeholder='Email')
+                                      input#email.form-control.input-sm(type='text',value={email}, name='email', placeholder='Email')
                                   .col-xs-6.col-sm-6.col-md-6
                                     .form-group
-                                      input#phoneNumber.form-control.input-sm(type='text', name='phoneNumber', placeholder='Phone Number')
+                                      input#phoneNumber.form-control.input-sm(type='text', name='phoneNumber',value={phoneNumber}, placeholder='Phone Number')
                                    
                                 .row
                                   .col-xs-6.col-sm-6.col-md-6
                                     .form-group
-                                      input#latitude.form-control.input-sm(type='text', name='latitude', placeholder='Latitude')
+                                      input#latitude.form-control.input-sm(type='text', name='latitude',value={latitude}, placeholder='Latitude')
                                   .col-xs-6.col-sm-6.col-md-6
                                     .form-group
-                                      input#longitude.form-control.input-sm(type='text', name='longitude', placeholder='Longitude')     
+                                      input#longitude.form-control.input-sm(type='text', name='longitude',value={longitude}, placeholder='Longitude')     
 
                                 br
                                 button.btn.btn-info.btn-block.blank-facility-info-update-btn(type='submit' ) Update Facility Information

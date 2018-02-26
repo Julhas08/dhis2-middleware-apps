@@ -1,5 +1,7 @@
 $(document).ready( function() {
-	
+const urlPath  = "https://centraldhis.mohfw.gov.bd/dhismohfw/";	
+//const urlPath  = "http://localhost:8080/dhis/";	
+
 // Return current date time	
 	function getTodayYYYYMMDD(){
 		var today = new Date();
@@ -705,7 +707,7 @@ $('.search-blank-fields').click(function(e){
 
             	let editFacility = "<a href='http://localhost:8082/blank-facility-update?uid="+dataJSON.children[i].id+"' target='_blank'><button class='btn btn-primary' style='cursor:pointer' id="+dataJSON.children[i].id+">Edit</button></a>";
 
-            	let editFacilityInDHIS = "<a href='https://centraldhis.mohfw.gov.bd/dhismohfw/dhis-web-maintenance/#/edit/organisationUnitSection/organisationUnit/"+dataJSON.children[i].id+"' target='_blank'><button class='btn btn-primary' style='cursor:pointer' id="+dataJSON.children[i].id+">Edit in DHIS</button></a>";
+            	let editFacilityInDHIS = "<a href='"+urlPath+"dhis-web-maintenance/#/edit/organisationUnitSection/organisationUnit/"+dataJSON.children[i].id+"' target='_blank'><button class='btn btn-primary' style='cursor:pointer' id="+dataJSON.children[i].id+">Edit in DHIS</button></a>";
 
             	
             	//let coordinates = dataJSON.children[i].coordinates;
@@ -817,6 +819,7 @@ $('.search-blank-fields').click(function(e){
     });
 });
 });
+
 // Update facility Information
 $('.blank-facility-info-update-btn').click(function(e){
 	e.preventDefault();
@@ -828,11 +831,27 @@ $('.blank-facility-info-update-btn').click(function(e){
 	var url 		= $('#url').val();  
 	var address 	= $('#address').val();  
 	var email 		= $('#email').val();  
+	var contactPerson = $('#contactPerson').val();  
 	var phoneNumber = $('#phoneNumber').val();  
 	var latitude 	= $('#latitude').val();  
 	var longitude 	= $('#longitude').val();
+// Get url param, UID	
+	var parseQueryString = function(url) {
+		  var urlParams = {};
+		  url.replace(
+		    new RegExp("([^?=&]+)(=([^&]*))?", "g"),
+		    function($0, $1, $2, $3) {
+		      urlParams[$1] = $3;
+		    }
+		  );
+		  
+		  return urlParams;
+	}
+	var urlToParse = location.search;  
+	var result     = parseQueryString(urlToParse );  
+	var uid        = result.uid;
 
-	var findInfo = '&facilityId=' + code+'&description=' + description+'&closedDate=' + closeDate+'&comment=' + comment+'&url=' + url+'&address=' + address+'&email=' + email+'&phoneNumber=' + phoneNumber+'&latitude=' + latitude+'&longitude=' + longitude;
+	var findInfo = '&uid=' + uid+'&code=' + code+'&description=' + description+'&closedDate=' + closeDate+'&comment=' + comment+'&url=' + url+'&address=' + address+'&email=' + email+'&contactPerson='+contactPerson+'&phoneNumber=' + phoneNumber+'&latitude=' + latitude+'&longitude=' + longitude;
 
 	$('.blank-facility-info-update-btn').after('<div class="loader"><img src="images/loading-small.gif" alt="Searching......" /></div>');
 	// Ajax posting 

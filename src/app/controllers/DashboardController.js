@@ -14,101 +14,139 @@ let logger4js = require('../../logger/log4js');
 * Dashboard Default Load in GET Method
 */
 
-module.exports.index = function index(req, res) {
+//let auth = fn.base_64_auth("admin","district");
+let urlPath  = "http://103.247.238.82:8080/dhismohfw/api/me";
 
-        let userList = [];
-        let notificationSummary = [];
-        let summaryList = [];
-		let createdFacilities=[];
-		let db= dbConnect.getConnection();
-	// Searching Parameters	
-		let dateSince 		= fn.getTodayYYYYMMDD();
-		let displayLimit	= 50;
-		let requestType		= "createdSince";
+module.exports.login = function index(req, res) {
 
-	//  Database user table data
-		let user;
-		db.query('SELECT * FROM users').then(user => {
-			userList.push(user);
-	    }).catch(error => {
-	    	logger4js.error("Users Information retriving issue: ",error);
-	        console.log(error); // print the error;
-	    });	   	
+// Authentication based on DHIS2 user authentication	
+	let username = req.body.username;
+	let password = req.body.password;
+// JSON Payload options development	
+	let auth = fn.base_64_auth(username,password);	 	
+	 	let options = {
+		    method: 'GET',
+		    url: urlPath,
+		    headers: { 
+		    	'Authorization': auth,
+		        'Accept': 'application/json',
+		        'Content-Type': 'application/json' 
+		    },
+			from: {
+			  mimeType: 'application/json'
+			}
+		};
+// Posting JSON payload to DHIS2			
+		request(options, function(error, response, body) {
 
-	//  Notification center data load
-		let notify;
-		db.query("select operation_type, count(id) from system_log where operation_type != '' and log_type= 'success' group by operation_type")
-		.then(notify => {
+			if(response.statusCode == 401 || response.statusCode == 409){
+				logger4js.getLoggerConfig().error("Conflicting in data posting! ",response.statusCode);
+				console.log("Not found");
+				res.render('login',{
+					responseCode: "Sorry! Username and Password is wrong in DHIS2."
+				})
 
-			notificationSummary.push(notify);
-			let str0 = JSON.stringify(notificationSummary);
-			let str1 = str0.replace('[','');
-			let str2 = str1.replace(']','');
-			summaryList= str2;
+			} else if(response.statusCode == 500){
+				logger4js.getLoggerConfig().error("Internal server error!",response.statusCode);
+				res.end('500');
+				console.log("internal");
+			} else if(response.statusCode == 200 || response.statusCode == 201){
+				let userList = [];
+		        let notificationSummary = [];
+		        let summaryList = [];
+				let createdFacilities=[];
+				let db= dbConnect.getConnection();
+			// Searching Parameters	
+				let dateSince 		= fn.getTodayYYYYMMDD();
+				let displayLimit	= 50;
+				let requestType		= "createdSince";
 
-		}).catch(error => {
-	    	logger4js.error("Notification center summary data query issue: ",error);
-	        console.log(error); // print the error;
-	    });	
-	    
+			//  Database user table data
+				let user;
+				db.query('SELECT * FROM users').then(user => {
+					userList.push(user);
+			    }).catch(error => {
+			    	logger4js.error("Users Information retriving issue: ",error);
+			        console.log(error); // print the error;
+			    });	   	
 
-	// API data from HRIS  
-	// API Information return SQL function	
-		function getApiSettingsInformation(name) {
-	    	let conName = name;
-		    return db.task('getApiSettingsInformation', t => {
-		            return t.oneOrNone('SELECT * FROM api_settings where connection_name=$1',conName)
-		                .then(apiInfo => {
-		                    return apiInfo;
-		                });
-		        });
-		}
-	// APi DB Connection String				
-			if(db){
-	// Pull all API information		
-			getApiSettingsInformation("hris").then(apiInfo => {
+			//  Notification center data load
+				let notify;
+				db.query("select operation_type, count(id) from system_log where operation_type != '' and log_type= 'success' group by operation_type")
+				.then(notify => {
 
-				let apiData      = JSON.parse(JSON.stringify(apiInfo));
-				let baseUrl 	 = apiData.base_url;
-				let resourcePath = apiData.resource_path;
-				let tokenType    = apiData.token_type;
-				let token        = apiData.token_string;
+					notificationSummary.push(notify);
+					let str0 = JSON.stringify(notificationSummary);
+					let str1 = str0.replace('[','');
+					let str2 = str1.replace(']','');
+					summaryList= str2;
 
-				let apiUrl = baseUrl+resourcePath+requestType+"="+dateSince+"&client_id=123551&offset=1&limit="+displayLimit;
-				let options = {
-					url: apiUrl,
-					method: 'GET',
-					headers: {
-					  'X-Auth-Token': token
-					},
-					from: {
-					  mimeType: 'application/json'
-					}
-				};
+				}).catch(error => {
+			    	logger4js.error("Notification center summary data query issue: ",error);
+			        console.log(error); // print the error;
+			    });	
+			    
 
-				request(options, function(error, response, body) {
-					//console.log(error + " :: " + response + " :: " + body);
-					//console.log(body);
-					let data          = JSON.stringify(JSON.parse(body));
-					let facilityInfo1 = data.replace('[','');
-					let facilityInfo  = facilityInfo1.replace(']','');
+			// API data from HRIS  
+			// API Information return SQL function	
+				function getApiSettingsInformation(name) {
+			    	let conName = name;
+				    return db.task('getApiSettingsInformation', t => {
+				            return t.oneOrNone('SELECT * FROM api_settings where connection_name=$1',conName)
+				                .then(apiInfo => {
+				                    return apiInfo;
+				                });
+				        });
+				}
+			// APi DB Connection String				
+					if(db){
+			// Pull all API information		
+					getApiSettingsInformation("hris").then(apiInfo => {
 
-					//let data = ('#{createdFacilitiesList}').toString();
-					let pdata = data.replace(/&quot;/g, '"');
-					let obj   = JSON.parse(pdata);
-					//console.log("summaryList:",JSON.parse(summaryList));
-					res.render('dashboard', {
-				      users: userList,
-				      summaryList:  JSON.parse(summaryList),
-				      createdFacilitiesList: obj
-				   });
-				});
+						let apiData      = JSON.parse(JSON.stringify(apiInfo));
+						let baseUrl 	 = apiData.base_url;
+						let resourcePath = apiData.resource_path;
+						let tokenType    = apiData.token_type;
+						let token        = apiData.token_string;
 
-			});
+						let apiUrl = baseUrl+resourcePath+requestType+"="+dateSince+"&client_id=123551&offset=1&limit="+displayLimit;
+						let options = {
+							url: apiUrl,
+							method: 'GET',
+							headers: {
+							  'X-Auth-Token': token
+							},
+							from: {
+							  mimeType: 'application/json'
+							}
+						};
 
-		} else {
-			logger4js.getLoggerConfig().error("Database Connection Error!");
-		}			 
+						request(options, function(error, response, body) {
+							//console.log(error + " :: " + response + " :: " + body);
+							//console.log(body);
+							let data          = JSON.stringify(JSON.parse(body));
+							let facilityInfo1 = data.replace('[','');
+							let facilityInfo  = facilityInfo1.replace(']','');
+
+							//let data = ('#{createdFacilitiesList}').toString();
+							let pdata = data.replace(/&quot;/g, '"');
+							let obj   = JSON.parse(pdata);
+							//console.log("summaryList:",JSON.parse(summaryList));
+							res.render('dashboard', {
+						      users: userList,
+						      summaryList:  JSON.parse(summaryList),
+						      createdFacilitiesList: obj
+						   });
+						});
+
+					});
+
+				} else {
+					logger4js.getLoggerConfig().error("Database Connection Error!");
+				}
+			}
+			
+		});			 
 		
 };
 
