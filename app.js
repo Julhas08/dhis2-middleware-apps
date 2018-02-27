@@ -18,7 +18,7 @@ var login          = require('./routes/login');
 var dashboard      = require('./routes/dashboard'); 
 var dhis2          = require('./routes/dhis2');
 var settingsRoutes = require('./routes/settings');
-var blankFields    = require('./routes/facility-blank-fields');
+var middlewareApps = require('./routes/middleware-apps');
 var reports        = require('./routes/reports');
 
 // view engine setup
@@ -38,7 +38,7 @@ app.use('/', login);
 app.use('/', dashboard);
 app.use('/', dhis2);
 app.use('/', settingsRoutes);
-app.use('/', blankFields);
+app.use('/', middlewareApps);
 app.use('/', reports);
 
 // Logger

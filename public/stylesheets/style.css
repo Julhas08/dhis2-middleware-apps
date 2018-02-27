@@ -50,7 +50,7 @@ ul {
   position: relative;
 }
 
-.middleware-instances-setup-btn,.blank-facility-info-update-btn, .multiple-instances-configure-btn,.search-blank-fields{
+.middleware-instances-setup-btn,.search-multiple-instances-sync-type-btn,.sync-multiple-dhis-data-btn,.blank-facility-info-update-btn, .multiple-instances-configure-btn,.search-blank-fields{
   cursor: pointer;
 }
 .header-botom-area.container-fulid {

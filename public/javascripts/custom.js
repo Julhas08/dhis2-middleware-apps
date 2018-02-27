@@ -873,5 +873,150 @@ $('.blank-facility-info-update-btn').click(function(e){
     });
 });
 
+
+$('.search-multiple-instances-sync-type-btn').click(function(e){
+	e.preventDefault();
+
+	var facilityId = null;
+	var level2 = $('#facilityLevel2').val(); // division
+	var level3 = $('#facilityLevel3').val(); // district
+	var level4 = $('#facilityLevel4').val(); // upazila
+	var level5 = $('#facilityLevel5').val(); // Union
+
+	
+	if(level2 !='' && level3 !='' && level4 !='' && level5 !='') {
+		facilityId = level5;
+
+	} else if(level2 !='' && level3 !='' && level4 !='' && level5 ==''){
+		facilityId = level4;
+
+	} else if(level2 !='' && level3 !='' && level4=='' && level5==''){
+		facilityId = level3;
+
+	} else if(level2 !='' && level3 =='' && level4 =='' && level5 ==''){
+		facilityId = level2;
+	} 	
+	var findInfo = '&facilityId=' + facilityId; 
+
+	$('.search-multiple-instances-sync-type-btn').after('<div class="loader"><img src="images/loading-small.gif" alt="Searching......" /></div>');
+	// Ajax posting 
+	$.ajax({
+		type: 'POST',
+		data: findInfo,
+        url: '/multiple-dhis-sync-type-search',						
+        success: function(data) {
+            var dataJSON = $.parseJSON(JSON.stringify(data));
+            let fieldsInfoArray = [];
+            let sn =1;
+            for (i=0; i < dataJSON.children.length; i++){
+            	
+            	//let coordinates = dataJSON.children[i].coordinates;
+            	let coordinates = code = address= contactPerson =phoneNumber = email = null;
+            	if(dataJSON.children[i].code == null || dataJSON.children[i].code ==''){
+            		code = '';
+            	} else {
+            		code = dataJSON.children[i].code;
+            	}
+
+            	if(dataJSON.children[i].address == null || dataJSON.children[i].address ==''){
+            		address = '';
+
+            	} else {
+            		address = dataJSON.children[i].address;
+            	}
+            	if(dataJSON.children[i].contactPerson == null || dataJSON.children[i].contactPerson ==''){
+            		contactPerson = '';
+            	} else {
+            		contactPerson = dataJSON.children[i].contactPerson;
+            	}
+
+            	if(dataJSON.children[i].phoneNumber == null || dataJSON.children[i].phoneNumber ==''){
+            		phoneNumber = '';
+            	} else {
+            		phoneNumber = dataJSON.children[i].phoneNumber;
+            	}
+
+            	if(dataJSON.children[i].email == null || dataJSON.children[i].email ==''){
+            		email = '';
+            	} else {
+            		email = dataJSON.children[i].email;
+            	}
+
+            	if(level5 !='' && dataJSON.children[i].coordinates !=''){
+            		coordinates = dataJSON.children[i].coordinates;
+            	} /*else if(level5 !='' && dataJSON.children[i].coordinates ==''){
+            		coordinates = '';
+            	}*/ else {
+            		coordinates = '';
+            	}
+            	
+            	fieldsInfoArray.push([
+            		sn++, 
+            		dataJSON.children[i].displayName,
+            		code,
+            		address,
+            		contactPerson,
+            		phoneNumber,
+            		email,
+            		coordinates
+            	]);	         	
+	         		         	
+	         }
+	        
+
+            if(dataJSON==null){
+
+			swal({   title: "Sorry!",   text: "There is no data in your selection parameter.",   type: "error",confirmButtonText: "Cool" });
+
+			$('#loader').slideUp(200,function(){		
+			$('#loader').remove();});
+			$(".loader").fadeOut("slow");
+			var dataTable = $('#displayData').DataTable(); 
+				dataTable.clear();
+			    dataTable.row.add([
+			        '',
+			        '',
+			        '',
+			        '',
+			        '',
+			        '',
+			        '',
+			        '',
+			        '',
+			        ''
+			    ]).draw();
+		}
+		$('#displayData').DataTable( {
+		        data: fieldsInfoArray,
+		        columns: [
+		            
+		            { title: "S/N" },
+		            { title: "Facility Name" },
+		            { title: "Code" },
+		            { title: "Address" },
+		            { title: "Contact Person" },
+		            { title: "Email" },
+		            { title: "Mobile" },
+		            { title: "Co-ordinates" },
+		            { title: "Edit" },
+		            { title: "DHIS Edit" }
+		        ],
+		        destroy: true, 
+		        "pageLength": 30,
+		        className: "dt-specialColorTH"
+		} );
+// Close loader        
+        $('#loader').slideUp(200,function(){        
+       		$('#loader').remove();
+        });
+        $(".loader").fadeOut("slow"); 
+        },
+        error: function(err){
+        	console.log(err);
+        }
+    });
+});
+
+
 				
     			
