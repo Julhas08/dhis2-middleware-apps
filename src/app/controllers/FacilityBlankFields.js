@@ -12,10 +12,10 @@ let logger4js = require('../../logger/log4js');
 // APi Connection String		
 let db = dbConnect.getConnection();
 // Base64 authentication, call from function.js		 	
-//let auth = fn.base_64_auth("julhas","Julhas@dhis2.28");
-let auth = fn.base_64_auth("admin","district");
-//let urlPath  = "https://centraldhis.mohfw.gov.bd/dhismohfw/";
-let urlPath  = "http://localhost:8080/dhis/";
+let auth = fn.base_64_auth("julhas","Julhas@dhis2.28");
+//let auth = fn.base_64_auth("admin","district");
+let urlPath  = "https://centraldhis.mohfw.gov.bd/dhismohfw/";
+//let urlPath  = "http://localhost:8080/dhis/";
 
 module.exports.facilityDropdownLevelOne= function index(req, res) {
 

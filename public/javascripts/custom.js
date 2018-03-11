@@ -873,6 +873,9 @@ $('.blank-facility-info-update-btn').click(function(e){
     });
 });
 
+/*******************************************************
+******************Multiple DHIS2 Interoperability ******
+********************************************************/
 
 $('.search-multiple-instances-sync-type-btn').click(function(e){
 	e.preventDefault();
@@ -1017,6 +1020,48 @@ $('.search-multiple-instances-sync-type-btn').click(function(e){
     });
 });
 
+$('.sync-multiple-dhis-datasubmit-btn').click(function(e){
+	e.preventDefault();
 
+	var facilityId = null;
+	var level2 = $('#facilityLevel2').val(); // division
+	var level3 = $('#facilityLevel3').val(); // district
+	var level4 = $('#facilityLevel4').val(); // upazila
+	var level5 = $('#facilityLevel5').val(); // Union
+
+	$('.sync-multiple-dhis-datasubmit-btn').after('<div class="loader"><img src="images/loading-small.gif" alt="Searching......" /></div>');
+	
+	if(level2 !='' && level3 !='' && level4 !='' && level5 !='') {
+		facilityId = level5;
+
+	} else if(level2 !='' && level3 !='' && level4 !='' && level5 ==''){
+		facilityId = level4;
+
+	} else if(level2 !='' && level3 !='' && level4=='' && level5==''){
+		facilityId = level3;
+
+	} else if(level2 !='' && level3 =='' && level4 =='' && level5 ==''){
+		facilityId = level2;
+	} 	
+	var findInfo = '&facilityId=' + facilityId; 
+
+	$.ajax({
+		type: 'POST',
+		data: findInfo,
+        url: '/multiple-dhis-sync-submit',						
+        success: function(data) {
+        	console.log(data);
+// Close loader        
+        $('#loader').slideUp(200,function(){        
+       		$('#loader').remove();
+        });
+        $(".loader").fadeOut("slow"); 
+        },
+        error: function(err){
+        	console.log(err);
+        }
+    });
+
+});	
 				
     			
