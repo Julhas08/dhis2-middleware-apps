@@ -31,7 +31,8 @@ html
                               .form-group
                                 input#instanceShortName.form-control.input-sm(type='text', name='instanceShortName', placeholder='Enter DHIS Instance Short Name (Ex. dhis_central/ dhis_community/ hris/ elmis/ equiest)')  
                               .form-group
-                                input#facilityLevels.form-control.input-sm(type='text', name='facilityLevels', placeholder='Enter Facilties Level Name (Ex: CSO, DH)')         
+                                input#facilityLevels.form-control.input-sm(type='text', name='facilityLevels', placeholder='Enter Facilties Level Name (Ex: CSO, DH)')      
+                    
                               
                               .row
                                 .col-xs-6.col-sm-6.col-md-6
@@ -55,12 +56,18 @@ html
                                       option(value="5") Level - 5   
                                       option(value="6") Level -  6 
                               .row
-                                .col-xs-12.col-sm-12.col-md-12
+                                .col-xs-6.col-sm-6.col-md-6
                                   .form-group
                                     select.form-control(id="instanceType", name="instanceType")
                                       option(value="") Select Instance Type
                                       option(value="source") Source    
-                                      option(value="destination") Destination               
+                                      option(value="destination") Destination
+                                .col-xs-6.col-sm-6.col-md-6
+                                  .form-group
+                                    select.form-control(id="sourceType", name="sourceType")
+                                      option(value="") Select Source Type
+                                      option(value="dhis2") DHIS2    
+                                      option(value="other") Other                      
                               .form-group
                                 input#notes.form-control.input-sm(type='text', name='notes', placeholder='Write notes')
                                 br

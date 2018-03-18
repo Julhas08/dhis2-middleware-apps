@@ -16,6 +16,7 @@ let transactionAutomaticMode = require('../src/app/controllers/DataTransactionAu
 
 // Transaction Manual mode that means all operations will be based on DHIS2 Facility Register App
 let transactionManualMode = require('../src/app/controllers/DataTransactionManualMode');
+let dhis2TransactionManualMode = require('../src/app/controllers/DHIS2DataTransactionManualMode');
 let dhis2Contorller     = require('../src/app/controllers/DHIS2Controller');
 
 // Send JSON Payload from Dashboard to DHIS2
@@ -25,7 +26,7 @@ router.post('/facility-create-json-payload',dhis2Contorller.facilityCreateJSONPa
 function getCronJobSettingsInformation(name) {
 	let conName = name;
     return db.task('getApiSettingsInformation', t => {
-        return t.oneOrNone('SELECT * FROM schedular_info where short_code=$1',conName)
+        return t.oneOrNone('select si.*,mi.source_type from schedular_info si inner join middleware_instances mi on si.source=mi.id where mi.instance_type = $1',conName)
             .then(info => {
             	return info;                
             }).catch(error=> {
@@ -48,7 +49,7 @@ function getDataTrasactionMode() {
     		});
     });
 }
-getCronJobSettingsInformation("hris").then(info => {
+getCronJobSettingsInformation("source").then(info => {
 
 	let data      = JSON.parse(JSON.stringify(info));
 	let isEnable, minutes, hours, dayOfMonth, monthOfYear, dayOfWeek, year,exportLimit,exportFromDays;
@@ -77,7 +78,7 @@ getCronJobSettingsInformation("hris").then(info => {
 			console.log("Server is running.");
 			console.log("Cron job is running! System Status: ", isEnable);
 			logger4js.getLoggerConfig().error("Cron job status:",isEnable);
-			let schedularTask = ["createdSince","updatedSince","deletedSince"];
+
 			// if Schedular settings is on
 			/**
 			* * * * * *
@@ -109,6 +110,7 @@ getCronJobSettingsInformation("hris").then(info => {
 						} else {
 				/****** Automatic Transaction Mode is in seperate method *****/
 							if(transactionMode.mode_type==1){
+								let schedularTask = ["createdSince","updatedSince","deletedSince"];
 								console.log("Mode Type: Automatic",transactionMode.mode_type);
 								let modeType = transactionMode.mode_type;
 							// Running the cron job in every five minutes 
@@ -126,9 +128,27 @@ getCronJobSettingsInformation("hris").then(info => {
 							// Running the cron job in every five minutes 
 								cron.schedule(''+minutes+' '+hours+' * * *', function(){ // 14:59 
 								  //console.log('running a task every minute');
-								  for (let i = 0; i < schedularTask.length; i++) {	  	
-								  	transactionManualMode.facilityCreateJSONPayloadSendToDHIS2(schedularTask[i], modeType,exportLimit,exportFromDays);
+
+								  // Only Source is DHIS
+								  console.log("data.source_type: ",data.source_type);
+
+								  if(data.source_type=='dhis2'){
+								  	let schedularTask = ["createdSince"];
+
+								  	for (let i = 0; i < schedularTask.length; i++) {	  	
+								  		dhis2TransactionManualMode.facilityCreateJSONPayloadSendToDHIS2(schedularTask[i], modeType,exportLimit,exportFromDays);
+								  	}
+
+								  } else {
+
+								  	let schedularTask = ["createdSince","updatedSince","deletedSince"];
+								  	for (let i = 0; i < schedularTask.length; i++) {
+								  	    //console.log(i);	  	
+								  		transactionManualMode.facilityCreateJSONPayloadSendToDHIS2(schedularTask[i], modeType,exportLimit,exportFromDays);
+								  	}
+
 								  }
+								  
 								  
 								});
 							}

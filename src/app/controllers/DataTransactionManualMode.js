@@ -18,18 +18,7 @@ let logger4js = require('../../logger/log4js');
 // APi Connection String		
 let db= dbConnect.getConnection();
 module.exports = {	
-	
-	// API Information return SQL function	
-		getApiSettingsInformation: function(name) {
-	    	let conName = name;
-		    return db.task('getApiSettingsInformation', t => {
-	            return t.oneOrNone('SELECT * FROM api_settings where connection_name=$1',conName)
-	                .then(apiInfo => {
-	                    return apiInfo;
-	            	});
-	        });
-		},	
-		
+			
 		facilityCreateJSONPayloadSendToDHIS2: function(requestType, modeType,exportLimit,exportFromDays){
 
 	// Receive JSON Payload		
@@ -45,11 +34,20 @@ module.exports = {
 
 		//console.log("Dynamic dateSince: ",dateSince);
 
-
+		// Database API information		
+			function getApiSettingsInformation(name) {
+		    	let conName = name;
+			    return db.task('getApiSettingsInformation', t => {
+			            return t.oneOrNone('select ap.* from api_settings ap inner join middleware_instances mi on ap.connection_name=mi.id where mi.instance_type=$1',conName)
+			                .then(apiInfo => {
+			                    return apiInfo;
+			                });
+			        });
+			}
 		/********************************************************************
 		**********************Generate JSON Payload from HRIS System ********
 		********************************************************************/	
-		this.getApiSettingsInformation("hris").then(apiInfo => {
+		getApiSettingsInformation("source").then(apiInfo => {
 
 			let apiData      = JSON.parse(JSON.stringify(apiInfo));
 			let baseUrl 	 = apiData.base_url;
@@ -68,26 +66,16 @@ module.exports = {
 				  mimeType: 'application/json'
 				}
 			};
-
 	/**********************************************************
 	****************DHIS2 Data Store Updates ******************
 	**********************************************************/
-	// Database API information		
-			function getApiSettingsInformation(name) {
-		    	let conName = name;
-			    return db.task('getApiSettingsInformation', t => {
-			            return t.oneOrNone('SELECT * FROM api_settings where connection_name=$1',conName)
-			                .then(apiInfo => {
-			                    return apiInfo;
-			                });
-			        });
-			}
+	
 
 		// To get HRIS information			
 			request(options, function(error, response, body) {
 				
 				let data          = JSON.stringify(JSON.parse(body));
-				console.log("HRIS data: ",data);
+				
 				let facilityInfo1 = data.replace('[','');
 				let facilityInfo  = facilityInfo1.replace(']','');
 				let pdata         = data.replace(/&quot;/g, '"');
@@ -109,23 +97,28 @@ module.exports = {
 		// JSON Payload Generate		
 				for(i = 0; i < json.length; i++) {
 
-						let unionCode,upazilaCode;
+						let unionCode,upazilaCode,unionName,upazilaName;
 						let openingDate  = (json[i].created_at).split(" "); 
+
 						if(json[i].union_code == null){
 							unionCode = '';
+							unionName = '';
 						} else {
 							unionCode = json[i].union_code;
+							unionName = json[i].union_name;
 						}
 
 						if(json[i].upazila_code == null){
 							upazilaCode = '';
+							upazilaName = '';
 						} else {
 							upazilaCode = json[i].upazila_code;
+							upazilaName = json[i].upazila_name;
 						}
 
 						let shortName = json[i].name.split(" ");
 
-						jsonArr.push({
+						/*jsonArr.push({
 					        code       	:  json[i].code,
 					        name       	:  json[i].name,
 					        shortName  	:  shortName[0]+' '+shortName[1]+' '+shortName[2],
@@ -150,8 +143,51 @@ module.exports = {
 					        status     	:  status,
 					        parentCode 	:  json[i].division_code+''+json[i].district_code+''+upazilaCode+''+unionCode
 					        
+					    });*/
+					    
+					    jsonArr.push({
+					        code       	:  json[i].code,
+					        name       	:  json[i].name,
+					        shortName  	:  shortName[0]+' '+shortName[1]+' '+shortName[2],
+					        displayName	:  json[i].name,
+					        displayShortName: json[i].name,
+					        openingDate	:  openingDate[0],
+					        divisionId 	:  json[i].division_code,
+					        divisionName:  json[i].division_name,
+					        districtId 	:  json[i].district_code,
+					        districtName:  json[i].district_name,
+					        upazilaId  	:  upazilaCode,
+					        upazilaName	:  json[i].upazila_name,
+					        unionId 	:  json[i].union_code,
+					        unionName	:  json[i].union_name,
+					        latitude   	:  json[i].latitude,
+					        longitude  	:  json[i].longitude,
+					        phoneNumber	:  json[i].mobile1,
+					        email   	:  json[i].email1,
+					        created 	:  json[i].created_at,
+					        facilitytypeCode:  json[i].facilitytype_code,
+					        facilitytypeName:  json[i].facilitytype_name,
+					        status     	:  status,
+					        parent      : {
+					        				code:json[i].division_code+''+json[i].district_code+''+upazilaCode+''+unionCode,
+					        				name:unionName,
+					        				parent: {
+					        					code:json[i].division_code+''+json[i].district_code+''+upazilaCode,
+					        					name:upazilaName,
+					        					parent: {
+					        						code:json[i].division_code+''+json[i].district_code,
+					        						name:json[i].district_name,
+					        						parent: {
+					        							code:json[i].division_code,
+					        							name:json[i].division_name
+					        						}
+					        					}
+					        				}
+					        			},  
+					        parentCode 	:  json[i].division_code+''+json[i].district_code+''+upazilaCode+''+unionCode
+					        
 					    });
-					
+					//console.log("jsonArr: ",jsonArr);
 					logger4js.getLoggerConfig().debug("JSON Payload for DHIS2: ",jsonArr);
 					logger4js.getLoggerConfig().error(error);
 
@@ -167,8 +203,9 @@ module.exports = {
 			
 			    if(db){	
 			    	if(json[i].facilitytype_name == "Community Clinic"){
+			    		
 			// Pull DHIS2 API Connection information		
-					getApiSettingsInformation("dhis2_central").then(apiInfo => {
+					getApiSettingsInformation("destination").then(apiInfo => {
 
 							let apiData      = JSON.parse(JSON.stringify(apiInfo));
 							let baseUrl 	 = apiData.base_url;
@@ -207,7 +244,7 @@ module.exports = {
 									}
 								}; // end of eoptions
 
-								//console.log("options:",options);
+								console.log("options CC:",options);
 							// Posting JSON payload to DHIS2			
 								request(options, function(error, response, body) {
 
@@ -263,7 +300,7 @@ module.exports = {
 						
 					} // end of checking server
 					 else {
-					 	getApiSettingsInformation("dhis2_central").then(apiInfo => {
+					 	getApiSettingsInformation("destination").then(apiInfo => {
 
 							let apiData      = JSON.parse(JSON.stringify(apiInfo));
 							let baseUrl 	 = apiData.base_url;
@@ -302,7 +339,7 @@ module.exports = {
 									}
 								}; // end of eoptions
 
-								//console.log("options:",options);
+								console.log("options above CC:",options);
 							// Posting JSON payload to DHIS2			
 								request(options, function(error, response, body) {
 

@@ -29,10 +29,11 @@ $('.middleware-instances-setup-btn').click(function(e){
         var facilityLevels	  = $('#facilityLevels').val();
         var minLevel 	      = $('#minLevel').val();		
         var maxLevel          = $('#maxLevel').val();			
-        var instanceType      = $('#instanceType').val();			
+        var instanceType      = $('#instanceType').val();
+        var sourceType		  = $('#sourceType').val();			
         var notes             = $('#notes').val();	
 
-        var paramInfo = '&instanceName=' + instanceName+'&instanceShortName=' + instanceShortName+'&facilityLevels='+facilityLevels+'&minLevel='+minLevel+'&maxLevel=' + maxLevel+'&instanceType='+instanceType+'&notes='+notes; 		 
+        var paramInfo = '&instanceName=' + instanceName+'&instanceShortName=' + instanceShortName+'&facilityLevels='+facilityLevels+'&minLevel='+minLevel+'&maxLevel=' + maxLevel+'&instanceType='+instanceType+'&sourceType='+sourceType+'&notes='+notes; 		 
 
 		if(instanceName==''){
 			swal("Sorry!", "Please enter Middleware Instance name.","error");
@@ -48,7 +49,9 @@ $('.middleware-instances-setup-btn').click(function(e){
 			swal("Sorry!", "Change your facility levels. Min level can't be greater than max level.","error");
 		} else if(instanceType == ''){
 			swal("Sorry!", "Please select instance type.","error");
-		} else{
+		} else if(sourceType == ''){
+			swal("Sorry!", "Please select source type.","error");
+		}else{
 
 	// Loader		
 		$('.middleware-instances-setup-btn').after('<div class="loader"><img src="images/load.gif" alt="Searching......" /></div>');
@@ -340,6 +343,7 @@ $('.schedular-settings-btn').click(function(e){
         var is_enable;      
         var name           = $('#name').val();
         var short_code 	   = $('#short_code').val();
+        var source   	   = $('#source').val();
         if($('#is_enable:checked').val()=='1'){
         	is_enable = 1;
         } else {
@@ -358,7 +362,7 @@ $('.schedular-settings-btn').click(function(e){
 
         //alert(exportedDataLimit+exportedDataLimit);
 
-        var paramInfo = '&name=' + name +'&short_code='+short_code+'&is_enable='+is_enable+'&schedular_type=' + schedular_type+'&minutes='+minutes+'&hours='+hours+'&dayOfMonth='+dayOfMonth+'&monthOfYear='+monthOfYear+'&dayOfWeek='+dayOfWeek+'&exportedDataLimit='+exportedDataLimit+'&exportFromDays='+exportFromDays+'&notes='+notes;  
+        var paramInfo = '&name=' + name +'&short_code='+short_code+'&source='+source+'&is_enable='+is_enable+'&schedular_type=' + schedular_type+'&minutes='+minutes+'&hours='+hours+'&dayOfMonth='+dayOfMonth+'&monthOfYear='+monthOfYear+'&dayOfWeek='+dayOfWeek+'&exportedDataLimit='+exportedDataLimit+'&exportFromDays='+exportFromDays+'&notes='+notes;  
 		console.log(paramInfo);
 
 		if(name==''){
@@ -382,6 +386,7 @@ $('.schedular-settings-btn').click(function(e){
 	            	} else {
 	            		swal("Sorry!", "Your Schedular settings has not been completed.","error");
 	            	}
+
 	// Close loader        
 	                $('#loader').slideUp(200,function(){        
 	               		$('#loader').remove();

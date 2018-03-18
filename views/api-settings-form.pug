@@ -18,7 +18,7 @@
                         select.form-control(id="connectionName", name="connectionName")
                           option(value="") Select Connection Name
                           each info in instanceInfo 
-                            option(value=info.instance_short_code) #{info.instance_name} 
+                            option(value=info.id) #{info.instance_name} 
                       .form-group
                         input#sourceName.form-control.input-sm(type='text', name='sourceName', placeholder='Enter Connection Source Name')
                       .form-group

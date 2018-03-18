@@ -65,10 +65,10 @@ module.exports.instancesSetup = function index(req, res) {
 * Create DHIS instance
 */
 exports.middlewareInstancesCreate = function (req, res) {
+	console.log(req.body.sourceType);
+	db.query("INSERT into middleware_instances (instance_name,instance_short_code,facility_levels,min_level,max_level,source_type,instance_type,notes) VALUES('"+req.body.instanceName+"','"+req.body.instanceShortName+"','"+req.body.facilityLevels+"','"+req.body.minLevel+"','"+req.body.maxLevel+"','"+req.body.instanceType+"','"+req.body.sourceType+"','"+req.body.notes+"')").then(user => {
 
-	db.query("INSERT into middleware_instances (instance_name,instance_short_code,facility_levels,min_level,max_level,instance_type,notes) VALUES('"+req.body.instanceName+"','"+req.body.instanceShortName+"','"+req.body.facilityLevels+"','"+req.body.minLevel+"','"+req.body.maxLevel+"','"+req.body.instanceType+"','"+req.body.notes+"')").then(user => {
-
-        console.log("Success"); // print success;
+        console.log("Successfully created new connection!"); // print success;
         res.send('success');
         logger4js.getLoggerConfig().debug("SUCCESS! ");	
     })
@@ -178,8 +178,38 @@ exports.multipleInstancesCreate = function (req, res) {
 module.exports.settingsFormIndex = function index(req, res) {
 
     let cronJobInformation = [];
+     db.tx(t => {
+        return t.batch([
+            t.any('SELECT * FROM schedular_info limit $1',10),
+            t.any('select * from middleware_instances where instance_type=$1',["source"]),
+        ]);
+    }).then(data => {
+
+    	let cronJobInformation= JSON.parse(JSON.stringify(data[0]));
+    	let sourceInstance   = JSON.parse(JSON.stringify(data[1]));
+
+    	if(cronJobInformation[0].is_enable){
+			res.render('schedular-setup',{
+	   			cronJobInfo: cronJobInformation,
+	   			sourceInfo : sourceInstance,
+	   			is_enable  : cronJobInformation[0].is_enable	
+	    	})
+		} else {
+			res.render('schedular-setup',{
+	   			cronJobInfo: cronJobInformation,
+	   			sourceInfo : sourceInstance,
+	   			is_enable  : 0	
+	    	})
+		}
+
+        
+    })
+    .catch(error => {
+        logger4js.getLoggerConfig().error("ERROR! ",error);
+        console.log(error); // print the error;
+    });
 	 
-	db.query('SELECT * FROM schedular_info').then(info => {
+	/*db.query('SELECT * FROM schedular_info').then(info => {
 
 	// Iterate Data	
 		for (let i = 0; i < info.length; i++) {
@@ -205,23 +235,13 @@ module.exports.settingsFormIndex = function index(req, res) {
 		//console.log(apiInfoList);
 		logger4js.getLoggerConfig().debug("API Data: ",cronJobInformation);
 
-		if(info[0].is_enable){
-			res.render('schedular-setup',{
-	   			cronJobInfo: cronJobInformation,
-	   			is_enable  : info[0].is_enable	
-	    	})
-		} else {
-			res.render('schedular-setup',{
-	   			cronJobInfo: cronJobInformation,
-	   			is_enable  : 0	
-	    	})
-		}
+		
 	    
 
 	}).catch(error => {		
 		logger4js.getLoggerConfig().error("ERROR! ",error);
         console.log(error); // print the error;
-    });
+    });*/
 };
 // Setup new schedular information
 exports.schedularCrudPOST = function (req, res) {
@@ -257,8 +277,8 @@ exports.schedularCrudPOST = function (req, res) {
 
 	});*/
 
-
-	db.query("INSERT into schedular_info (name,short_code,is_enable,schedular_type,minutes,hours,day_of_month,month_of_year,day_of_week,exported_date_limit,export_from_days, notes) VALUES('"+req.body.name+"','"+req.body.short_code+"','"+req.body.is_enable+"','"+req.body.schedular_type+"','"+req.body.minutes+"','"+req.body.hours+"','"+req.body.dayOfMonth+"','"+req.body.monthOfYear+"','"+req.body.dayOfWeek+"','"+req.body.exportedDataLimit+"','"+req.body.exportFromDays+"','"+req.body.notes+"')").then(user => {
+	
+	db.query("INSERT into schedular_info (name,short_code,source,is_enable,schedular_type,minutes,hours,day_of_month,month_of_year,day_of_week,exported_date_limit,export_from_days, notes) VALUES('"+req.body.name+"','"+req.body.short_code+"','"+req.body.source+"','"+req.body.is_enable+"','"+req.body.schedular_type+"','"+req.body.minutes+"','"+req.body.hours+"','"+req.body.dayOfMonth+"','"+req.body.monthOfYear+"','"+req.body.dayOfWeek+"','"+req.body.exportedDataLimit+"','"+req.body.exportFromDays+"','"+req.body.notes+"')").then(user => {
         console.log("Schedular Setup Success"); // print success;
         res.send('success');
         logger4js.getLoggerConfig().info("SUCCESS! ");	

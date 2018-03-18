@@ -42,6 +42,14 @@
                         .col-xs-6.col-sm-6.col-md-6
                           .form-group
                             input#short_code.form-control.input-sm(type='text', name='short_code', placeholder='Short Code')
+                            
+                      .row
+                        .col-xs-12.col-sm-12.col-md-12
+                          .form-group
+                            select.form-control(id="source", name="source")
+                                  option(value="") Select Source Instance
+                                  each info in sourceInfo 
+                                    option(value=info.id) #{info.instance_name}
                       .row
                         .col-xs-6.col-sm-6.col-md-6
                           .form-group
