@@ -65,8 +65,8 @@ module.exports.instancesSetup = function index(req, res) {
 * Create DHIS instance
 */
 exports.middlewareInstancesCreate = function (req, res) {
-	console.log(req.body.sourceType);
-	db.query("INSERT into middleware_instances (instance_name,instance_short_code,facility_levels,min_level,max_level,source_type,instance_type,notes) VALUES('"+req.body.instanceName+"','"+req.body.instanceShortName+"','"+req.body.facilityLevels+"','"+req.body.minLevel+"','"+req.body.maxLevel+"','"+req.body.instanceType+"','"+req.body.sourceType+"','"+req.body.notes+"')").then(user => {
+
+	db.query("INSERT into middleware_instances (instance_name,instance_short_code,facility_levels,min_level,max_level,instance_type,source_type,notes) VALUES('"+req.body.instanceName+"','"+req.body.instanceShortName+"','"+req.body.facilityLevels+"','"+req.body.minLevel+"','"+req.body.maxLevel+"','"+req.body.instanceType+"','"+req.body.sourceType+"','"+req.body.notes+"')").then(user => {
 
         console.log("Successfully created new connection!"); // print success;
         res.send('success');

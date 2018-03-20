@@ -27,7 +27,7 @@ module.exports = {
 		//let dateFrom 		= req.body.dateFrom;
 		let displayLimit 	= exportLimit;
 		//let date            = dateFrom.split("-");
-		let dateSince       = "20180101";
+		let dateSince       = "20180301";
 		//let dateSince       = fn.getTodayYYYYMM()+exportFromDays;
 		let operationMode   = "manual";
 		let operationType   = null; 
@@ -66,6 +66,7 @@ module.exports = {
 				  mimeType: 'application/json'
 				}
 			};
+		//console.log("Options:",options);	
 	/**********************************************************
 	****************DHIS2 Data Store Updates ******************
 	**********************************************************/
@@ -144,7 +145,8 @@ module.exports = {
 					        parentCode 	:  json[i].division_code+''+json[i].district_code+''+upazilaCode+''+unionCode
 					        
 					    });*/
-					    
+					    let createdAt = json[i].created_at.split(" ");
+
 					    jsonArr.push({
 					        code       	:  json[i].code,
 					        name       	:  json[i].name,
@@ -164,7 +166,7 @@ module.exports = {
 					        longitude  	:  json[i].longitude,
 					        phoneNumber	:  json[i].mobile1,
 					        email   	:  json[i].email1,
-					        created 	:  json[i].created_at,
+					        created 	:  createdAt[0],
 					        facilitytypeCode:  json[i].facilitytype_code,
 					        facilitytypeName:  json[i].facilitytype_name,
 					        status     	:  status,
@@ -243,13 +245,14 @@ module.exports = {
 									  mimeType: 'application/json'
 									}
 								}; // end of eoptions
-
-								console.log("options CC:",options);
+								//console.log("Options Post:",options);
 							// Posting JSON payload to DHIS2			
 								request(options, function(error, response, body) {
 
 									let message = null;
 									let logType = null;	
+									//console.log("options CC:",options);
+									//console.log("response.statusCode:",response.statusCode);
 									//console.log("response:",response);
 									/*console.log("body:",body);*/
 									//console.log("response:",response);
@@ -338,13 +341,14 @@ module.exports = {
 									  mimeType: 'application/json'
 									}
 								}; // end of eoptions
-
-								console.log("options above CC:",options);
+								
 							// Posting JSON payload to DHIS2			
 								request(options, function(error, response, body) {
 
 									let message = null;
 									let logType = null;	
+									//console.log("options above CC:",options);
+									//console.log("response.statusCode:",response.statusCode);
 									//console.log("response:",response);
 									/*console.log("body:",body);*/
 									//console.log("response:",response);

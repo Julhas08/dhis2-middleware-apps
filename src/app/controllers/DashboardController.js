@@ -38,7 +38,7 @@ module.exports.login = function index(req, res) {
 		};
 // Posting JSON payload to DHIS2			
 		request(options, function(error, response, body) {
-
+			//console.log("response.statusCode:",response.statusCode);
 			if(response.statusCode == 401 || response.statusCode == 409){
 				logger4js.getLoggerConfig().error("Conflicting in data posting! ",response.statusCode);
 				console.log("Not found");
@@ -90,18 +90,18 @@ module.exports.login = function index(req, res) {
 			// API data from HRIS  
 			// API Information return SQL function	
 				function getApiSettingsInformation(name) {
-			    	let conName = name;
-				    return db.task('getApiSettingsInformation', t => {
-				            return t.oneOrNone('SELECT * FROM api_settings where connection_name=$1',conName)
-				                .then(apiInfo => {
-				                    return apiInfo;
-				                });
-				        });
-				}
+		    	let conName = name;
+			    return db.task('getApiSettingsInformation', t => {
+			            return t.oneOrNone('select ap.* from api_settings ap inner join middleware_instances mi on ap.connection_name=mi.id where mi.instance_type=$1',conName)
+			                .then(apiInfo => {
+			                    return apiInfo;
+			                });
+			        });
+			    }
 			// APi DB Connection String				
 					if(db){
 			// Pull all API information		
-					getApiSettingsInformation("hris").then(apiInfo => {
+					getApiSettingsInformation("source").then(apiInfo => {
 
 						let apiData      = JSON.parse(JSON.stringify(apiInfo));
 						let baseUrl 	 = apiData.base_url;
@@ -120,10 +120,10 @@ module.exports.login = function index(req, res) {
 							  mimeType: 'application/json'
 							}
 						};
-
+						console.log("options:",options);
 						request(options, function(error, response, body) {
 							//console.log(error + " :: " + response + " :: " + body);
-							//console.log(body);
+							console.log(body);
 							let data          = JSON.stringify(JSON.parse(body));
 							let facilityInfo1 = data.replace('[','');
 							let facilityInfo  = facilityInfo1.replace(']','');
@@ -166,18 +166,18 @@ exports.dashboardFacilityInfoSearch = function (req, res) {
 		// API data from HRIS  
 	// API Information return SQL function	
 		function getApiSettingsInformation(name) {
-	    	let conName = name;
-		    return db.task('getApiSettingsInformation', t => {
-	            return t.oneOrNone('SELECT * FROM api_settings where connection_name=$1',conName)
-	                .then(apiInfo => {
-	                    return apiInfo;
-	                });
-	        });
-		}
+		    	let conName = name;
+			    return db.task('getApiSettingsInformation', t => {
+			            return t.oneOrNone('select ap.* from api_settings ap inner join middleware_instances mi on ap.connection_name=mi.id where mi.instance_type=$1',conName)
+			                .then(apiInfo => {
+			                    return apiInfo;
+			                });
+			        });
+			}
 	// APi DB Connection String				
 		if(db){
 	// Pull all API information		
-			getApiSettingsInformation("hris").then(apiInfo => {
+			getApiSettingsInformation("source").then(apiInfo => {
 
 				let apiData      = JSON.parse(JSON.stringify(apiInfo));
 				let baseUrl 	 = apiData.base_url;
@@ -233,18 +233,18 @@ exports.dashControllerJsonPayload = function (req, res) {
 		// API data from HRIS   
 		// API Information return SQL function	
 		function getApiSettingsInformation(name) {
-	    	let conName = name;
-		    return db.task('getApiSettingsInformation', t => {
-	            return t.oneOrNone('SELECT * FROM api_settings where connection_name=$1',conName)
-	                .then(apiInfo => {
-	                    return apiInfo;
-	                });
-	        });
-		}
+		    	let conName = name;
+			    return db.task('getApiSettingsInformation', t => {
+			            return t.oneOrNone('select ap.* from api_settings ap inner join middleware_instances mi on ap.connection_name=mi.id where mi.instance_type=$1',conName)
+			                .then(apiInfo => {
+			                    return apiInfo;
+			                });
+			        });
+			}
 	// APi DB Connection String				
 		if(db){
 	// Pull all API information		
-			getApiSettingsInformation("hris").then(apiInfo => {
+			getApiSettingsInformation("source").then(apiInfo => {
 
 				let apiData      = JSON.parse(JSON.stringify(apiInfo));
 				let baseUrl 	 = apiData.base_url;
