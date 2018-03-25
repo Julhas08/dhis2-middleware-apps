@@ -283,7 +283,6 @@ $('.api-settings-btn').click(function(e){
         e.preventDefault();
             // Requested data from API settings form posting    
         var connectionName = $('#connectionName').val();
-        var sourceName     = $('#sourceName').val();
         var baseUrl 	   = $('#baseUrl').val();		
         var resourcePath   = $('#resourcePath').val();		
         var tokenType      = $('#tokenType').val();		
@@ -292,7 +291,7 @@ $('.api-settings-btn').click(function(e){
         var password       = $('#password').val();		
         var notes          = $('#notes').val();	
 
-        var paramInfo = '&connectionName=' + connectionName+'&sourceName='+sourceName+'&baseUrl='+baseUrl+'&resourcePath=' + resourcePath+'&tokenType='+tokenType+'&tokenString='+tokenString+'&username=' + username+'&password='+password+'&notes='+notes;  
+        var paramInfo = '&connectionName=' + connectionName+'&baseUrl='+baseUrl+'&resourcePath=' + resourcePath+'&tokenType='+tokenType+'&tokenString='+tokenString+'&username=' + username+'&password='+password+'&notes='+notes;  
 		console.log(paramInfo);
 
 		if(connectionName==''){

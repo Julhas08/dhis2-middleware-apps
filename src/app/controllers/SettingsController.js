@@ -114,7 +114,7 @@ module.exports.index = function index(req, res) {
 */
 exports.apiCrudPOST = function (req, res) {
 
-	db.query("INSERT into api_settings (connection_name,source_name,base_url,resource_path,token_type,token_string,username,password,notes) VALUES('"+req.body.connectionName+"','"+req.body.sourceName+"','"+req.body.baseUrl+"','"+req.body.resourcePath+"','"+req.body.tokenType+"','"+req.body.tokenString+"','"+req.body.username+"','"+req.body.password+"','"+req.body.notes+"')").then(user => {
+	db.query("INSERT into api_settings (connection_name,base_url,resource_path,token_type,token_string,username,password,notes) VALUES('"+req.body.connectionName+"','"+req.body.baseUrl+"','"+req.body.resourcePath+"','"+req.body.tokenType+"','"+req.body.tokenString+"','"+req.body.username+"','"+req.body.password+"','"+req.body.notes+"')").then(user => {
         console.log("Success"); // print success;
         res.send('success');
         logger4js.getLoggerConfig().debug("SUCCESS! ");	
@@ -133,8 +133,8 @@ exports.multipleInstancesFormDisplay = function (req, res) {
 
     db.tx(t => {
         return t.batch([
-            t.any('select * from middleware_instances where instance_type=$1',["source"]),
-            t.any('select * from middleware_instances where instance_type=$1',["destination"]),
+            t.any('select * from middleware_instances limit $1',[10]),
+            t.any('select * from middleware_instances  limit $1',[10]),
             t.any('select mi.instance_name,mi.instance_type,mi.instance_short_code,mi.facility_levels,mui.notes from middleware_instances mi inner join multiple_instances mui on mui.souece_id=mi.id or mui.destination_id=mi.id limit $1',[10])
         ]);
     }).then(data => {
