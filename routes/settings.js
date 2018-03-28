@@ -10,8 +10,8 @@ let router = express.Router();
 let settings = require('../src/app/controllers/SettingsController');
 
 // DHIS2 Instances Setup
-router.get('/middleware-instances-setup', settings.instancesSetup);
-router.post('/middleware-instances-crud', settings.middlewareInstancesCreate);
+router.get('/middleware-channel-setup', settings.channelSetup);
+router.post('/middleware-channel-crud', settings.middlewareInstancesCreate);
 
 // Multiple instances configure
 router.get('/multiple-instances-configure', settings.multipleInstancesFormDisplay);

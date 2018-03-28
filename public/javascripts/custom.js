@@ -23,35 +23,34 @@ const urlPath  = "https://centraldhis.mohfw.gov.bd/dhismohfw/";
 // Middleware Instance Setup
 $('.middleware-instances-setup-btn').click(function(e){
         e.preventDefault();
-    // Requested data    
-        var instanceName      = $('#instanceName').val();
-        var instanceShortName = $('#instanceShortName').val();     
-        var facilityLevels	  = $('#facilityLevels').val();
-        var minLevel 	      = $('#minLevel').val();		
-        var maxLevel          = $('#maxLevel').val();			
-        var instanceType      = $('#instanceType').val();
-        var sourceType		  = $('#sourceType').val();			
-        var notes             = $('#notes').val();	
-
-        var paramInfo = '&instanceName=' + instanceName+'&instanceShortName=' + instanceShortName+'&facilityLevels='+facilityLevels+'&minLevel='+minLevel+'&maxLevel=' + maxLevel+'&instanceType='+instanceType+'&sourceType='+sourceType+'&notes='+notes; 		 
-
-		if(instanceName==''){
+        var jsonArr       = [];
+  		if($('#instanceName').val() == ''){
 			swal("Sorry!", "Please enter Middleware Instance name.","error");
-		} else if(instanceShortName==''){
+		} else if($('#instanceShortName').val() == ''){
 			swal("Sorry!", "Please enter middleware instance short name.","error");
-		} else if(facilityLevels==''){
-			swal("Sorry!", "Please enter facility levels.","error");
-		} else if(minLevel==''){
-			swal("Sorry!", "Please select facility minimum level.","error");
-		} else if(maxLevel==''){
-			swal("Sorry!", "Please select facility maximum level.","error");
-		} else if(minLevel > maxLevel){
-			swal("Sorry!", "Change your facility levels. Min level can't be greater than max level.","error");
-		} else if(instanceType == ''){
+		} else if($('#baseUrl').val() == ''){
+			swal("Sorry!", "Please enter API base url.","error");
+		} else if($('#resourcePath').val() == ''){
+			swal("Sorry!", "Please enter api resource path.","error");
+		} else if($('#instanceType').val() == ''){
 			swal("Sorry!", "Please select instance type.","error");
-		} else if(sourceType == ''){
+		} else if($('#sourceType').val() == ''){
 			swal("Sorry!", "Please select source type.","error");
 		}else{
+
+			jsonArr.push({
+	        channelName       :  $('#channelName').val(),
+	        shortName 		  :  $('#shortName').val(),
+	        baseUrl		      :  $('#baseUrl').val(),
+	        resourcePath      :  $('#resourcePath').val(),
+	        tokenType 		  :  $('#tokenType').val(),
+	        tokenString		  :  $('#tokenString').val(),
+	        username       	  :  $('#username').val(),
+	        password 		  :  $('#password').val(),
+	        channelType       :  $('#channelType').val(),
+	        instanceType      :  $('#instance_type').val(),
+	        notes 		      :  $('#notes').val(),
+	        });
 
 	// Loader		
 		$('.middleware-instances-setup-btn').after('<div class="loader"><img src="images/load.gif" alt="Searching......" /></div>');
@@ -59,10 +58,17 @@ $('.middleware-instances-setup-btn').click(function(e){
 			$.ajax({
 				type: 'POST',
 				cache: false,
-				data: paramInfo,
-		        //contentType: 'application/json',
-	            url: '/middleware-instances-crud',						
+				data: {paramInfo: JSON.stringify(jsonArr)},
+		        //contentType: "application/json; charset=utf-8",
+    			dataType: "json",
+    			/*beforeSend: function(x) {
+		            if (x && x.overrideMimeType) {
+		              x.overrideMimeType("application/j-son;charset=UTF-8");
+		            }
+		        },*/
+	            url: '/middleware-channel-crud',						
 	            success: function(data) {
+
 	            	if(data=='success'){
 	            		swal("Success!", "New instance has added successfully","success");
 	            	} else {

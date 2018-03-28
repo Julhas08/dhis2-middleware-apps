@@ -26,7 +26,7 @@ router.post('/facility-create-json-payload',dhis2Contorller.facilityCreateJSONPa
 function getCronJobSettingsInformation(name) {
 	let conName = name;
     return db.task('getApiSettingsInformation', t => {
-        return t.oneOrNone('select si.*,mi.source_type from schedular_info si inner join middleware_instances mi on si.source=mi.id where mi.instance_type = $1',conName)
+        return t.oneOrNone('select apis.*,si.* from api_settings apis inner join schedular_info si on apis.id=si.source where apis.channel_type = $1',conName)
             .then(info => {
             	return info;                
             }).catch(error=> {
@@ -130,10 +130,12 @@ getCronJobSettingsInformation("source").then(info => {
 								  //console.log('running a task every minute');
 
 								  // Only Source is DHIS
-								  console.log("data.source_type: ",data.source_type);
+								  console.log("data.channel_type: ",data.channel_type);
 
-								  if(data.source_type=='dhis2'){
+								  if(data.instance_type=='dhis2'){
+
 								  	let schedularTask = ["createdSince"];
+								  	//console.log("schedularTask: ",schedularTask);
 
 								  	for (let i = 0; i < schedularTask.length; i++) {	  	
 								  		dhis2TransactionManualMode.facilityCreateJSONPayloadSendToDHIS2(schedularTask[i], modeType,exportLimit,exportFromDays);

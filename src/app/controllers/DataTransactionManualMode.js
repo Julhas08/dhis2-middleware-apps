@@ -27,7 +27,7 @@ module.exports = {
 		//let dateFrom 		= req.body.dateFrom;
 		let displayLimit 	= exportLimit;
 		//let date            = dateFrom.split("-");
-		let dateSince       = "20180301";
+		let dateSince       = "20180201";
 		//let dateSince       = fn.getTodayYYYYMM()+exportFromDays;
 		let operationMode   = "manual";
 		let operationType   = null; 
@@ -38,7 +38,7 @@ module.exports = {
 			function getApiSettingsInformation(name) {
 		    	let conName = name;
 			    return db.task('getApiSettingsInformation', t => {
-			            return t.oneOrNone('select ap.* from api_settings ap inner join middleware_instances mi on ap.connection_name=mi.id where mi.instance_type=$1',conName)
+			            return t.oneOrNone('select * from api_settings where channel_type = $1',conName)
 			                .then(apiInfo => {
 			                    return apiInfo;
 			                });
@@ -85,13 +85,16 @@ module.exports = {
 				let i, status;
 		// Status Management 
 				if(requestType=="createdSince") {
-					status = 1;
+
+					status        = 'create';
 					operationType = "created";
 				} else if(requestType=="updatedSince") {
-					status = 2;
+
+					status        = 'update';
 					operationType = "updated";
-				} if(requestType=="deletedSince") {
-					status = 3;
+				} if(requestType == "deletedSince") {
+
+					status 		  = 'delete';
 					operationType = "deleted";
 				}		
 				//console.log("JSON: ",json)
@@ -118,33 +121,6 @@ module.exports = {
 						}
 
 						let shortName = json[i].name.split(" ");
-
-						/*jsonArr.push({
-					        code       	:  json[i].code,
-					        name       	:  json[i].name,
-					        shortName  	:  shortName[0]+' '+shortName[1]+' '+shortName[2],
-					        displayName	:  json[i].name,
-					        displayShortName: json[i].name,
-					        openingDate	:  openingDate[0],
-					        divisionId 	:  json[i].division_code,
-					        divisionName:  json[i].division_name,
-					        districtId 	:  json[i].district_code,
-					        districtName:  json[i].district_name,
-					        upazilaId  	:  upazilaCode,
-					        upazilaName	:  json[i].upazila_name,
-					        unionId 	:  json[i].union_code,
-					        unionName	:  json[i].union_name,
-					        latitude   	:  json[i].latitude,
-					        longitude  	:  json[i].longitude,
-					        mobile1  	:  json[i].mobile1,
-					        email1  	:  json[i].email1,
-					        createdAt 	:  json[i].created_at,
-					        facilitytypeCode:  json[i].facilitytype_code,
-					        facilitytypeName:  json[i].facilitytype_name,
-					        status     	:  status,
-					        parentCode 	:  json[i].division_code+''+json[i].district_code+''+upazilaCode+''+unionCode
-					        
-					    });*/
 					    let createdAt = json[i].created_at.split(" ");
 
 					    jsonArr.push({

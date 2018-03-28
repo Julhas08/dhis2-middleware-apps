@@ -38,13 +38,18 @@ module.exports.login = function index(req, res) {
 		};
 // Posting JSON payload to DHIS2			
 		request(options, function(error, response, body) {
-			//console.log("response.statusCode:",response.statusCode);
+
+			let responseStatus = response;
 			if(response.statusCode == 401 || response.statusCode == 409){
 				logger4js.getLoggerConfig().error("Conflicting in data posting! ",response.statusCode);
 				console.log("Not found");
 				res.render('login',{
 					responseCode: "Sorry! Username and Password is wrong in DHIS2."
 				})
+
+			} else if(responseStatus=='undefined'){
+
+				console.log("responseStatus",responseStatus);
 
 			} else if(response.statusCode == 500){
 				logger4js.getLoggerConfig().error("Internal server error!",response.statusCode);
@@ -57,7 +62,8 @@ module.exports.login = function index(req, res) {
 				let createdFacilities=[];
 				let db= dbConnect.getConnection();
 			// Searching Parameters	
-				let dateSince 		= fn.getTodayYYYYMMDD();
+				//let dateSince 		= fn.getTodayYYYYMMDD();
+				let dateSince 		= "20180101";
 				let displayLimit	= 50;
 				let requestType		= "createdSince";
 
@@ -92,7 +98,7 @@ module.exports.login = function index(req, res) {
 				function getApiSettingsInformation(name) {
 		    	let conName = name;
 			    return db.task('getApiSettingsInformation', t => {
-			            return t.oneOrNone('select ap.* from api_settings ap inner join middleware_instances mi on ap.connection_name=mi.id where mi.instance_type=$1',conName)
+			            return t.oneOrNone('select * from api_settings where channel_type=$1',conName)
 			                .then(apiInfo => {
 			                    return apiInfo;
 			                });
@@ -123,7 +129,7 @@ module.exports.login = function index(req, res) {
 						console.log("options:",options);
 						request(options, function(error, response, body) {
 							//console.log(error + " :: " + response + " :: " + body);
-							console.log(body);
+							//console.log(body);
 							let data          = JSON.stringify(JSON.parse(body));
 							let facilityInfo1 = data.replace('[','');
 							let facilityInfo  = facilityInfo1.replace(']','');
@@ -131,9 +137,8 @@ module.exports.login = function index(req, res) {
 							//let data = ('#{createdFacilitiesList}').toString();
 							let pdata = data.replace(/&quot;/g, '"');
 							let obj   = JSON.parse(pdata);
-							//console.log("summaryList:",JSON.parse(summaryList));
+							console.log("summaryList:",JSON.parse(summaryList));
 							res.render('dashboard', {
-						      users: userList,
 						      summaryList:  JSON.parse(summaryList),
 						      createdFacilitiesList: obj
 						   });
@@ -168,7 +173,7 @@ exports.dashboardFacilityInfoSearch = function (req, res) {
 		function getApiSettingsInformation(name) {
 		    	let conName = name;
 			    return db.task('getApiSettingsInformation', t => {
-			            return t.oneOrNone('select ap.* from api_settings ap inner join middleware_instances mi on ap.connection_name=mi.id where mi.instance_type=$1',conName)
+			            return t.oneOrNone('select * from api_settings where channel_type=$1',conName)
 			                .then(apiInfo => {
 			                    return apiInfo;
 			                });
@@ -235,7 +240,7 @@ exports.dashControllerJsonPayload = function (req, res) {
 		function getApiSettingsInformation(name) {
 		    	let conName = name;
 			    return db.task('getApiSettingsInformation', t => {
-			            return t.oneOrNone('select ap.* from api_settings ap inner join middleware_instances mi on ap.connection_name=mi.id where mi.instance_type=$1',conName)
+			            return t.oneOrNone('select * from api_settings where channel_type=$1',conName)
 			                .then(apiInfo => {
 			                    return apiInfo;
 			                });

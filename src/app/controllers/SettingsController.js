@@ -25,48 +25,34 @@ module.exports = {
   },
 };*/
 
-module.exports.instancesSetup = function index(req, res) {
+module.exports.channelSetup = function index(req, res) {
 
-    let infoList = [];
-	 
-	db.query('SELECT * FROM middleware_instances order by id asc ').then(info => {
-
-	// Iterate Data	
-		for (let i = 0; i < info.length; i++) {
-
-			// Create an object to save current row's data
-			let instanceInfoArray = {
-				'id'			 :info[i].id,
-				'instance_name'  :info[i].instance_name,
-				'instance_short_code' :info[i].instance_short_code,
-				'facility_levels':info[i].facility_levels,
-				'min_level'		 :info[i].min_level,
-				'max_level'		 :info[i].max_level,
-				'instance_type'	 :info[i].instance_type,
-				'notes'			 :info[i].notes,
-				'created_at'	 :info[i].created_at,
-			}
-			// Add object into array
-			infoList.push(instanceInfoArray);
-
-		}
-		//console.log(instanceInfoList);
-		logger4js.getLoggerConfig().debug("Middleware Instances",infoList);	
-	    res.render('middleware-instances-setup',{
-	   		infoList: infoList
+    db.tx(t => {
+        return t.batch([
+            t.any('SELECT * FROM api_settings order by id asc limit $1',[20]),
+        ]);
+    }).then(data => {
+		res.render('middleware-channel-setup',{
+	   		infoList : JSON.parse(JSON.stringify(data[0]))
 	    })
-
-	}).catch(error => {		
-		logger4js.getLoggerConfig().error("ERROR! ",error);
+        
+    })
+    .catch(error => {
+        logger4js.getLoggerConfig().error("ERROR! ",error);
         console.log(error); // print the error;
-    });
+    });	 
+	
 };
 /****
 * Create DHIS instance
 */
 exports.middlewareInstancesCreate = function (req, res) {
 
-	db.query("INSERT into middleware_instances (instance_name,instance_short_code,facility_levels,min_level,max_level,instance_type,source_type,notes) VALUES('"+req.body.instanceName+"','"+req.body.instanceShortName+"','"+req.body.facilityLevels+"','"+req.body.minLevel+"','"+req.body.maxLevel+"','"+req.body.instanceType+"','"+req.body.sourceType+"','"+req.body.notes+"')").then(user => {
+	let dataReq1 = req.body.paramInfo.replace('[','');
+	let dataReq  = dataReq1.replace(']','');
+	var info = JSON.parse(dataReq);
+
+	db.query("INSERT into api_settings (channel_name,short_code,base_url,resource_path,token_type,token_string,username,password,channel_type,instance_type,notes) VALUES('"+info.channelName+"','"+info.shortName+"','"+info.baseUrl+"','"+info.resourcePath+"','"+info.tokenType+"','"+info.tokenString+"','"+info.username+"','"+info.password+"','"+info.channelType+"','"+info.instanceType+"','"+info.notes+"')").then(user => {
 
         console.log("Successfully created new connection!"); // print success;
         res.send('success');
@@ -91,8 +77,7 @@ module.exports.index = function index(req, res) {
             t.any('SELECT * FROM api_settings order by id asc limit $1',[20]),
             t.any('select *  from middleware_instances limit $1',[10])
         ]);
-    })
-     .then(data => {
+    }).then(data => {
 
     	let apiInfoData   = JSON.parse(JSON.stringify(data[0]));
     	let instanceInfo  = JSON.parse(JSON.stringify(data[1]));
