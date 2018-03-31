@@ -52,6 +52,7 @@ $('.middleware-instances-setup-btn').click(function(e){
 	        notes 		      :  $('#notes').val(),
 	        });
 
+
 	// Loader		
 		$('.middleware-instances-setup-btn').after('<div class="loader"><img src="images/load.gif" alt="Searching......" /></div>');
 	// Ajax posting 
@@ -59,26 +60,24 @@ $('.middleware-instances-setup-btn').click(function(e){
 				type: 'POST',
 				cache: false,
 				data: {paramInfo: JSON.stringify(jsonArr)},
-		        //contentType: "application/json; charset=utf-8",
     			dataType: "json",
-    			/*beforeSend: function(x) {
-		            if (x && x.overrideMimeType) {
-		              x.overrideMimeType("application/j-son;charset=UTF-8");
-		            }
-		        },*/
 	            url: '/middleware-channel-crud',						
 	            success: function(data) {
-
+	            	console.log("data.responseText: ",data);
 	            	if(data=='success'){
 	            		swal("Success!", "New instance has added successfully","success");
 	            	} else {
 	            		swal("Sorry!", "New instance creation problem","error");
 	            	}
-	// Close loader        
+	// Close loader and set timeout callback function 
+				setTimeout(function(){	       
 	                $('#loader').slideUp(200,function(){        
-	               		$('#loader').remove();
+	               		$('#loader').remove();	   
 		            });
 		            $(".loader").fadeOut("slow"); 
+		             window.location.reload();		             
+	            }, 1000);  
+
 	            },
 	            error: function(err){
 	            	console.log(err);
@@ -1073,5 +1072,56 @@ $('.sync-multiple-dhis-datasubmit-btn').click(function(e){
     });
 
 });	
+
+// All delete operations
+$('.delete-settings').click(function(e){
+		e.preventDefault();
+
+	var id = $(this).val();
+	var flag	  = id.split("_");
+	var findInfo = '&id=' + flag[0]+'&flag=' + flag[1]; 
+	swal({
+	  title: "Are you sure?",
+	  text: "Your will not be able to recover this data!",
+	  type: "warning",
+	  showCancelButton: true,
+	  confirmButtonClass: "btn-danger",
+	  confirmButtonText: "Yes, delete it!",
+	  closeOnConfirm: false
+	},
+	function(){
+
+		$.ajax({
+			type: 'POST',
+			data: findInfo,
+	        url: '/delete-channel-settings',						
+	        success: function(data) {
+	        	console.log(data);
+	        	if(data=='success'){
+	        		swal("Thanks!", "Your channel information has been deleted successfully.","success");
+	        	}
+		// Close loader and set timeout callback function 
+				setTimeout(function(){	       
+	                $('#loader').slideUp(200,function(){        
+	               		$('#loader').remove();	   
+		            });
+		            $(".loader").fadeOut("slow"); 
+		             window.location.reload();
+	            }, 1000);  
+
+	        },
+	        error: function(err){
+	        	console.log(err);
+	// Close loader        
+	        $('#loader').slideUp(200,function(){        
+	       		$('#loader').remove();
+	        });
+	        $(".loader").fadeOut("slow"); 
+	        }
+	    });
+		//swal("Deleted!", "Your imaginary file has been deleted.", "success");
+	});
+});
+
 				
     			

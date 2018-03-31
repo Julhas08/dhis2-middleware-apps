@@ -35,4 +35,7 @@ router.post('/schedular-enable-disable', settings.schedularEnableDisable);
 router.get('/data-sync-mode', settings.dataTransactionMode);
 router.post('/data-transaction-mode-enable', settings.dataTransactionModeUpdate);
 
+// Delete API/  Channel Setup
+router.post('/delete-channel-settings', settings.deleteChannelSettings);
+
 module.exports = router;

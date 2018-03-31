@@ -52,9 +52,8 @@ exports.middlewareInstancesCreate = function (req, res) {
 	let dataReq  = dataReq1.replace(']','');
 	var info = JSON.parse(dataReq);
 
-	db.query("INSERT into api_settings (channel_name,short_code,base_url,resource_path,token_type,token_string,username,password,channel_type,instance_type,notes) VALUES('"+info.channelName+"','"+info.shortName+"','"+info.baseUrl+"','"+info.resourcePath+"','"+info.tokenType+"','"+info.tokenString+"','"+info.username+"','"+info.password+"','"+info.channelType+"','"+info.instanceType+"','"+info.notes+"')").then(user => {
+	/*db.query("INSERT into api_settings (channel_name,short_code,base_url,resource_path,token_type,token_string,username,password,channel_type,instance_type,notes) VALUES('"+info.channelName+"','"+info.shortName+"','"+info.baseUrl+"','"+info.resourcePath+"','"+info.tokenType+"','"+info.tokenString+"','"+info.username+"','"+info.password+"','"+info.channelType+"','"+info.instanceType+"','"+info.notes+"')").then(user => {
 
-        console.log("Successfully created new connection!"); // print success;
         res.send('success');
         logger4js.getLoggerConfig().debug("SUCCESS! ");	
     })
@@ -62,7 +61,24 @@ exports.middlewareInstancesCreate = function (req, res) {
 		logger4js.getLoggerConfig().error("ERROR! ",error);
         console.log(error); // print the error;
         res.send('error');
+    });*/
+
+    db.tx(t => {
+        return t.batch([
+            t.none("INSERT into api_settings (channel_name,short_code,base_url,resource_path,token_type,token_string,username,password,channel_type,instance_type,notes) VALUES('"+info.channelName+"','"+info.shortName+"','"+info.baseUrl+"','"+info.resourcePath+"','"+info.tokenType+"','"+info.tokenString+"','"+info.username+"','"+info.password+"','"+info.channelType+"','"+info.instanceType+"','"+info.notes+"')")
+        ]);
+    })
+    .then(data => {
+        res.send('success');
+        logger4js.getLoggerConfig().info("SUCCESS!");   
+    })
+    .catch(error => {
+       logger4js.getLoggerConfig().error("ERROR! ",error);
+        console.log(error); // print the error;
+        res.send('error');
     });
+
+
 };
 
 /***
@@ -371,3 +387,40 @@ exports.dataTransactionModeUpdate = function (req, res) {
         res.send('error');
     });
 };
+
+
+// Transaction Mode Updates
+exports.deleteChannelSettings = function (req, res) {
+
+    let jsonId  = JSON.parse(JSON.stringify(req.body));
+    let id      = jsonId.id;
+    let flag    = jsonId.flag;
+    let table;
+
+    if (flag  == 'channel'){
+        table = "api_settings";
+    } else if(flag == 'schedular'){
+        table = "schedular_info";
+    } else if(flag == 'syncMode'){
+        table = "data_transaction_mode";
+    }
+    console.log("flag: ",flag);
+    console.log("table:",table);
+
+    db.tx(t => {
+        return t.batch([
+            t.none('delete from "'+table+'" where id = $1', [id])
+        ]);
+    })
+    .then(data => {
+
+        res.send('success');
+        logger4js.getLoggerConfig().info("SUCCESS!");   
+    })
+    .catch(error => {
+       logger4js.getLoggerConfig().error("ERROR! ",error);
+        console.log(error); // print the error;
+        res.send('error');
+    });
+};
+
