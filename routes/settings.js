@@ -8,7 +8,7 @@ let express = require('express');
 let router = express.Router();
 // APi Settings Controller Import
 let settings = require('../src/app/controllers/SettingsController');
-
+let rabbitmq = require('../src/app/controllers/RabbitMQController');
 // DHIS2 Instances Setup
 router.get('/middleware-channel-setup', settings.channelSetup);
 router.post('/middleware-channel-crud', settings.middlewareInstancesCreate);
@@ -36,6 +36,11 @@ router.get('/data-sync-mode', settings.dataTransactionMode);
 router.post('/data-transaction-mode-enable', settings.dataTransactionModeUpdate);
 
 // Delete API/  Channel Setup
-router.post('/delete-channel-settings', settings.deleteChannelSettings);
+router.post('/delete-channel-settings', settings.deleteChannelSettings)
+;
+// RabbitMQ setup
+router.get('/rabbitmq-setup', rabbitmq.rabbitMQSetup);
+router.post('/rabbitmq-sender', rabbitmq.rabbitMQSender);
+router.post('/rabbitmq-receiver', rabbitmq.rabbitMQReceiver);
 
 module.exports = router;

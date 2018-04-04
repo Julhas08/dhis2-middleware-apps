@@ -1123,5 +1123,104 @@ $('.delete-settings').click(function(e){
 	});
 });
 
+
+
+// RabbitMQ Operations
+$('.rabbitmqsender-btn').click(function(e){
+		e.preventDefault();
+
+	var id =123;
+	var findInfo = '&id=' + id; 
+	swal({
+	  title: "Are you sure?",
+	  text: "Your will not be able to recover this data!",
+	  type: "warning",
+	  showCancelButton: true,
+	  confirmButtonClass: "btn-danger",
+	  confirmButtonText: "Yes, delete it!",
+	  closeOnConfirm: false
+	},
+	function(){
+
+		$.ajax({
+			type: 'POST',
+			data: findInfo,
+	        url: '/rabbitmq-sender',						
+	        success: function(data) {
+	        	console.log(data);
+	        	if(data=='success'){
+	        		swal("Thanks!", "Your message has sent","success");
+	        	}
+		// Close loader and set timeout callback function 
+			setTimeout(function(){	       
+	                $('#loader').slideUp(200,function(){        
+	               		$('#loader').remove();	   
+		            });
+		            $(".loader").fadeOut("slow"); 
+		             window.location.reload();
+	            }, 1000);  
+
+	        },
+	        error: function(err){
+	        	console.log(err);
+	// Close loader        
+	        $('#loader').slideUp(200,function(){        
+	       		$('#loader').remove();
+	        });
+	        $(".loader").fadeOut("slow"); 
+	        }
+	    });
+
+	});
+});
+
+// RabbitMQ Operations
+$('.rabbitmqreceiver-btn').click(function(e){
+	e.preventDefault();
+
+	var id = 1234;
+	var findInfo = '&id=' + id; 
+	swal({
+	  title: "Are you sure?",
+	  text: "Your will not be able to recover this data!",
+	  type: "warning",
+	  showCancelButton: true,
+	  confirmButtonClass: "btn-danger",
+	  confirmButtonText: "Yes, delete it!",
+	  closeOnConfirm: false
+	},
+	function(){
+
+		$.ajax({
+			type: 'POST',
+			data: findInfo,
+	        url: '/rabbitmq-receiver',						
+	        success: function(data) {
+	        	console.log(data);
+	        	if(data=='success'){
+	        		swal("Thanks!", "Your message has sent","success");
+	        	}
+		// Close loader and set timeout callback function 
+			setTimeout(function(){	       
+	                $('#loader').slideUp(200,function(){        
+	               		$('#loader').remove();	   
+		            });
+		            $(".loader").fadeOut("slow"); 
+		             window.location.reload();
+	            }, 1000);  
+
+	        },
+	        error: function(err){
+	        	console.log(err);
+	// Close loader        
+	        $('#loader').slideUp(200,function(){        
+	       		$('#loader').remove();
+	        });
+	        $(".loader").fadeOut("slow"); 
+	        }
+	    });
+
+	});
+});
 				
     			

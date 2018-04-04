@@ -14,6 +14,7 @@ module.exports = {
 		    database: 'middleware',
 		    user:     'postgres',
 		    password: ''
+		    //password: 'postgres'
 		};
 		let db = pgp(connection);
 

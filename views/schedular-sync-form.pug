@@ -48,8 +48,8 @@
                           .form-group
                             select.form-control(id="source", name="source")
                                   option(value="") Select Source Instance
-                                  each info in sourceInfo 
-                                    option(value=info.id) #{info.instance_name}
+                                  each info in cronJobInfo 
+                                    option(value=info.id) #{info.channel_name}
                       .row
                         .col-xs-6.col-sm-6.col-md-6
                           .form-group

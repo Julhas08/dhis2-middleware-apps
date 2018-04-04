@@ -8,6 +8,7 @@ let dbConnect = require('../config/db-config');
 let fn        = require('../function');
 let logger4js = require('../../logger/log4js');
 let db 		  = dbConnect.getConnection();
+
 /**
 * Default load api information 
 */
@@ -181,24 +182,23 @@ module.exports.settingsFormIndex = function index(req, res) {
     let cronJobInformation = [];
      db.tx(t => {
         return t.batch([
-            t.any('SELECT * FROM schedular_info limit $1',10),
-            t.any('select * from middleware_instances where instance_type=$1',["source"]),
+            t.any('SELECT sci.*,api.* FROM schedular_info sci inner join api_settings api on api.id=sci.source where api.channel_type = $1',['source']),
+           
         ]);
     }).then(data => {
 
     	let cronJobInformation= JSON.parse(JSON.stringify(data[0]));
-    	let sourceInstance   = JSON.parse(JSON.stringify(data[1]));
+    	//let sourceInstance   = JSON.parse(JSON.stringify(data[1]));
 
     	if(cronJobInformation[0].is_enable){
 			res.render('schedular-setup',{
 	   			cronJobInfo: cronJobInformation,
-	   			sourceInfo : sourceInstance,
+	   			//sourceInfo : sourceInstance,
 	   			is_enable  : cronJobInformation[0].is_enable	
 	    	})
 		} else {
 			res.render('schedular-setup',{
 	   			cronJobInfo: cronJobInformation,
-	   			sourceInfo : sourceInstance,
 	   			is_enable  : 0	
 	    	})
 		}
@@ -389,7 +389,7 @@ exports.dataTransactionModeUpdate = function (req, res) {
 };
 
 
-// Transaction Mode Updates
+// Delete existing channel
 exports.deleteChannelSettings = function (req, res) {
 
     let jsonId  = JSON.parse(JSON.stringify(req.body));
@@ -423,4 +423,5 @@ exports.deleteChannelSettings = function (req, res) {
         res.send('error');
     });
 };
+
 

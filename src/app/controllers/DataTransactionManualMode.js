@@ -27,7 +27,7 @@ module.exports = {
 		//let dateFrom 		= req.body.dateFrom;
 		let displayLimit 	= exportLimit;
 		//let date            = dateFrom.split("-");
-		let dateSince       = "20180201";
+		let dateSince       = "20180101";
 		//let dateSince       = fn.getTodayYYYYMM()+exportFromDays;
 		let operationMode   = "manual";
 		let operationType   = null; 
@@ -74,9 +74,9 @@ module.exports = {
 
 		// To get HRIS information			
 			request(options, function(error, response, body) {
-				
+				//console.log("response:",response);
 				let data          = JSON.stringify(JSON.parse(body));
-				
+			
 				let facilityInfo1 = data.replace('[','');
 				let facilityInfo  = facilityInfo1.replace(']','');
 				let pdata         = data.replace(/&quot;/g, '"');
