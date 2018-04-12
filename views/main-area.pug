@@ -65,7 +65,7 @@ div(class="main-area")
 									option(value="deletedSince") Deleted Facilities
 						.control-group.inline
 							.controls
-								input#dateFrom.form-control(type='date', placeholder='Date From' name='dateFrom')
+								input#dateFrom.form-control(type='text', placeholder='Date From' name='dateFrom')
 
 						.control-group.inline
 							.controls
@@ -80,6 +80,8 @@ div(class="main-area")
 									option(value="100") 100
 									option(value="150") 150
 									option(value="200") 200
+									option(value="500") 500
+									option(value="1000") 1000
 
 						.control-group.inline
 							.controls
@@ -93,10 +95,12 @@ div(class="main-area")
 
 					button.btn.btn-warning.json-payload-generates-btn(type='submit' ) Generate JSON Payload
 					hr
+					<br>
+					<br>
 
 					div(id="displayFacilityInformation")
 
-					h3 Today's created facilities
+					h3 Today's published/transmited facilities
 					table(class="table table-bordered table-hover table-header-bg")
 
 						thead(class="table-header-bg thead")
@@ -112,18 +116,7 @@ div(class="main-area")
 								th Longitude
 								th Created Date
 						tbody        
-							each finfo,i in createdFacilitiesList
-								tr
-									td= i
-									td= finfo.division_name +'('+ finfo.division_code+')'
-									td= finfo.district_name +'('+ finfo.district_code+')'
-									td= finfo.upazila_name +'('+ finfo.upazila_code+')'
-									td= finfo.union_name +'('+ finfo.union_code+')'
-									td= finfo.name
-									td= finfo.code
-									td= finfo.latitude
-									td= finfo.longitude
-									td= finfo.created_at
+							
 											
 
 					script.

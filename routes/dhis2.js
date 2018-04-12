@@ -111,7 +111,7 @@ getCronJobSettingsInformation("source").then(info => {
 				/****** Automatic Transaction Mode is in seperate method *****/
 							if(transactionMode.mode_type==1){
 								let schedularTask = ["createdSince","updatedSince","deletedSince"];
-								console.log("Mode Type: Automatic",transactionMode.mode_type);
+								console.log("Data Transaction Mode Type: Automatic");
 								let modeType = transactionMode.mode_type;
 							// Running the cron job in every five minutes 
 								cron.schedule(''+minutes+' '+hours+' * * *', function(){ // 14:59 
@@ -123,14 +123,16 @@ getCronJobSettingsInformation("source").then(info => {
 								});
 				/*** Manual Transaction Mode ****/				
 							} else {
-								console.log("Mode Type - Manual: ",transactionMode.mode_type);
+								console.log("Data Transaction Mode Type - Manual! ");
 								let modeType = transactionMode.mode_type;
 							// Running the cron job in every five minutes 
+								console.log("Minutes: ",minutes);
+								console.log("Hours: ",hours);
 								cron.schedule(''+minutes+' '+hours+' * * *', function(){ // 14:59 
 								  //console.log('running a task every minute');
 
 								  // Only Source is DHIS
-								  console.log("data.channel_type: ",data.channel_type);
+								  //console.log("data.channel_type: ",data.channel_type);
 
 								  if(data.instance_type=='dhis2'){
 

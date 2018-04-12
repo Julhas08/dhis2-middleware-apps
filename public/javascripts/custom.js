@@ -1137,7 +1137,7 @@ $('.rabbitmqsender-btn').click(function(e){
 	  type: "warning",
 	  showCancelButton: true,
 	  confirmButtonClass: "btn-danger",
-	  confirmButtonText: "Yes, delete it!",
+	  confirmButtonText: "Yes, send it!",
 	  closeOnConfirm: false
 	},
 	function(){
@@ -1186,7 +1186,7 @@ $('.rabbitmqreceiver-btn').click(function(e){
 	  type: "warning",
 	  showCancelButton: true,
 	  confirmButtonClass: "btn-danger",
-	  confirmButtonText: "Yes, delete it!",
+	  confirmButtonText: "Yes, want to procced!",
 	  closeOnConfirm: false
 	},
 	function(){

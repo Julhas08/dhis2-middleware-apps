@@ -109,7 +109,7 @@ module.exports = {
 							unionName = '';
 						} else {
 							unionCode = json[i].union_code;
-							unionName = json[i].union_name;
+							unionName = json[i].union_name +" Union";
 						}
 
 						if(json[i].upazila_code == null){
@@ -117,7 +117,7 @@ module.exports = {
 							upazilaName = '';
 						} else {
 							upazilaCode = json[i].upazila_code;
-							upazilaName = json[i].upazila_name;
+							upazilaName = json[i].upazila_name + " Upazila";
 						}
 
 						let shortName = json[i].name.split(" ");
