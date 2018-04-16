@@ -261,9 +261,15 @@ module.exports = {
 										message = "Successfully submitted json payload!";
 										logType ="success";
 									}
+							// Add in queue detail table
+							db.query("INSERT into queue_detail (queue_id,operation_mode,operation_type,message,response_code,created_at) VALUES('"+apiData.queue+"','"+operationMode+"','"+operationType+"','"+jsonPayload+"','"+response.statusCode+"','"+fn.getDateYearMonthDayMinSeconds()+"')").then(info => {	
+								}).catch(error => {
+							    	logger4js.getLoggerConfig().error("System log was not updated!",error);
+							    	console.log(error);
+							    });		
 							// System log table updates
 									db.query("INSERT into system_log (module_name,table_name,operation_mode,operation_type,log_type,message,created_date,status_code) VALUES('DHIS2 Data Send','schedular_info','"+operationMode+"','"+operationType+"','"+logType+"','"+message+''+parentCode+','+orgName+"','"+fn.getDateYearMonthDayMinSeconds()+"','"+response.statusCode+"')").then(info => {
-									//db.query("INSERT into system_log (module_name,table_name,log_type,message,created_date,status_code) VALUES('DHIS2 Data Send','schedular_info','"+logType+"','"+message+''+parentCode+','+orgName+"','"+fn.getDateYearMonthDayMinSeconds()+"','"+response.statusCode+"')").then(info => {
+									
 								    })
 								    .catch(error => {
 								    	logger4js.getLoggerConfig().error("System log was not updated!",error);

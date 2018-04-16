@@ -31,10 +31,12 @@ module.exports.channelSetup = function index(req, res) {
     db.tx(t => {
         return t.batch([
             t.any('SELECT * FROM api_settings order by id asc limit $1',[20]),
+            t.any('SELECT * FROM queues order by id asc limit $1',[20]),
         ]);
     }).then(data => {
 		res.render('middleware-channel-setup',{
-	   		infoList : JSON.parse(JSON.stringify(data[0]))
+            infoList  : JSON.parse(JSON.stringify(data[0])),
+	   		queueList : JSON.parse(JSON.stringify(data[1]))
 	    })
         
     })
@@ -66,7 +68,7 @@ exports.middlewareInstancesCreate = function (req, res) {
 
     db.tx(t => {
         return t.batch([
-            t.none("INSERT into api_settings (channel_name,short_code,base_url,resource_path,token_type,token_string,username,password,channel_type,instance_type,notes) VALUES('"+info.channelName+"','"+info.shortName+"','"+info.baseUrl+"','"+info.resourcePath+"','"+info.tokenType+"','"+info.tokenString+"','"+info.username+"','"+info.password+"','"+info.channelType+"','"+info.instanceType+"','"+info.notes+"')")
+            t.none("INSERT into api_settings (channel_name,short_code,base_url,resource_path,token_type,token_string,username,password,channel_type,instance_type,queue,notes) VALUES('"+info.channelName+"','"+info.shortName+"','"+info.baseUrl+"','"+info.resourcePath+"','"+info.tokenType+"','"+info.tokenString+"','"+info.username+"','"+info.password+"','"+info.channelType+"','"+info.instanceType+"','"+info.queue+"','"+info.notes+"')")
         ]);
     })
     .then(data => {
@@ -396,13 +398,16 @@ exports.deleteChannelSettings = function (req, res) {
     let id      = jsonId.id;
     let flag    = jsonId.flag;
     let table;
-
+    console.log(jsonId);
     if (flag  == 'channel'){
         table = "api_settings";
     } else if(flag == 'schedular'){
         table = "schedular_info";
     } else if(flag == 'syncMode'){
         table = "data_transaction_mode";
+    } else if(flag == 'queues'){
+        table = "queues";
+         console.log("table:",table);
     }
     console.log("flag: ",flag);
     console.log("table:",table);

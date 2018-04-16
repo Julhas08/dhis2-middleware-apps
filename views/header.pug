@@ -53,16 +53,19 @@
 						.caret-up-background
 						.hover-menu-content(style='overflow: hidden;')
 							
-
+							li
+								a(href='queues', type='button')
+									img.sub-image(src='/images/queues.png', alt='Queues')
+									| Queues
 							li
 								a(href='middleware-channel-setup', type='button')
-									img.sub-image(src='/images/api-settings.png', alt='API Settings')
-									| API Information Setup
-																		
+									img.sub-image(src='/images/api-settings.png', alt='Channels')
+									| Channels
+																	
 							li
 								a(href='schedular-setup', type='button')
 									img.sub-image(src='/images/cron-job.png', alt='Schedular Sync')
-									| Schedular Sync Setup
+									| Schedular Setup
 							li
 								a(href='data-sync-mode', type='button')
 									img.sub-image(src='/images/data-sync-mode.png', alt='Data Sync Mode')

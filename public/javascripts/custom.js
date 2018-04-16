@@ -36,6 +36,8 @@ $('.middleware-instances-setup-btn').click(function(e){
 			swal("Sorry!", "Please select instance type.","error");
 		} else if($('#sourceType').val() == ''){
 			swal("Sorry!", "Please select source type.","error");
+		}else if($('#queue').val() == ''){
+			swal("Sorry!", "Please select queue.","error");
 		}else{
 
 			jsonArr.push({
@@ -49,6 +51,7 @@ $('.middleware-instances-setup-btn').click(function(e){
 	        password 		  :  $('#password').val(),
 	        channelType       :  $('#channelType').val(),
 	        instanceType      :  $('#instance_type').val(),
+	        queue             :  $('#queue').val(),
 	        notes 		      :  $('#notes').val(),
 	        });
 
@@ -1222,5 +1225,67 @@ $('.rabbitmqreceiver-btn').click(function(e){
 
 	});
 });
-				
+
+// New Queue Setup-queue-setup-btn
+$('.queue-setup-btn').click(function(e){
+        e.preventDefault();
+        var jsonArr = [];
+  		if($('#queueName').val() == ''){
+			swal("Sorry!", "Please enter queue name.","error");
+		} else if($('#durability').val() == ''){
+			swal("Sorry!", "Please select durability.","error");
+		} else if($('#autoDelete').val() == ''){
+			swal("Sorry!", "Please select auto delete type.","error");
+		} else{
+
+			jsonArr.push({
+	        	queueName   : $('#queueName').val(),
+	        	durability 	: $('#durability').val(),
+	        	autoDelete	: $('#autoDelete').val()
+	        });
+
+
+	// Loader		
+		$('.queue-setup-btn').after('<div class="loader"><img src="images/load.gif" alt="Searching......" /></div>');
+	// Ajax posting 
+			$.ajax({
+				type: 'POST',
+				cache: false,
+				data: {paramInfo: JSON.stringify(jsonArr)},
+    			dataType: "json",
+	            url: '/add-new-queue',						
+	            success: function(data) {
+	            	console.log(JSON.parse(data));
+	            	swal("Success!", "New queue has added successfully","success");
+	            	if(data=='success'){
+	            		swal("Success!", "New queue has added successfully","success");
+	            	} else {
+	            		swal("Sorry!", "Queue creation problem","error");
+	            	}
+	// Close loader and set timeout callback function 
+				setTimeout(function(){	       
+	                $('#loader').slideUp(200,function(){        
+	               		$('#loader').remove();	   
+		            });
+		            $(".loader").fadeOut("slow"); 
+		             window.location.reload();		             
+	            }, 1000);  
+
+	            },
+	            error: function(err){
+	            	console.log(err);
+	// Close loader        
+	                $('#loader').slideUp(200,function(){        
+	               		$('#loader').remove();
+		            });
+		            $(".loader").fadeOut("slow");
+	            }
+	        });
+		}
+    });
+// Modal over modal and close the top most modal
+$('.modal-auto-close').click(function(e) {
+   
+    $('#viewMessageSummary').modal('hide');
+});
     			

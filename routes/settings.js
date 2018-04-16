@@ -9,6 +9,8 @@ let router = express.Router();
 // APi Settings Controller Import
 let settings = require('../src/app/controllers/SettingsController');
 let rabbitmq = require('../src/app/controllers/RabbitMQController');
+let queuesRoutes = require('../src/app/controllers/QueuesController');
+
 // DHIS2 Instances Setup
 router.get('/middleware-channel-setup', settings.channelSetup);
 router.post('/middleware-channel-crud', settings.middlewareInstancesCreate);
@@ -43,4 +45,7 @@ router.get('/rabbitmq-setup', rabbitmq.rabbitMQSetup);
 router.post('/rabbitmq-sender', rabbitmq.rabbitMQSender);
 router.post('/rabbitmq-receiver', rabbitmq.rabbitMQReceiver);
 
+// Queues
+router.get('/queues', queuesRoutes.allQueues);
+router.post('/add-new-queue', queuesRoutes.addNewQueue);
 module.exports = router;
