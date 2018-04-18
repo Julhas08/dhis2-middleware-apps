@@ -360,23 +360,27 @@ $('.schedular-settings-btn').click(function(e){
 
         var minutes     = $('#minutes').val();		
         var hours       = $('#hours').val();		
-        var dayOfMonth  = $('#dayOfMonth').val();		
-        var monthOfYear = $('#monthOfYear').val();		
-        var dayOfWeek   = $('#dayOfWeek').val();		
-        var exportedDataLimit   = $('#exportedDataLimit').val();	
-        var exportFromDays      = $('#exportFromDays').val();		
+        //var dayOfMonth  = $('#dayOfMonth').val();		
+        //var monthOfYear = $('#monthOfYear').val();		
+        //var dayOfWeek   = $('#dayOfWeek').val();		
+        var exportedDataLimit = $('#exportedDataLimit').val();	
+        var exportFromDays    = $('#exportFromDays').val();		
         var notes       = $('#notes').val();	
 
         //alert(exportedDataLimit+exportedDataLimit);
 
-        var paramInfo = '&name=' + name +'&short_code='+short_code+'&source='+source+'&is_enable='+is_enable+'&schedular_type=' + schedular_type+'&minutes='+minutes+'&hours='+hours+'&dayOfMonth='+dayOfMonth+'&monthOfYear='+monthOfYear+'&dayOfWeek='+dayOfWeek+'&exportedDataLimit='+exportedDataLimit+'&exportFromDays='+exportFromDays+'&notes='+notes;  
+        var paramInfo = '&name=' + name +'&short_code='+short_code+'&source='+source+'&is_enable='+is_enable+'&schedular_type=' + schedular_type+'&minutes='+minutes+'&hours='+hours/*+'&dayOfMonth='+dayOfMonth+'&monthOfYear='+monthOfYear+'&dayOfWeek='+dayOfWeek*/+'&exportedDataLimit='+exportedDataLimit+'&exportFromDays='+exportFromDays+'&notes='+notes;  
 		console.log(paramInfo);
 
 		if(name==''){
-			swal("Sorry!", "Please select Schedular name.","error");
-		}/* else if(short_code==''){
-			swal("Sorry!", "Please enter short code.","error");
-		} */else{
+			swal("Sorry!", "Please enter schedular name.","error");
+		}else if(hours>=24){
+			swal("Sorry!", "Invalid hours.","error");
+			$('#hours').val('');
+		} else if(minutes>=60){
+			swal("Sorry!", "Invalid minutes.","error");
+			$('#hours').val('');
+		} else{
 
 	// Loader		
 			 $('.schedular-settings-btn').after('<div class="loader"><img src="images/load.gif" alt="Searching......" /></div>');
@@ -389,16 +393,19 @@ $('.schedular-settings-btn').click(function(e){
 	            url: '/schedular-settings-crud',						
 	            success: function(data) {
 	            	if(data=='success'){
-	            		swal("Success!", "Your Schedular settings has completed","success");
+	            		swal("Success!", "Your schedular settings was successful.","success");
 	            	} else {
-	            		swal("Sorry!", "Your Schedular settings has not been completed.","error");
+	            		swal("Sorry!", "Your schedular settings was unsuccessful.","error");
 	            	}
 
-	// Close loader        
+	// Close loader and set timeout callback function 
+				setTimeout(function(){	       
 	                $('#loader').slideUp(200,function(){        
-	               		$('#loader').remove();
+	               		$('#loader').remove();	   
 		            });
 		            $(".loader").fadeOut("slow"); 
+		             window.location.reload();		             
+	            }, 1000);  
 	            },
 	            error: function(err){
 	            	console.log(err);
@@ -1236,12 +1243,17 @@ $('.queue-setup-btn').click(function(e){
 			swal("Sorry!", "Please select durability.","error");
 		} else if($('#autoDelete').val() == ''){
 			swal("Sorry!", "Please select auto delete type.","error");
+		} else if($('#maxLength').val() == ''){
+			swal("Sorry!", "Please add max lenth.","error");
 		} else{
 
 			jsonArr.push({
 	        	queueName   : $('#queueName').val(),
 	        	durability 	: $('#durability').val(),
-	        	autoDelete	: $('#autoDelete').val()
+	        	autoDelete	: $('#autoDelete').val(),
+	        	autoExpire	: $('#autoExpire').val(),
+	        	maxLength	: $('#maxLength').val(),
+	        	routingKey	: $('#routingKey').val(),
 	        });
 
 
@@ -1255,8 +1267,7 @@ $('.queue-setup-btn').click(function(e){
     			dataType: "json",
 	            url: '/add-new-queue',						
 	            success: function(data) {
-	            	console.log(JSON.parse(data));
-	            	swal("Success!", "New queue has added successfully","success");
+	            	
 	            	if(data=='success'){
 	            		swal("Success!", "New queue has added successfully","success");
 	            	} else {

@@ -184,24 +184,30 @@ module.exports.settingsFormIndex = function index(req, res) {
     let cronJobInformation = [];
      db.tx(t => {
         return t.batch([
-            t.any('SELECT sci.*,api.* FROM schedular_info sci inner join api_settings api on api.id=sci.source where api.channel_type = $1',['source']),
+            t.any('SELECT * from api_settings where channel_type = $1',['source']),
+            t.any('SELECT sci.id as schedular_id,sci.name,sci.short_code,sci.source,sci.is_enable,sci.schedular_type,sci.minutes,sci.hours,sci.exported_date_limit,sci.export_from_days,sci.created_at as createddate FROM schedular_info sci inner join api_settings api on api.id=sci.source where api.channel_type = $1',['source']),
            
         ]);
     }).then(data => {
-
-    	let cronJobInformation= JSON.parse(JSON.stringify(data[0]));
+        
+        let apiSettingsInfo    = JSON.parse(JSON.stringify(data[0]));
+        let cronJobInformation = JSON.parse(JSON.stringify(data[1]));
     	//let sourceInstance   = JSON.parse(JSON.stringify(data[1]));
-
-    	if(cronJobInformation[0].is_enable){
+        // console.log("cronJobInformation: ",cronJobInformation);
+        //console.log("apiSettingsInfo:",apiSettingsInfo);
+    	if(cronJobInformation=='[]'){ // empty
+            //console.log("cronJobInformation[0].is_enable:",cronJobInformation[0].is_enable);
 			res.render('schedular-setup',{
 	   			cronJobInfo: cronJobInformation,
-	   			//sourceInfo : sourceInstance,
-	   			is_enable  : cronJobInformation[0].is_enable	
+	   			is_enable  : 0 	
 	    	})
 		} else {
+            //console.log("cronJobInformation[0].is_enable:",cronJobInformation[0].is_enable);
 			res.render('schedular-setup',{
+                sourceInfo: apiSettingsInfo,
 	   			cronJobInfo: cronJobInformation,
-	   			is_enable  : 0	
+                //is_enable  : cronJobInformation[0].is_enable
+	   			is_enable  : 0
 	    	})
 		}
 
@@ -281,7 +287,7 @@ exports.schedularCrudPOST = function (req, res) {
 	});*/
 
 	
-	db.query("INSERT into schedular_info (name,short_code,source,is_enable,schedular_type,minutes,hours,day_of_month,month_of_year,day_of_week,exported_date_limit,export_from_days, notes) VALUES('"+req.body.name+"','"+req.body.short_code+"','"+req.body.source+"','"+req.body.is_enable+"','"+req.body.schedular_type+"','"+req.body.minutes+"','"+req.body.hours+"','"+req.body.dayOfMonth+"','"+req.body.monthOfYear+"','"+req.body.dayOfWeek+"','"+req.body.exportedDataLimit+"','"+req.body.exportFromDays+"','"+req.body.notes+"')").then(user => {
+	db.query("INSERT into schedular_info (name,short_code,source,is_enable,schedular_type,minutes,hours,exported_date_limit,export_from_days, notes, created_at) VALUES('"+req.body.name+"','"+req.body.short_code+"','"+req.body.source+"','"+req.body.is_enable+"','"+req.body.schedular_type+"','"+req.body.minutes+"','"+req.body.hours+"','"+req.body.exportedDataLimit+"','"+req.body.exportFromDays+"','"+req.body.notes+"','"+fn.getDateYearMonthDayMinSeconds()+"')").then(user => {
         console.log("Schedular Setup Success"); // print success;
         res.send('success');
         logger4js.getLoggerConfig().info("SUCCESS! ");	
@@ -401,6 +407,7 @@ exports.deleteChannelSettings = function (req, res) {
     console.log(jsonId);
     if (flag  == 'channel'){
         table = "api_settings";
+
     } else if(flag == 'schedular'){
         table = "schedular_info";
     } else if(flag == 'syncMode'){
@@ -411,7 +418,7 @@ exports.deleteChannelSettings = function (req, res) {
     }
     console.log("flag: ",flag);
     console.log("table:",table);
-
+    //console.log('delete from "'+table+'" where id = "'+[id]+'"');
     db.tx(t => {
         return t.batch([
             t.none('delete from "'+table+'" where id = $1', [id])

@@ -36,13 +36,12 @@ module.exports = {
 
 		// Database API information		
 			function getApiSettingsInformation(name) {
-		    	let conName = name;
 			    return db.task('getApiSettingsInformation', t => {
-			            return t.oneOrNone('select * from api_settings where channel_type = $1',conName)
-			                .then(apiInfo => {
-			                    return apiInfo;
-			                });
-			        });
+		            return t.oneOrNone('select aps.*,q.* from api_settings aps left join queues q on q.id=aps.queue where channel_type = $1',name)
+		                .then(apiInfo => {
+		                    return apiInfo;
+		                });
+			    });
 			}
 		/********************************************************************
 		**********************Generate JSON Payload from HRIS System ********
@@ -69,8 +68,7 @@ module.exports = {
 		//console.log("Options:",options);	
 	/**********************************************************
 	****************DHIS2 Data Store Updates ******************
-	**********************************************************/
-	
+	**********************************************************/	
 
 		// To get HRIS information			
 			request(options, function(error, response, body) {
@@ -185,16 +183,28 @@ module.exports = {
 			// Pull DHIS2 API Connection information		
 					getApiSettingsInformation("destination").then(apiInfo => {
 
-							let apiData      = JSON.parse(JSON.stringify(apiInfo));
-							let baseUrl 	 = apiData.base_url;
-							let resourcePath = apiData.resource_path;
-							let username     = apiData.username;
-							let password     = apiData.password;	
-							var data         = JSON.stringify(jsonData);
-							var pdata        = data.replace(/&quot;/g, '"');
-							var json         = JSON.stringify(JSON.parse(pdata));
-							let facilityInfo1= json.replace('[','');
-							let jsonPayload  = facilityInfo1.replace(']','');
+						let apiData 	 = JSON.parse(JSON.stringify(apiInfo));
+						let baseUrl 	 = apiData.base_url;
+						let resourcePath = apiData.resource_path;
+						let username     = apiData.username;
+						let password     = apiData.password;	
+						var data         = JSON.stringify(jsonData);
+						var pdata        = data.replace(/&quot;/g, '"');
+						var json         = JSON.stringify(JSON.parse(pdata));
+						let facilityInfo1= json.replace('[','');
+						let jsonPayload  = facilityInfo1.replace(']','');
+					// Check the durability if durable the data will be stored in queue table	
+						if(apiData.durability=='durable'){
+					// Add in queue detail table
+							db.query("INSERT into queue_detail (queue_id,operation_mode,operation_type,message,response_code,created_at) VALUES('"+apiData.queue+"','"+operationMode+"','"+operationType+"','"+jsonPayload+"','"+response.statusCode+"','"+fn.getDateYearMonthDayMinSeconds()+"')").then(info => {	
+							}).catch(error => {
+						    	logger4js.getLoggerConfig().error("System log was not updated!",error);
+						    	console.log(error);
+						    });	
+					// Transient Durability. Source publish messages directly to the destination	    
+						} else {
+							
+							
 						 	let rootResource = fn.getTodayYYYYMMDD()+''+fn.getRandomArbitrary(100,1000000);
 						// Base64 authentication, call from function.js		 	
 						 	let auth = fn.base_64_auth(username,password);
@@ -262,27 +272,25 @@ module.exports = {
 										logType ="success";
 									}
 							// Add in queue detail table
-							db.query("INSERT into queue_detail (queue_id,operation_mode,operation_type,message,response_code,created_at) VALUES('"+apiData.queue+"','"+operationMode+"','"+operationType+"','"+jsonPayload+"','"+response.statusCode+"','"+fn.getDateYearMonthDayMinSeconds()+"')").then(info => {	
+								db.query("INSERT into queue_detail (queue_id,operation_mode,operation_type,message,response_code,created_at) VALUES('"+apiData.queue+"','"+operationMode+"','"+operationType+"','"+jsonPayload+"','"+response.statusCode+"','"+fn.getDateYearMonthDayMinSeconds()+"')").then(info => {	
 								}).catch(error => {
 							    	logger4js.getLoggerConfig().error("System log was not updated!",error);
 							    	console.log(error);
 							    });		
 							// System log table updates
-									db.query("INSERT into system_log (module_name,table_name,operation_mode,operation_type,log_type,message,created_date,status_code) VALUES('DHIS2 Data Send','schedular_info','"+operationMode+"','"+operationType+"','"+logType+"','"+message+''+parentCode+','+orgName+"','"+fn.getDateYearMonthDayMinSeconds()+"','"+response.statusCode+"')").then(info => {
+								db.query("INSERT into system_log (module_name,table_name,operation_mode,operation_type,log_type,message,created_date,status_code) VALUES('DHIS2 Data Send','schedular_info','"+operationMode+"','"+operationType+"','"+logType+"','"+message+''+parentCode+','+orgName+"','"+fn.getDateYearMonthDayMinSeconds()+"','"+response.statusCode+"')").then(info => {
+								}).catch(error => {
+							    	logger4js.getLoggerConfig().error("System log was not updated!",error);
+							    	console.log(error);
+							    });			
 									
-								    })
-								    .catch(error => {
-								    	logger4js.getLoggerConfig().error("System log was not updated!",error);
-								    	console.log(error);
-								    });			
-									
-								}); // End of request od posting data to dhis2
-						
+							}); // End of request of posting data to dhis2
+						} // End of Durability						
 
 						}).catch(error => {
 						    console.log(error);
 						}); // end of getApiSettingsInformation("ConnectionName") for DHIS2
-						
+							
 					} // end of checking server
 					 else {
 					 	getApiSettingsInformation("destination").then(apiInfo => {
@@ -297,6 +305,17 @@ module.exports = {
 							var json         = JSON.stringify(JSON.parse(pdata));
 							let facilityInfo1= json.replace('[','');
 							let jsonPayload  = facilityInfo1.replace(']','');
+							// Check the durability if durable the data will be stored in queue table	
+						if(apiData.durability=='durable'){
+					// Add in queue detail table
+							db.query("INSERT into queue_detail (queue_id,operation_mode,operation_type,message,response_code,created_at) VALUES('"+apiData.queue+"','"+operationMode+"','"+operationType+"','"+jsonPayload+"','"+response.statusCode+"','"+fn.getDateYearMonthDayMinSeconds()+"')").then(info => {	
+							}).catch(error => {
+						    	logger4js.getLoggerConfig().error("System log was not updated!",error);
+						    	console.log(error);
+						    });	
+					// Transient Durability. Source publish messages directly to the destination	    
+						} else {
+							
 						 	let rootResource = fn.getTodayYYYYMMDD()+''+fn.getRandomArbitrary(100,1000000);
 						// Base64 authentication, call from function.js		 	
 						 	let auth = fn.base_64_auth(username,password);
@@ -363,17 +382,21 @@ module.exports = {
 										message = "Successfully submitted json payload!";
 										logType ="success";
 									}
+							// Add in queue detail table
+								db.query("INSERT into queue_detail (queue_id,operation_mode,operation_type,message,response_code,created_at) VALUES('"+apiData.queue+"','"+operationMode+"','"+operationType+"','"+jsonPayload+"','"+response.statusCode+"','"+fn.getDateYearMonthDayMinSeconds()+"')").then(info => {	
+								}).catch(error => {
+							    	logger4js.getLoggerConfig().error("System log was not updated!",error);
+							    	console.log(error);
+							    });		
 							// System log table updates
-									db.query("INSERT into system_log (module_name,table_name,operation_mode,operation_type,log_type,message,created_date,status_code) VALUES('DHIS2 Data Send','schedular_info','"+operationMode+"','"+operationType+"','"+logType+"','"+message+''+parentCode+','+orgName+"','"+fn.getDateYearMonthDayMinSeconds()+"','"+response.statusCode+"')").then(info => {
-									//db.query("INSERT into system_log (module_name,table_name,log_type,message,created_date,status_code) VALUES('DHIS2 Data Send','schedular_info','"+logType+"','"+message+''+parentCode+','+orgName+"','"+fn.getDateYearMonthDayMinSeconds()+"','"+response.statusCode+"')").then(info => {
-								    })
-								    .catch(error => {
-								    	logger4js.getLoggerConfig().error("System log was not updated!",error);
-								    	console.log(error);
-								    });			
+								db.query("INSERT into system_log (module_name,table_name,operation_mode,operation_type,log_type,message,created_date,status_code) VALUES('DHIS2 Data Send','schedular_info','"+operationMode+"','"+operationType+"','"+logType+"','"+message+''+parentCode+','+orgName+"','"+fn.getDateYearMonthDayMinSeconds()+"','"+response.statusCode+"')").then(info => {
+								}).catch(error => {
+							    	logger4js.getLoggerConfig().error("System log was not updated!",error);
+							    	console.log(error);
+							    });				
 									
 								}); // End of request od posting data to dhis2
-						
+							} // End of Durability Checking
 
 						}).catch(error => {
 						    console.log(error);

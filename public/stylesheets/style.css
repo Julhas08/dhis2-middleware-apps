@@ -1566,6 +1566,7 @@ input:checked + .slider:before {
   width: 863px;
   padding-right: 5px;
   border-radius:2px; 
+  word-wrap: break-word;
 }
 .modal-content {
   position: relative;

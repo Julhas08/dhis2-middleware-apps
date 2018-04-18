@@ -44,42 +44,26 @@
                             input#short_code.form-control.input-sm(type='text', name='short_code', placeholder='Short Code')
                             
                       .row
-                        .col-xs-12.col-sm-12.col-md-12
+                        .col-xs-6.col-sm-6.col-md-6
                           .form-group
                             select.form-control(id="source", name="source")
                                   option(value="") Select Source Instance
-                                  each info in cronJobInfo 
+                                  each info in sourceInfo 
                                     option(value=info.id) #{info.channel_name}
-                      .row
                         .col-xs-6.col-sm-6.col-md-6
                           .form-group
                             select.form-control(id="schedular_type", name="schedular_type")
-                              option(value="") Select Schedular Type
-                              option(value="hourly") Hourly 
+                              option(value="") Select Schedular Type                              
                               option(value="daily") Daily 
-                              option(value="midday") Mid day 
-                              option(value="midnight") Midnight 
-                              option(value="weekly") Weekly
-                              option(value="monthly") Monthly
-
+                              option(value="hourly") Hourly             
+                      .row                        
                         .col-xs-6.col-sm-6.col-md-6
                           .form-group
-                            input#minutes.form-control.input-sm(type='number', name='minutes', placeholder='Minute (range: 0-59)')
+                            input#hours.form-control.input-sm(type='number', name='hours',min='0', max='23', placeholder='Hour (range: 0-23)')
+                        .col-xs-6.col-sm-6.col-md-6
+                          .form-group
+                            input#minutes.form-control.input-sm(type='number', name='minutes', min='0', max='59', placeholder='Minute (range: 0-59)')    
                         
-                      .row
-                        .col-xs-6.col-sm-6.col-md-6
-                          .form-group
-                            input#hours.form-control.input-sm(type='number', name='hours', placeholder='Hour (range: 0-23)')
-                        .col-xs-6.col-sm-6.col-md-6
-                          .form-group
-                            input#dayOfMonth.form-control.input-sm(type='number', name='dayOfMonth', placeholder='Day of the Month (range: 1-31)')  
-                      .row
-                        .col-xs-6.col-sm-6.col-md-6
-                          .form-group
-                            input#monthOfYear.form-control.input-sm(type='number', name='monthOfYear', placeholder='Month of the Year (range: 1-12)')
-                        .col-xs-6.col-sm-6.col-md-6
-                          .form-group
-                            input#dayOfWeek.form-control.input-sm(type='number', name='dayOfWeek', placeholder='Day of the Week   (range: 1-7, 1 standing for Monday)')
                       .row
                         .col-xs-6.col-sm-6.col-md-6
                           .form-group
@@ -91,33 +75,31 @@
                       .form-group
                         input#notes.form-control.input-sm(type='text', name='notes', placeholder='Write notes')
                         br
-                        button.btn.btn-info.btn-block.schedular-settings-btn(type='submit' ) Register Now!
+                        button.btn.btn-info.btn-block.schedular-settings-btn(type='submit' ) Create Schedular
 
         table(class="table table-bordered table-hover table-header-bg")
           thead(class="table-header-bg thead")
             tr
+              th ID
               th Name
               th Short Code
               th Enable/Disable
               th Schedular Type
-              th Start Time (Minute)
-              th Hour
-              th Day of Month
+              th Start Time
               th Created Date
               th Action
 
           tbody        
             each api, i in cronJobInfo
               tr
+                td= api.schedular_id   
                 td= api.name   
                 td= api.short_code   
                 td= api.is_enable   
-                td= api.schedular_type   
-                td= api.minutes   
-                td= api.hours   
-                td= api.dayOfMonth      
-                td= api.created_at
+                td= api.schedular_type    
+                td= api.hours +':'+ api.minutes 
+                td= api.createddate
                 td 
-                  button(class="btn btn-small delete-settings", id="delete-settings"+api.id, type="button", value=api.id+"_schedular") Delete    
+                  button(class="btn btn-danger btn-small delete-settings", id="delete-settings"+api.schedular_id, type="button", value=api.schedular_id+"_schedular") Delete    
 
 
