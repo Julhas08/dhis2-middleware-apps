@@ -477,6 +477,168 @@ $('#is_enable').on('change',function(e){
 
     });	
 
+// Create Data exchange mode
+$('#create-exchange-mode').on('click',function(e){
+		var jsonArr = [];	
+
+		if(exchangeMode==''){
+			swal("Sorry!", "Please select exchange mode.","error");
+		} else {
+
+			// Exchange mode 
+			var is_enable;
+			if($('#exchangeModeStatus:checked').val()=='1'){
+				is_enable = 1; 
+
+			} else if($('#exchangeModeStatus:checked').val()=='on') {
+				is_enable = 1;
+			} else {
+				is_enable = 0;
+			}
+
+			// Auto Sync 
+			let autoSyncStatus;
+			if($('#autoSyncStatus:checked').val()=='1'){
+				autoSyncStatus = 1; 
+			} else if($('#autoSyncStatus:checked').val()=='on') {
+				autoSyncStatus = 1;
+			} else {
+				autoSyncStatus = 0;
+			}
+		
+			jsonArr.push({
+		        exchangeMode:  $('#exchangeMode').val(),
+		        modeStatus 	:  is_enable,
+		        autoSyncStatus:  $('#autoSyncStatus').val(),
+		        autoSyncTime:  $('#autoSyncTime').val(),
+		        notes		:  $('#notes').val(),
+	    	});    	
+
+	// Loader		
+			$('#exchangeMode').after('<div class="loader"><img src="images/load.gif" alt="Searching......" /></div>');
+	// Ajax posting 
+			$.ajax({
+				type: 'POST',
+				cache: false,
+				data: {paramInfo: JSON.stringify(jsonArr)},
+		        //contentType: 'application/json',
+	            url: '/create-exchange-mode',						
+	            success: function(data) {
+	            	if(data=='success'){
+	            		swal("Success!", "Exchange mode has created successfully.","success");
+	            		$('#exchangeMode').val(' ');	
+	            	} else {
+	            		swal("Sorry!", "Exchange mode was not created.","error");
+	            		$('#exchangeMode').val(' ');	
+	            	}
+	// Close loader and set timeout callback function 
+					setTimeout(function(){	       
+		                $('#loader').slideUp(200,function(){        
+		               		$('#loader').remove();	   
+			            });
+			            $(".loader").fadeOut("slow"); 
+			             window.location.reload();
+		            }, 1000);            		
+
+	            },
+	            error: function(err){
+	            	console.log(err);
+	// Close loader and set timeout callback function         
+	                setTimeout(function(){	       
+		                $('#loader').slideUp(200,function(){        
+		               		$('#loader').remove();	   
+			            });
+			            $(".loader").fadeOut("slow"); 
+			             window.location.reload();
+		            }, 3000);
+	            }
+	        });
+		}
+});	
+// Setup translator elements mapping
+$('#translator-elements-mapping-btn').on('click',function(e){
+		var jsonArr = [];
+		if(orgUnitName==''){
+			swal("Sorry!", "Please add organization unit.","error");
+		} else if(orgUnitShortName==''){
+			swal("Sorry!", "Please add organization unit short name.","error");
+		} else if(code==''){
+			swal("Sorry!", "Please add code.","error");
+		} else if(openingDate==''){
+			swal("Sorry!", "Please add opening date.","error");
+		} else {
+		
+			jsonArr.push({
+		        channelID  : $('#channelID').val(),
+		        orgUnitName: $('#orgUnitName').val(),
+		        orgUnitShortName: $('#orgUnitShortName').val(),
+		        code	   : $('#code').val(),
+		        description: $('#description').val(),
+		        openingDate: $('#openingDate').val(),
+		        closedDate : $('#closedDate').val(),
+		        level1ID   : $('#level1ID').val(),
+		        level1Name : $('#level1Name').val(),
+		        level2ID   : $('#level2ID').val(),
+		        level2Name : $('#level2Name').val(),
+		        level3ID   : $('#level3ID').val(),
+		        level3Name : $('#level3Name').val(),
+		        level4ID   : $('#level4ID').val(),
+		        level4Name : $('#level4Name').val(),
+		        level5ID   : $('#level5ID').val(),
+		        level5Name : $('#level5Name').val(),
+		        level6ID   : $('#level6ID').val(),
+		        level6Name : $('#level6Name').val(),
+		        comment    : $('#comment').val(),
+		        url        : $('#url').val(),
+		        contactPerson: $('#contactPerson').val(),
+		        address	   : $('#address').val(),
+		        email      : $('#email').val(),
+		        phoneNumber: $('#phoneNumber').val(),
+		        latitude   : $('#latitude').val(),
+		        longitude  : $('#longitude').val(),
+	    	});    	
+
+	// Loader		
+			$('#translator-elements-mapping-btn').after('<div class="loader"><img src="images/load.gif" alt="Searching......" /></div>');
+	// Ajax posting 
+			$.ajax({
+				type: 'POST',
+				cache: false,
+				data: {paramInfo: JSON.stringify(jsonArr)},
+		        //contentType: 'application/json',
+	            url: '/translator-elements-map-create',						
+	            success: function(data) {
+	            	if(data=='success'){
+	            		swal("Success!", "Translator mapping has created successfully.","success");
+	            		$('#exchangeMode').val(' ');	
+	            	} else {
+	            		swal("Sorry!", "Translator mapping was not created.","error");
+	            		$('#exchangeMode').val(' ');	
+	            	}
+	// Close loader and set timeout callback function 
+					setTimeout(function(){	       
+		                $('#loader').slideUp(200,function(){        
+		               		$('#loader').remove();	   
+			            });
+			            $(".loader").fadeOut("slow"); 
+			             window.location.reload();
+		            }, 1000);            		
+
+	            },
+	            error: function(err){
+	            	console.log(err);
+	// Close loader and set timeout callback function         
+	                setTimeout(function(){	       
+		                $('#loader').slideUp(200,function(){        
+		               		$('#loader').remove();	   
+			            });
+			            $(".loader").fadeOut("slow"); 
+			             window.location.reload();
+		            }, 3000);
+	            }
+	        });
+		}
+});
 /***Data Syncronization or Transaction mode Automatic/ Manual Setup***/
 // Enable or disable cron job 
 $('#isEnableSynMode').on('change',function(e){
@@ -500,13 +662,13 @@ $('#isEnableSynMode').on('change',function(e){
 				cache: false,
 				data: paramInfo,
 		        //contentType: 'application/json',
-	            url: '/data-transaction-mode-enable',						
+	            url: '/data-exchange-mode-update',						
 	            success: function(data) {
 	            	if(data=='success'){
-	            		swal("Success!", "Data transaction mode has enabled.","success");
+	            		swal("Success!", "Message exchange mode has updated successfully.","success");
 	            		$('#isEnableSynMode').val(' ');	
 	            	} else {
-	            		swal("Sorry!", "Your transaction mode has not been completed.","error");
+	            		swal("Sorry!", "Message exchange mode was not updated.","error");
 	            		$('#isEnableSynMode').val(' ');	
 	            	}
 	// Close loader and set timeout callback function 
@@ -533,7 +695,61 @@ $('#isEnableSynMode').on('change',function(e){
 	        });
 
     });	
+// Enable/ disable auto sync 
+$('#autoSyncStatus').on('change',function(e){
 
+		var is_enable;
+		if($('#autoSyncStatus:checked').val()=='1'){
+			is_enable = 1; 
+
+		} else if($('#autoSyncStatus:checked').val()=='on') {
+			is_enable = 1;
+		} else {
+			is_enable = 0;
+		}
+        var paramInfo = '&is_enable='+is_enable;
+
+	// Loader		
+			$('#autoSyncStatus').after('<div class="loader"><img src="images/load.gif" alt="Searching......" /></div>');
+	// Ajax posting 
+			$.ajax({
+				type: 'POST',
+				cache: false,
+				data: paramInfo,
+		        //contentType: 'application/json',
+	            url: '/auto-sync-mode-update',						
+	            success: function(data) {
+	            	if(data=='success'){
+	            		swal("Success!", "Auto sync has updated successfully.","success");
+	            		$('#autoSyncStatus').val(' ');	
+	            	} else {
+	            		swal("Sorry!", "Auto sync was not updated.","error");
+	            		$('#autoSyncStatus').val(' ');	
+	            	}
+	// Close loader and set timeout callback function 
+					setTimeout(function(){	       
+		                $('#loader').slideUp(200,function(){        
+		               		$('#loader').remove();	   
+			            });
+			            $(".loader").fadeOut("slow"); 
+			             window.location.reload();
+		            }, 1000);            		
+
+	            },
+	            error: function(err){
+	            	console.log(err);
+	// Close loader and set timeout callback function         
+	                setTimeout(function(){	       
+		                $('#loader').slideUp(200,function(){        
+		               		$('#loader').remove();	   
+			            });
+			            $(".loader").fadeOut("slow"); 
+			             window.location.reload();
+		            }, 3000);
+	            }
+	        });
+
+    });
 
 /****************************************************************
 ***************************Reports Area**************************

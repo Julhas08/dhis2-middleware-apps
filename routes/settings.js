@@ -34,8 +34,14 @@ router.post('/schedular-settings-crud', settings.schedularCrudPOST);
 router.post('/schedular-enable-disable', settings.schedularEnableDisable);
 
 // Data Sync Mode Management 
-router.get('/data-sync-mode', settings.dataTransactionMode);
-router.post('/data-transaction-mode-enable', settings.dataTransactionModeUpdate);
+router.get('/exchange-mode', settings.dataExchangeMode);
+router.post('/data-exchange-mode-update', settings.dataExchangeModeUpdate);
+router.post('/create-exchange-mode', settings.createExchangeMode);
+router.post('/auto-sync-mode-update', settings.autoSyncModeUpdate);
+
+// Translator Elements Mapping
+router.get('/translator-elements-mapping', settings.translatorElementsMapForm);
+router.post('/translator-elements-map-create', settings.translatorElementsCreate);
 
 // Delete API/  Channel Setup
 router.post('/delete-channel-settings', settings.deleteChannelSettings)

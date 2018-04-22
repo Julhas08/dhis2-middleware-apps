@@ -217,75 +217,10 @@ module.exports.settingsFormIndex = function index(req, res) {
         logger4js.getLoggerConfig().error("ERROR! ",error);
         console.log(error); // print the error;
     });
-	 
-	/*db.query('SELECT * FROM schedular_info').then(info => {
 
-	// Iterate Data	
-		for (let i = 0; i < info.length; i++) {
-
-			// Create an object to save current row's data
-			let infoArray = {
-				'id':info[i].id,
-				'name':info[i].name,
-				'short_code':info[i].short_code,
-				'is_enable':info[i].is_enable,
-				'schedular_type':info[i].schedular_type,
-				'minutes':info[i].minutes,
-				'hours':info[i].hours,
-				'day_of_month':info[i].day_of_month,
-				'month_of_year':info[i].month_of_year,
-				'day_of_week':info[i].day_of_week,
-				'created_at':info[i].created_at,
-			}
-			// Add object into array
-			cronJobInformation.push(infoArray);
-
-		}
-		//console.log(apiInfoList);
-		logger4js.getLoggerConfig().debug("API Data: ",cronJobInformation);
-
-		
-	    
-
-	}).catch(error => {		
-		logger4js.getLoggerConfig().error("ERROR! ",error);
-        console.log(error); // print the error;
-    });*/
 };
 // Setup new schedular information
 exports.schedularCrudPOST = function (req, res) {
-
-	/*let schedularInfo = {};
-
-	schedularInfo.name	        =req.body.name;
-	schedularInfo.short_code	=req.body.short_code;
-	schedularInfo.is_enable	    =req.body.is_enable;
-	schedularInfo.schedular_type=req.body.schedular_type;
-	schedularInfo.minutes	    =req.body.minutes;
-	schedularInfo.hours			=req.body.hours;
-	schedularInfo.day_of_month	=req.body.day_of_month;
-	schedularInfo.month_of_year	=req.body.month_of_year;
-	schedularInfo.day_of_week	=req.body.day_of_week;
-	schedularInfo.exported_date_limit=req.body.exported_date_limit;
-	schedularInfo.export_from_days=req.body.export_from_days;
-	schedularInfo.notes	=req.body.notes;
-
-	schedularInfo.sav(function(err){
-
-		if(err){
-			console.log("Error in saving data");
-			logger4js.getLoggerConfig().error("ERROR! ",error);
-        	console.log(error); // print the error;
-        	res.send('error');
-		} else {
-			console.log("Schedular Setup Success"); // print success;
-        	res.send('success');
-        	logger4js.getLoggerConfig().info("SUCCESS! ");
-		}
-
-
-	});*/
-
 	
 	db.query("INSERT into schedular_info (name,short_code,source,is_enable,schedular_type,minutes,hours,exported_date_limit,export_from_days, notes, created_at) VALUES('"+req.body.name+"','"+req.body.short_code+"','"+req.body.source+"','"+req.body.is_enable+"','"+req.body.schedular_type+"','"+req.body.minutes+"','"+req.body.hours+"','"+req.body.exportedDataLimit+"','"+req.body.exportFromDays+"','"+req.body.notes+"','"+fn.getDateYearMonthDayMinSeconds()+"')").then(user => {
         console.log("Schedular Setup Success"); // print success;
@@ -328,64 +263,78 @@ exports.schedularEnableDisable = function (req, res) {
 };
 
 /**
-* Data Transaction Mode Setup
+* Data Exchange Mode Setup
 */
 
-module.exports.dataTransactionMode = function index(req, res) {
+exports.createExchangeMode = function (req, res) {
 
-    let transactionModeInfo = [];
-	 
-	db.query('SELECT * FROM data_transaction_mode').then(info => {
+    let dataReq1 = req.body.paramInfo.replace('[','');
+    let dataReq  = dataReq1.replace(']','');
+    var info = JSON.parse(dataReq);
+    let autoSyncStatus;
+    if(info.autoSyncStatus=='on'){
+        autoSyncStatus=1;
+    }
+    db.tx(t => {
+        return t.batch([
+            t.none("INSERT into exchange_mode (mode_type,is_enable,sync_status,sync_period,notes,created_at) VALUES('"+info.exchangeMode+"','"+info.modeStatus+"','"+autoSyncStatus+"','"+info.autoSyncTime+"','"+info.notes+"','"+fn.getDateYearMonthDayMinSeconds()+"')")
+        ]);
+    })
+    .then(data => {
+        console.log("Message exchange mode has changed successfully: ",data); // print success;
+        res.send('success');
+        logger4js.getLoggerConfig().info("SUCCESS!");   
+    })
+    .catch(error => {
+       logger4js.getLoggerConfig().error("ERROR! ",error);
+        console.log(error); // print the error;
+        res.send('error');
+    });
+};
 
-	// Iterate Data	
-		for (let i = 0; i < info.length; i++) {
+module.exports.dataExchangeMode = function index(req, res) {
 
-			// Create an object to save current row's data
-			let infoArray = {
-				'id'        : info[i].id,
-				'mode_type' : info[i].mode_type,
-				'is_enable' : info[i].is_enable,
-				'notes'     : info[i].notes,
-				'created_at': info[i].created_at,
-			}
-			// Add object into array
-			transactionModeInfo.push(infoArray);
 
-		}
-		//console.log(apiInfoList);
-		logger4js.getLoggerConfig().debug("API Data: ",transactionModeInfo);
+    db.tx(t => {
+        return t.batch([
+            t.any('SELECT * FROM exchange_mode')           
+        ]);
+    }).then(data => {
+        
+        let exchangeMode = JSON.parse(JSON.stringify(data[0]));
+        //console.log(exchangeMode);
+        if(exchangeMode=='[]'){ // empty
+            res.render('exchange-mode',{
+                resultInfo: exchangeMode,
+                is_enable  : 0  
+            })
+        } else {
+            res.render('exchange-mode',{
+                resultInfo: exchangeMode,
+                is_enable  : 0,
+            })
+        }
 
-		if(info[0].is_enable){
-			res.render('data-sync-mode',{
-	   			resultInfo: transactionModeInfo,
-	   			is_enable  : info[0].is_enable	
-	    	})
-		} else {
-			res.render('data-sync-mode',{
-	   			resultInfo: transactionModeInfo,
-	   			is_enable  : 0	
-	    	})
-		}
-	    
-
-	}).catch(error => {		
-		logger4js.getLoggerConfig().error("ERROR! ",error);
+        
+    })
+    .catch(error => {
+        logger4js.getLoggerConfig().error("ERROR! ",error);
         console.log(error); // print the error;
     });
 };
 
 // Transaction Mode Updates
-exports.dataTransactionModeUpdate = function (req, res) {
+exports.dataExchangeModeUpdate = function (req, res) {
 
 	let isEnable = req.body.is_enable;
 
     db.tx(t => {
         return t.batch([
-            t.none('UPDATE data_transaction_mode SET mode_type = $1', [isEnable])
+            t.none('UPDATE exchange_mode SET mode_type = $1', [isEnable])
         ]);
     })
     .then(data => {
-        console.log("Transaction Mode Setup has success: ",data); // print success;
+        console.log("Message exchange mode has changed successfully: ",data); // print success;
         res.send('success');
         logger4js.getLoggerConfig().info("SUCCESS!");	
     })
@@ -395,8 +344,72 @@ exports.dataTransactionModeUpdate = function (req, res) {
         res.send('error');
     });
 };
+// Update Auto sync mode
+exports.autoSyncModeUpdate = function (req, res) {
 
+    let isEnable = req.body.is_enable;
 
+    db.tx(t => {
+        return t.batch([
+            t.none('UPDATE exchange_mode SET sync_status = $1', [isEnable])
+        ]);
+    })
+    .then(data => {
+        console.log("Auto sync has changed successfully: ",data); // print success;
+        res.send('success');
+        logger4js.getLoggerConfig().info("SUCCESS!");   
+    })
+    .catch(error => {
+       logger4js.getLoggerConfig().error("ERROR! ",error);
+        console.log(error); // print the error;
+        res.send('error');
+    });
+};
+
+// Translator Elements Mapping Form
+exports.translatorElementsMapForm = function (req, res) {
+    db.tx(t => {
+        return t.batch([
+            t.any('SELECT id,channel_name FROM api_settings where channel_type=$1',['source']),           
+            t.any('select tm.*, cha.channel_name from translator_mapping tm inner join api_settings cha on cha.id=tm.channel_id')           
+        ]);
+    }).then(data => {
+        
+        let source      = JSON.parse(JSON.stringify(data[0]));
+        let mappingInfo = JSON.parse(JSON.stringify(data[1]));
+            res.render('translator-elements-mapping',{
+                sourceInfo : source,
+                mappingInfo: mappingInfo
+            })
+
+    }).catch(error => {
+        logger4js.getLoggerConfig().error("ERROR! ",error);
+        console.log(error); // print the error;
+    });
+};
+
+// Translator Elements create
+exports.translatorElementsCreate = function (req, res) {
+    let dataReq1 = req.body.paramInfo.replace('[','');
+    let dataReq  = dataReq1.replace(']','');
+    var info = JSON.parse(dataReq);
+
+    db.tx(t => {
+        return t.batch([
+            t.none("INSERT into translator_mapping (channel_id,org_name,short_name,code,description,opening_date,closed_date,level1_id,level1_name,level2_id,level2_name,level3_id,level3_name,level4_id,level4_name,level5_id,level5_name,level6_id,level6_name,comment,url,contact_person,address,email,phone_number,latitude,longitude,created_at) VALUES('"+info.channelID+"','"+info.orgUnitName+"','"+info.orgUnitShortName+"','"+info.code+"','"+info.description+"','"+info.openingDate+"','"+info.closedDate+"','"+info.level1ID+"','"+info.level1Name+"','"+info.level2ID+"','"+info.level2Name+"','"+info.level3ID+"','"+info.level3Name+"','"+info.level4ID+"','"+info.level4Name+"','"+info.level5ID+"','"+info.level5Name+"','"+info.level6ID+"','"+info.level6Name+"','"+info.comment+"','"+info.url+"','"+info.contactPerson+"','"+info.address+"','"+info.email+"','"+info.phoneNumber+"','"+info.latitude+"','"+info.longitude+"','"+fn.getDateYearMonthDayMinSeconds()+"')")
+        ]);
+    })
+    .then(data => {
+        console.log("Translator mapping has changed successfully: ",data); // print success;
+        res.send('success');
+        logger4js.getLoggerConfig().info("SUCCESS!");   
+    })
+    .catch(error => {
+       logger4js.getLoggerConfig().error("ERROR! ",error);
+        console.log(error); // print the error;
+        res.send('error');
+    });
+};
 // Delete existing channel
 exports.deleteChannelSettings = function (req, res) {
 
@@ -411,13 +424,14 @@ exports.deleteChannelSettings = function (req, res) {
     } else if(flag == 'schedular'){
         table = "schedular_info";
     } else if(flag == 'syncMode'){
-        table = "data_transaction_mode";
+        table = "exchange_mode";
     } else if(flag == 'queues'){
         table = "queues";
-         console.log("table:",table);
+    } else if(flag == 'translatorMapping'){
+        table = "translator_mapping";
     }
-    console.log("flag: ",flag);
-    console.log("table:",table);
+    //console.log("flag: ",flag);
+    //console.log("table:",table);
     //console.log('delete from "'+table+'" where id = "'+[id]+'"');
     db.tx(t => {
         return t.batch([

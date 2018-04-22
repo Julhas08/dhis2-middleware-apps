@@ -16,7 +16,7 @@ var bodyParser   = require('body-parser');
 var dbConnect      = require('./src/app/config/db-config');
 var login          = require('./routes/login');
 var dashboard      = require('./routes/dashboard'); 
-var dhis2          = require('./routes/dhis2');
+var schedular      = require('./routes/schedular');
 var settingsRoutes = require('./routes/settings');
 var middlewareApps = require('./routes/middleware-apps');
 var reports        = require('./routes/reports');
@@ -36,7 +36,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 // Routes 
 app.use('/', login); 
 app.use('/', dashboard);
-app.use('/', dhis2);
+app.use('/', schedular);
 app.use('/', settingsRoutes);
 app.use('/', middlewareApps);
 app.use('/', reports);
