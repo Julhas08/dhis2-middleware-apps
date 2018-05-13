@@ -1,0 +1,300 @@
+html
+    head
+      meta(charset='UTF-8')
+      title Queues
+      link(rel='stylesheet', href='/stylesheets/bootstrap.min.css') 
+      link(rel='stylesheet', href='/stylesheets/style.css')    
+      script(type='text/javascript' src='/javascripts/jquery-3.2.1.min.js')    
+      script(type='text/javascript' src='/javascripts/bootstrap.min.js')   
+        
+    body
+        div
+        include ./header.pug 
+        .main-area
+          .col-md-12.col-xs-12.col-lg-12.right-sidebar.padding-left-right-zero
+            .col-md-12.col-xs-12.col-lg-12.col-sm-12.padding-box-columing
+              .panel.panel-white
+                .panel-heading.clearfix
+                  h3.panel-title List of All Queues
+                  
+                table(class="table table-bordered table-hover table-header-bg")
+                  thead(class="table-header-bg thead")
+                    tr
+                      th Queue ID
+                      th Name
+                      th Durability
+                      th Auto Delete
+                      th Auto Expire
+                      th Max Length
+                      th Routing Key
+                      th Created Date
+                      th Message Summary
+                      th Action
+
+                  tbody
+                    each info in queueInfo
+                        tr
+                          td= info.id   
+                          td= info.name   
+                          td= info.durability
+                          td= info.delete_status
+                          td= info.expire_status
+                          td= info.max_length
+                          td= info.routing_key
+                          td= info.created_at
+                          td 
+                            button(type='button', data-toggle='modal', data-target='#viewMessageSummary' class="btn btn-small btn-info hover-ponter viewMessageSumary", id="viewMessageSumary"+info.id, value=info.id+"_queues") View Summary  
+                          td 
+                            button(class="btn btn-small btn-danger delete-settings", id="delete-settings"+info.id, type="button", value=info.id+"_queues") Delete    
+
+                // View all Success messages
+                #viewAllSuccessMessages.modal.fade(role='dialog')
+                  .modal-dialog.modal-lg
+                    // Modal content
+                    .modal-content
+                      .modal-header
+                        button.close(type='button', data-dismiss='modal') ×
+                        h4.modal-title View all messages
+                      .modal-body                        
+                        div(class="queue-detail-body")
+                          button(type='button', data-toggle='modal', data-target='#viewAllSuccessMessages' class="btn btn-warning btn-small hover-ponter viewMessageSumary", id="syncDurableMessages", value="_queues") Sync All  
+                          each info in successQueueDetail
+                            table(class="table table-bordered table-hover table-header-bg")
+                              thead(class="table-header-bg thead")
+                                tr
+                                  th ID
+                                  th Name
+                                  th Durability
+                                  th Exchange Mode
+                                  th Response Code
+                                  th Destination
+                                  th Action
+                              tbody                                 
+                                  tr
+                                    td= info.id   
+                                    td= info.queue_name   
+                                    td= info.durability   
+                                    td= info.exchange_mode
+                                    td= info.response_code
+                                    td
+                                      a(target='_blank' href='view-channel-detail?id='+info.id) #{info.channel_name} 
+                                    td
+                                      button(type='button' class="btn btn-small btn-warning hover-ponter syncDurableMessages", id="syncDurableMessages", value=info.id+"_queues") Sync Now  
+                            h6 JSON Payload: #{info.message} 
+                            <br>
+
+
+                      .modal-footer
+                        button.btn.btn-default(type='button', data-dismiss='modal') Close               
+                
+                // View all Conflict messages
+                #viewAllConflictMessages.modal.fade(role='dialog')
+                  .modal-dialog.modal-lg
+                    // Modal content
+                    .modal-content
+                      .modal-header
+                        button.close(type='button', data-dismiss='modal') ×
+                        h4.modal-title View all messages
+                      .modal-body                        
+                        div(class="queue-detail-body")
+                          button(type='button', data-toggle='modal', data-target='#viewAllConflictMessages' class="btn btn-warning btn-small hover-ponter viewMessageSumary", id="viewMessageSumary", value="_queues") Sync All  
+                          each info in conflictQueueDetail
+                            table(class="table table-bordered table-hover table-header-bg")
+                              thead(class="table-header-bg thead")
+                                tr
+                                  th ID
+                                  th Name
+                                  th Durability
+                                  th Exchange Mode
+                                  th Response Code
+                                  th Destination
+                                  th Action
+                              tbody                                 
+                                  tr
+                                    td= info.id   
+                                    td= info.queue_name   
+                                    td= info.durability   
+                                    td= info.exchange_mode
+                                    td= info.response_code
+                                    td
+                                      a(target='_blank' href='view-channel-detail?id='+info.id) #{info.channel_name} 
+                                    td
+                                      button(type='button', data-toggle='modal', data-target='#viewMessageSummary' class="btn btn-small btn-warning hover-ponter viewMessageSumary", id="viewMessageSumary"+info.id, value=info.id+"_queues") Sync Now  
+                            h6 JSON Payload: #{info.message} 
+                            <br>
+
+
+                      .modal-footer
+                        button.btn.btn-default(type='button', data-dismiss='modal') Close
+                
+                // View all Error messages
+                #viewAllErrorMessages.modal.fade(role='dialog')
+                  .modal-dialog.modal-lg
+                    // Modal content
+                    .modal-content
+                      .modal-header
+                        button.close(type='button', data-dismiss='modal') ×
+                        h4.modal-title View all messages
+                      .modal-body                        
+                        div(class="queue-detail-body")
+                          button(type='button', data-toggle='modal', data-target='#viewMessageSummary' class="btn btn-warning btn-small hover-ponter viewMessageSumary", id="viewAllErrorMessages", value="_queues") Sync All  
+                          each info in errorQueueDetail
+                            table(class="table table-bordered table-hover table-header-bg")
+                              thead(class="table-header-bg thead")
+                                tr
+                                  th ID
+                                  th Name
+                                  th Durability
+                                  th Exchange Mode
+                                  th Response Code
+                                  th Destination
+                                  th Action
+                              tbody                                 
+                                  tr
+                                    td= info.id   
+                                    td= info.queue_name   
+                                    td= info.durability   
+                                    td= info.exchange_mode
+                                    td= info.response_code
+                                    td
+                                      a(target='_blank' href='view-channel-detail?id='+info.id) #{info.channel_name} 
+                                    td
+                                      button(type='button', data-toggle='modal', data-target='#viewMessageSummary' class="btn btn-small btn-warning hover-ponter viewMessageSumary", id="viewMessageSumary"+info.id, value=info.id+"_queues") Sync Now  
+                            h6 JSON Payload: #{info.message} 
+                            <br>
+
+
+                      .modal-footer
+                        button.btn.btn-default(type='button', data-dismiss='modal') Close
+
+                // View all Durable Queue messages
+                #viewAllDurableQueueMessages.modal.fade(role='dialog')
+                  .modal-dialog.modal-lg
+                    // Modal content
+                    .modal-content
+                      .modal-header
+                        button.close(type='button', data-dismiss='modal') ×
+                        h4.modal-title View all messages
+                      .modal-body                        
+                        div(class="queue-detail-body")
+                          button(type='button', data-toggle='modal', data-target='#viewMessageSummary' class="btn btn-warning btn-small hover-ponter viewMessageSumary", id="viewMessageSumary", value="_queues") Sync All  
+                          each info in errorQueueDetail
+                            table(class="table table-bordered table-hover table-header-bg")
+                              thead(class="table-header-bg thead")
+                                tr
+                                  th ID
+                                  th Name
+                                  th Durability
+                                  th Exchange Mode
+                                  th Response Code
+                                  th Destination
+                                  th Action
+                              tbody                                 
+                                  tr
+                                    td= info.id   
+                                    td= info.queue_name   
+                                    td= info.durability   
+                                    td= info.exchange_mode
+                                    td= info.response_code
+                                    td
+                                      a(target='_blank' href='view-channel-detail?id='+info.id) #{info.channel_name} 
+                                    td
+                                      button(type='button', data-toggle='modal', data-target='#viewMessageSummary' class="btn btn-small btn-warning hover-ponter viewMessageSumary", id="viewMessageSumary"+info.id, value=info.id+"_queues") Sync Now  
+                            h6 JSON Payload: #{info.message} 
+                            <br>
+
+
+                      .modal-footer
+                        button.btn.btn-default(type='button', data-dismiss='modal') Close        
+                
+                // Modal View Message Summary
+                #viewMessageSummary.modal.fade(role='dialog')
+                  .modal-dialog.modal-lg
+                    // Modal content
+                    .modal-content
+                      .modal-header
+                        button.close(type='button', data-dismiss='modal') ×
+                        h4.modal-title View message summary
+                      .modal-body
+                        table(class="table table-bordered table-hover table-header-bg")
+                          thead(class="table-header-bg thead")
+                            tr
+                              th Response Type
+                              th Total Message
+                              th Action
+
+                          tbody
+                            each info in queueSummary
+                              if(info.response_code==201 || info.response_code==200)
+                                tr
+                                  td= 'Success'  
+                                  td= info.totalmessage   
+                                  td
+                                    button(type='button', data-toggle='modal', data-target='#viewAllSuccessMessages' class="btn btn-small btn-success hover-ponter modal-auto-close", id="viewQueues"+info.id, value=info.id+"_queues") View    
+                              if(info.response_code==409)
+                                tr
+                                  td= 'Conflict/Failed'  
+                                  td= info.totalmessage   
+                                  td
+                                    button(type='button', data-toggle='modal', data-target='#viewAllConflictMessages' class="btn btn-small btn-warning hover-ponter modal-auto-close", id="viewQueues"+info.id, value=info.id+"_queues") View    
+                                    if(info.response_code==200)
+                              if(info.response_code==500)  
+                                tr
+                                  td= 'Error'  
+                                  td= info.totalmessage   
+                                  td
+                                    button(type='button', data-toggle='modal', data-target='#viewAllErrorMessages' class="btn btn-small btn-danger hover-ponter modal-auto-close", id="viewQueues"+info.id, value=info.id+"_queues") View    
+                      .modal-footer
+                        button.btn.btn-default(type='button', data-dismiss='modal') Close
+                
+                
+                // Setup new Queue         
+                .panel-body
+                  .container
+                    .row.centered-form
+                      .col-xs-12.col-sm-10.col-md-10.col-sm-offset-8.col-md-offset-8
+                        .panel.panel-default
+                          .panel-heading
+                            h3.panel-title
+                              | Add new queue
+                          .panel-body
+                            form
+                              .row
+                                .col-xs-6.col-sm-6.col-md-6
+                                  .form-group
+                                    input#queueName.form-control.input-sm(type='text', name='queueName', placeholder='Queue name')
+                                .col-xs-6.col-sm-6.col-md-6
+                                  .form-group
+                                    select.form-control(id="durability", name="durability")
+                                      option(value="") Select Durability
+                                      option(value="durable") Durable
+                                      option(value="transient") Transient
+                              .row
+                                .col-xs-6.col-sm-6.col-md-6
+                                  .form-group
+                                    select.form-control(id="autoDelete", name="autoDelete")
+                                      option(value="") Select auto delete type
+                                      option(value="no") No
+                                      option(value="yes") Yes
+                                .col-xs-6.col-sm-6.col-md-6
+                                  .form-group
+                                    select.form-control(id="autoExpire", name="autoExpire")
+                                      option(value="") Select auto expire type
+                                      option(value="no") No
+                                      option(value="yes") Yes 
+                              .row
+                                .col-xs-6.col-sm-6.col-md-6
+                                  .form-group
+                                    input#maxLength.form-control.input-sm(type='number', name='maxLength', placeholder='Max length') 
+                                .col-xs-6.col-sm-6.col-md-6
+                                  .form-group
+                                    input#routingKey.form-control.input-sm(type='text', name='routingKey', placeholder='Routing Key')                                                     
+                              <br>
+                                button.btn.btn-info.btn-block.hover-ponter.queue-setup-btn(type='submit' ) Add Queue    
+
+        
+    
+link(rel='stylesheet', href='/javascripts/sweetalert/sweetalert.css')
+script(type='text/javascript' src='/javascripts/sweetalert/sweetalert.min.js')     
+script(type='text/javascript' src='/javascripts/custom.js')     
+  

@@ -1,0 +1,140 @@
+div(class="main-area")
+	div(class="col-md-12 col-xs-12 col-lg-12 right-sidebar  padding-left-right-zero") 
+		div(class="col-md-12 col-xs-12 col-lg-12 col-sm-12 padding-box-columing")
+			div(class="panel panel-white")
+				div(class="panel-heading clearfix")
+						h3(class="panel-title")
+							|	Notification Center (Daily)                              
+
+				div(class="panel-body")
+					div(class="notification-center-alignment")
+
+						each info in summaryList
+							if info.operation_type=='created'
+								div.control-group.inline
+									div(class="notification-center") 
+										div(class="notify-circle")
+											p=info.count	 
+										span
+											| Created Facilities
+
+							else if info.operation_type=='updated'
+								div.control-group.inline
+									div(class="notification-center") 
+										div(class="notify-circle")
+											p=info.count	 
+										span
+											| Updated Facilities				
+							else 
+								div.control-group.inline
+									div(class="notification-center") 
+										div(class="notify-circle")
+											p=info.count	 
+										span
+											| Deleted Facilities									
+
+						
+
+	div(class="col-md-12 col-xs-12 col-lg-12 right-sidebar  padding-left-right-zero") 
+		div(class="col-md-12 col-xs-12 col-lg-12 col-sm-12 padding-box-columing")
+			div(class="panel panel-white")
+				div(class="panel-heading clearfix")
+						h3(class="panel-title")
+							|	Middleware Schedular Operation Summary                              
+
+				div(class="panel-body")
+					div(class="notification-center-alignment")
+					
+					include ./dashboard-systemlog-monitor.pug
+
+	div(class="col-md-12 col-xs-12 col-lg-12 col-sm-12 padding-box-columing")
+			div(class="panel panel-white")
+				div(class="panel-heading clearfix")
+						h3(class="panel-title")
+							|	All Newly Created / Updated and Deleted Facilities Data from HRIS System                               
+
+				div(class="panel-body")
+
+					form.form-horizontal.search-facility
+						.control-group.inline
+							.controls
+								select.form-control(id="requestType", name="requestType")
+									option(value="") Select Request Type
+									option(value="createdSince" selected) Newly Cretaed Facilities
+									option(value="updatedSince") Updated Facilities
+									option(value="deletedSince") Deleted Facilities
+						.control-group.inline
+							.controls
+								input#dateFrom.form-control(type='date', placeholder='Date From' name='dateFrom')
+
+						.control-group.inline
+							.controls
+								select.form-control(id="displayLimit", name="displayLimit")
+									option(value="") Display Limit
+									option(value="1" selected) 1
+									option(value="2") 2
+									option(value="5") 5
+									option(value="10") 10
+									option(value="20" ) 20
+									option(value="50") 50
+									option(value="100") 100
+									option(value="150") 150
+									option(value="200") 200
+									option(value="500") 500
+									option(value="1000") 1000
+
+						.control-group.inline
+							.controls
+								button.btn.btn-primary.facility-search-btn(type='submit' ) Search Facility
+
+					hr(id="loaderClass")
+
+					input#displayFacilityInformationText.form-control(type='hidden', name='dateFrom')
+					
+					button.btn.btn-primary.sends-json-dhis-btn(type='submit' ) Sends to DHIS2
+
+					button.btn.btn-warning.json-payload-generates-btn(type='submit' ) Generate JSON Payload
+					hr
+
+					div(id="displayFacilityInformation")
+
+					h3 Today's published/transmited facilities
+					table(class="table table-bordered table-hover table-header-bg")
+
+						thead(class="table-header-bg thead")
+							tr
+								th S/N
+								th Division
+								th District
+								th Upazila
+								th Union
+								th Facility Name
+								th F. Code
+								th Latitude
+								th Longitude
+								th Created Date
+						tbody        
+							each finfo,i in createdFacilitiesList
+								tr
+									td= i
+									td= finfo.division_name +'('+ finfo.division_code+')'
+									td= finfo.district_name +'('+ finfo.district_code+')'
+									td= finfo.upazila_name +'('+ finfo.upazila_code+')'
+									td= finfo.union_name +'('+ finfo.union_code+')'
+									td= finfo.name
+									td= finfo.code
+									td= finfo.latitude
+									td= finfo.longitude
+									td= finfo.created_at
+											
+
+					script.
+					script(src='javascripts/custom.js')
+
+					
+ 
+
+					
+
+
+

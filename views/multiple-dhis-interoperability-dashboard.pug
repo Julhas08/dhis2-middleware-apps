@@ -1,0 +1,75 @@
+html
+    head
+      meta(charset='UTF-8')
+      meta(name='viewport', content='width=device-width, initial-scale=1')
+      title DHIS2 Middleware Apps || Schedular Settings
+      link(rel='stylesheet', href='/stylesheets/bootstrap.min.css') 
+      link(rel='stylesheet', href='/stylesheets/style.css')    
+      script(type='text/javascript' src='/javascripts/jquery-3.2.1.min.js')    
+      script(type='text/javascript' src='/javascripts/bootstrap.min.js')  
+        
+    body
+        div
+        include ./header.pug
+        .main-area
+          .col-md-12.col-xs-12.col-lg-12.right-sidebar.padding-left-right-zero
+            .col-md-12.col-xs-12.col-lg-12.col-sm-12.padding-box-columing
+              .panel.panel-white
+                .panel-heading.clearfix
+                  h3.panel-title Multiple DHIS Interoperability App
+                .panel-body
+                  form.form-horizontal.search-facility
+
+                  .control-group.inline(style="width:180px;margin-left:10px;")
+                    .controls
+                      select.form-control(id="syncType", name="syncType")
+                        option(value="") Syncronization Type
+                            option(value="OrgUnit") Organnization Units
+                            option(value="DataSet") Data Sets
+                  
+                  .control-group.inline(style="width:180px;margin-left:10px;")
+                    .controls
+                      select.form-control(id="facilityLevel2", name="facilityLevel2")
+                        option(value="") Select Division
+                          each info in responseInfoTwo 
+                            option(value=info.id) #{info.displayName}
+                  .control-group.inline(style="width:180px;margin-left:10px;")
+                    .controls
+                      select.form-control(id="facilityLevel3", name="facilityLevel3")
+                        option(value="") Select District
+                  .control-group.inline(style="width:180px;margin-left:10px;")
+                    .controls
+                      select.form-control(id="facilityLevel4", name="facilityLevel4")
+                        option(value="") Select Upazila
+                  .control-group.inline(style="width:200px;margin-left:10px;")
+                    .controls
+                      select.form-control(id="facilityLevel5", name="facilityLevel5")
+                        option(value="") Select Union                                
+                                    
+                  .control-group.inline(style="width:120px;margin-left:10px;")
+                    .controls
+                      button.btn.btn-primary.search-multiple-instances-sync-type-btn(type='submit' ) Search
+                  .control-group.inline(style="width:140px;margin-left:10px;")
+                    .controls
+                      button.btn.btn-warning.sync-multiple-dhis-datasubmit-btn(type='submit' ) Sync Now    
+                  hr
+                  table(id="displayData" class="display table table-bordered table-hover table-header-bg" width="100%")
+   
+
+s
+link(rel='stylesheet', href='/javascripts/datatables/css/jquery.dataTables.min.css')
+script(type='text/javascript' src='/javascripts/datatables/js/jquery.dataTables.min.js')  
+script(type='text/javascript' src='/javascripts/datatables/js/dataTables.buttons.min.js')  
+script(type='text/javascript' src='/javascripts/datatables/js/jszip.min.js')  
+script(type='text/javascript' src='/javascripts/datatables/js/pdfmake.min.js')  
+script(type='text/javascript' src='/javascripts/datatables/js/vfs_fonts.js')  
+script(type='text/javascript' src='/javascripts/datatables/js/buttons.html5.min.js')  
+script(type='text/javascript' src='/javascripts/datatables/js/buttons.colVis.min.js')  
+script(type='text/javascript' src='/javascripts/datatables/js/buttons.print.min.js')  
+
+link(rel='stylesheet', href='/javascripts/sweetalert/sweetalert.css')
+script(type='text/javascript' src='/javascripts/sweetalert/sweetalert.min.js')     
+   
+script(type='text/javascript' src='/javascripts/custom.js')     
+script(type='text/javascript' src='/javascripts/datatable.js')     
+  

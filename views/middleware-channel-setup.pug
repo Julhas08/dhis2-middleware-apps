@@ -1,0 +1,121 @@
+html
+    head
+      meta(charset='UTF-8')
+      title DHIS2 Middleware Apps
+      link(rel='stylesheet', href='/stylesheets/bootstrap.min.css') 
+      link(rel='stylesheet', href='/stylesheets/style.css')    
+      script(type='text/javascript' src='/javascripts/jquery-3.2.1.min.js')    
+      script(type='text/javascript' src='/javascripts/bootstrap.min.js')   
+        
+    body
+        div
+        include ./header.pug 
+        .main-area
+          .col-md-12.col-xs-12.col-lg-12.right-sidebar.padding-left-right-zero
+            .col-md-12.col-xs-12.col-lg-12.col-sm-12.padding-box-columing
+              .panel.panel-white
+                .panel-heading.clearfix
+                  h3.panel-title List of all Channels 
+                table(class="table table-bordered table-hover table-header-bg")
+                  thead(class="table-header-bg thead")
+                    tr
+                      th Channel Name
+                      th Short Code
+                      th Base URL
+                      th Token Type
+                      th Username
+                      th Channel Type
+                      th Instance Type
+                      th Notes
+                      th Action
+
+                  tbody             
+                    each info in infoList
+                      tr
+                        td= info.channel_name   
+                        td= info.short_code
+                        td= info.base_url     
+                        td= info.token_type 
+                        td= info.username   
+                        td= info.channel_type
+                        td= info.instance_type   
+                        td= info.notes  
+                        td 
+                          button(class="btn btn-danger btn-small delete-settings", id="delete-settings"+info.id, type="button", value=info.id+"_channel") Delete                     
+                .panel-body
+
+                  .container
+                    .row.centered-form
+
+                      .col-xs-12.col-sm-10.col-md-10.col-sm-offset-8.col-md-offset-8
+
+                        .panel.panel-default
+                          .panel-heading
+                            h3.panel-title
+                              | Add new channel
+                          .panel-body
+                            form
+                              .row
+                                .col-xs-6.col-sm-6.col-md-6
+                                  .form-group
+                                    input#channelName.form-control.input-sm(type='text', name='channelName', placeholder='Enter Channel Name (Ex. DHIS2 Central Server)')
+                                .col-xs-6.col-sm-6.col-md-6
+                                  .form-group
+                                    input#shortName.form-control.input-sm(type='text', name='shortName', placeholder='Enter Channel Short Name (Ex. dhis_central/ dhis_community/ hris/ elmis/ equiest)') 
+                              
+                              .form-group
+                                input#baseUrl.form-control.input-sm(type='text', name='baseUrl', placeholder='Enter Base URL') 
+                              .form-group
+                                input#resourcePath.form-control.input-sm(type='text', name='resourcePath', placeholder='Enter API Root/ Resource Path/ End Point')
+                              .row
+                                .col-xs-6.col-sm-6.col-md-6
+                                  .form-group
+                                    select.form-control(id="tokenType", name="tokenType")
+                                      option(value="") Select Token Type
+                                      option(value="X-Auth-Token") X-Auth-Token 
+                                      option(value="X-Auth") X-Auth
+                                .col-xs-6.col-sm-6.col-md-6
+                                  .form-group
+                                    input#tokenString.form-control.input-sm(type='text', name='tokenString', placeholder='Enter Token String')      
+                              .row
+                                .col-xs-6.col-sm-6.col-md-6
+                                  .form-group
+                                    input#username.form-control.input-sm(type='text', name='username', placeholder='API Auth Username')
+                                .col-xs-6.col-sm-6.col-md-6
+                                  .form-group
+                                    input#password.form-control.input-sm(type='text', name='password', placeholder='API Auth Password')  
+
+                              .row
+                                .col-xs-6.col-sm-6.col-md-6
+                                  .form-group
+                                    select.form-control(id="channelType", name="channelType")
+                                      option(value="") Select Channel Type
+                                      option(value="source") Source    
+                                      option(value="destination") Destination
+                                .col-xs-6.col-sm-6.col-md-6
+                                  .form-group
+                                    select.form-control(id="instanceType", name="instanceType")
+                                      option(value="") Select Source Type
+                                      option(value="dhis2") DHIS2    
+                                      option(value="other") Other
+                              .row
+                                .col-xs-12.col-sm-12.col-md-12
+                                  .form-group
+                                    select.form-control(id="queue", name="queue")
+                                          option(value="") Select queue
+                                          each info in queueList 
+                                            option(value=info.id) #{info.name}                            
+                              .form-group
+                                input#notes.form-control.input-sm(type='text', name='notes', placeholder='Write notes')
+                                br
+                                button.btn.btn-info.btn-block.middleware-instances-setup-btn(type='submit' ) Add New Instance
+
+                                div(id=apiSettingsResult)
+                
+
+        
+    
+link(rel='stylesheet', href='/javascripts/sweetalert/sweetalert.css')
+script(type='text/javascript' src='/javascripts/sweetalert/sweetalert.min.js')     
+script(type='text/javascript' src='/javascripts/custom.js')     
+  

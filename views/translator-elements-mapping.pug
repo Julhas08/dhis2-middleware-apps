@@ -1,0 +1,227 @@
+html
+    head
+      meta(charset='UTF-8')
+      meta(name='viewport', content='width=device-width, initial-scale=1')
+      title DHIS2 Middleware Apps || Transaction Mode Setting
+      link(rel='stylesheet', href='/stylesheets/bootstrap.min.css') 
+      link(rel='stylesheet', href='/stylesheets/style.css')    
+      script(type='text/javascript' src='/javascripts/jquery-3.2.1.min.js')    
+      script(type='text/javascript' src='/javascripts/bootstrap.min.js')  
+        
+    body
+        div
+        include ./header.pug 
+        .main-area
+          .col-md-12.col-xs-12.col-lg-12.right-sidebar.padding-left-right-zero
+            .col-md-12.col-xs-12.col-lg-12.col-sm-12.padding-box-columing
+              .panel.panel-white
+                .panel-heading.clearfix
+                  h3.panel-title Translator Elements Mapping
+                .panel-body
+                  .container
+                    .row.centered-form
+                      .col-xs-12.col-sm-12.col-md-12.col-sm-offset-12.col-md-offset-12
+                        .panel.panel-default
+                          .panel-heading
+                            h3.panel-title
+                              | Translator Elements Mapping
+                            
+                          .panel-body
+                            form
+                              table(class="table table-bordered table-hover table-header-bg")
+                                  thead(class="table-header-bg thead")                                    
+                                  tbody 
+                                    tr
+                                    each info in sourceInfo
+                                      td= "Source"
+                                      td(colspan='3')
+                                        .col-xs-10.col-sm-10.col-md-10
+                                          .form-group-sync-mode           
+                                            input#channelID.form-control.input-sm(type='hidden', value=info.id name='channelID' readonly)      
+                                            input.form-control.input-sm(type='text', value=info.channel_name readonly)      
+                                    tr
+                                      td= "Org. Unit Name(*)"
+                                      td
+                                        .col-xs-10.col-sm-10.col-md-10
+                                          .form-group-sync-mode
+                                            input#orgUnitName.form-control.input-sm(type='text', name='orgUnitName' required)
+                                      td= "Short Name(*)"
+                                      td
+                                        .col-xs-10.col-sm-10.col-md-10
+                                          .form-group-sync-mode
+                                            input#orgUnitShortName.form-control.input-sm(type='text', name='orgUnitShortName')
+                                    tr
+                                      td= "Code(*)"
+                                      td
+                                        .col-xs-10.col-sm-10.col-md-10
+                                          .form-group-sync-mode
+                                            input#code.form-control.input-sm(type='text', name='code')
+                                      td= "Description"
+                                      td
+                                        .col-xs-10.col-sm-10.col-md-10
+                                          .form-group-sync-mode
+                                            input#description.form-control.input-sm(type='date', name='description')
+                                    tr
+                                      td= "Opening Date(*)"                            
+                                      td
+                                        .col-xs-10.col-sm-10.col-md-10
+                                          .form-group-sync-mode
+                                            input#openingDate.form-control.input-sm(type='text', name='openingDate' )
+                                      td= "Closed Date"
+                                      td
+                                        .col-xs-10.col-sm-10.col-md-10
+                                          .form-group-sync-mode
+                                            input#closedDate.form-control.input-sm(type='text', name='closedDate')
+                                    tr
+                                      td= "Level-1 ID"                            
+                                      td
+                                        .col-xs-10.col-sm-10.col-md-10
+                                          .form-group-sync-mode
+                                            input#level1ID.form-control.input-sm(type='text', name='level1ID' )
+                                      td= "Level-1 Name"
+                                      td
+                                        .col-xs-10.col-sm-10.col-md-10
+                                          .form-group-sync-mode
+                                            input#level1Name.form-control.input-sm(type='text', name='level1Name')
+                                    tr
+                                      td= "Level-2 ID"                            
+                                      td
+                                        .col-xs-10.col-sm-10.col-md-10
+                                          .form-group-sync-mode
+                                            input#level2ID.form-control.input-sm(type='text', name='level2ID' )
+                                      td= "Level-2 Name"
+                                      td
+                                        .col-xs-10.col-sm-10.col-md-10
+                                          .form-group-sync-mode
+                                            input#level2Name.form-control.input-sm(type='text', name='level2Name')
+                                    tr
+                                      td= "Level-3 ID"                            
+                                      td
+                                        .col-xs-10.col-sm-10.col-md-10
+                                          .form-group-sync-mode
+                                            input#level3ID.form-control.input-sm(type='text', name='level3ID' )
+                                      td= "Level-3 Name"
+                                      td
+                                        .col-xs-10.col-sm-10.col-md-10
+                                          .form-group-sync-mode
+                                            input#level3Name.form-control.input-sm(type='text', name='level3Name')
+                                    tr
+                                      td= "Level-4 ID"                            
+                                      td
+                                        .col-xs-10.col-sm-10.col-md-10
+                                          .form-group-sync-mode
+                                            input#level4ID.form-control.input-sm(type='text', name='level4ID' )
+                                      td= "Level-4 Name"
+                                      td
+                                        .col-xs-10.col-sm-10.col-md-10
+                                          .form-group-sync-mode
+                                            input#level4Name.form-control.input-sm(type='text', name='level4Name')
+                                    
+                                    tr
+                                      td= "Level-5 ID"                            
+                                      td
+                                        .col-xs-10.col-sm-10.col-md-10
+                                          .form-group-sync-mode
+                                            input#level5ID.form-control.input-sm(type='text', name='level5ID' )
+                                      td= "Level-5 Name"
+                                      td
+                                        .col-xs-10.col-sm-10.col-md-10
+                                          .form-group-sync-mode
+                                            input#level5Name.form-control.input-sm(type='text', name='level5Name')
+                                    
+                                    tr
+                                      td= "Level-6 ID"                            
+                                      td
+                                        .col-xs-10.col-sm-10.col-md-10
+                                          .form-group-sync-mode
+                                            input#level6ID.form-control.input-sm(type='text', name='level6ID' )
+                                      td= "Level-6 Name"
+                                      td
+                                        .col-xs-10.col-sm-10.col-md-10
+                                          .form-group-sync-mode
+                                            input#level6Name.form-control.input-sm(type='text', name='level6Name')
+                                    tr
+                                      td= "Comment"                            
+                                      td
+                                        .col-xs-10.col-sm-10.col-md-10
+                                          .form-group-sync-mode
+                                            input#comment.form-control.input-sm(type='text', name='comment' )
+                                      td= "URL"
+                                      td
+                                        .col-xs-10.col-sm-10.col-md-10
+                                          .form-group-sync-mode
+                                            input#url.form-control.input-sm(type='text', name='url')
+                                    tr
+                                      td= "Contact Person"                            
+                                      td
+                                        .col-xs-10.col-sm-10.col-md-10
+                                          .form-group-sync-mode
+                                            input#contactPerson.form-control.input-sm(type='text', name='contactPerson' )
+                                      td= "Address"
+                                      td
+                                        .col-xs-10.col-sm-10.col-md-10
+                                          .form-group-sync-mode
+                                            input#address.form-control.input-sm(type='text', name='address')        
+                                    tr
+                                      td= "Email"                            
+                                      td
+                                        .col-xs-10.col-sm-10.col-md-10
+                                          .form-group-sync-mode
+                                            input#email.form-control.input-sm(type='text', name='email' )
+                                      td= "Phone Number"
+                                      td
+                                        .col-xs-10.col-sm-10.col-md-10
+                                          .form-group-sync-mode
+                                            input#phoneNumber.form-control.input-sm(type='text', name='phoneNumber')
+                                    tr
+                                      td= "Latitude"                            
+                                      td
+                                        .col-xs-10.col-sm-10.col-md-10
+                                          .form-group-sync-mode
+                                            input#latitude.form-control.input-sm(type='text', name='latitude' )
+                                      td= "Longitude"
+                                      td
+                                        .col-xs-10.col-sm-10.col-md-10
+                                          .form-group-sync-mode
+                                            input#longitude.form-control.input-sm(type='text', name='longitude')        
+                              .row  
+                                .col-xs-12.col-sm-12.col-md-12        
+                                  .form-group
+                                    <br>  
+                                    button(class="btn btn-info btn-small hover-ponter", id="translator-elements-mapping-btn", type="button") Create Mapping  
+                  table(class="table table-bordered table-hover table-header-bg")
+                    thead(class="table-header-bg thead")
+                      tr
+                        th Source
+                        th Name
+                        th Short Name
+                        th Code
+                        th Opening Date
+                        th Contact Person
+                        th Address
+                        th Email
+                        th Phone
+                        th Latitude
+                        th Longitude
+                        th Action
+
+                    tbody 
+                      each info in mappingInfo
+                        tr
+                          td= info.channel_name                      
+                          td= info.org_name                      
+                          td= info.short_name                      
+                          td= info.code                      
+                          td= info.opening_date                      
+                          td= info.contact_person                      
+                          td= info.address                      
+                          td= info.phone_number                      
+                          td= info.email                      
+                          td= info.latitude                      
+                          td= info.longitude 
+                          td
+                            button(class="btn btn-danger btn-small delete-settings", id="delete-settings"+info.id, type="button", value=info.id+"_translatorMapping") Delete                     
+link(rel='stylesheet', href='/javascripts/sweetalert/sweetalert.css')
+script(type='text/javascript' src='/javascripts/sweetalert/sweetalert.min.js')     
+script(type='text/javascript' src='/javascripts/custom.js')     
+  

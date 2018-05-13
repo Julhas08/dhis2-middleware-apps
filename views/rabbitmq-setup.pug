@@ -1,0 +1,38 @@
+html
+    head
+      meta(charset='UTF-8')
+      title DHIS2 Middleware Apps
+      link(rel='stylesheet', href='/stylesheets/bootstrap.min.css') 
+      link(rel='stylesheet', href='/stylesheets/style.css')    
+      script(type='text/javascript' src='/javascripts/jquery-3.2.1.min.js')    
+      script(type='text/javascript' src='/javascripts/bootstrap.min.js')   
+        
+    body
+        div
+        include ./header.pug 
+        .main-area
+          .col-md-12.col-xs-12.col-lg-12.right-sidebar.padding-left-right-zero
+            .col-md-12.col-xs-12.col-lg-12.col-sm-12.padding-box-columing
+              .panel.panel-white
+                .panel-heading.clearfix
+                  h3.panel-title RabbitMQ Integration
+                .panel-body
+                  .container
+                    .row.centered-form
+                      .col-xs-12.col-sm-10.col-md-10.col-sm-offset-8.col-md-offset-8
+                        .panel.panel-default
+                          .panel-heading
+                            h3.panel-title
+                              | Middleware App integration testing panel with RabbitMQ 
+                          .panel-body
+                            form
+                              .form-group
+                                button.btn.btn-info.btn-block.rabbitmqsender-btn(type='submit' ) RabbitMQ Sender
+                                button.btn.btn-info.btn-block.rabbitmqreceiver-btn(type='submit' ) RabbitMQ Receiver
+
+        
+    
+link(rel='stylesheet', href='/javascripts/sweetalert/sweetalert.css')
+script(type='text/javascript' src='/javascripts/sweetalert/sweetalert.min.js')     
+script(type='text/javascript' src='/javascripts/custom.js')     
+  

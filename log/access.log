@@ -1,106 +1,191 @@
-[2018-02-18T16:05:32.601] [ERROR] accesslog - Cron job status: 1
-[2018-02-18T16:06:08.520] [ERROR] accesslog - Cron job status: 1
-[2018-02-18T16:07:01.358] [ERROR] accesslog - null
-[2018-02-18T16:07:01.360] [ERROR] accesslog - null
-[2018-02-18T16:07:01.360] [ERROR] accesslog - null
-[2018-02-18T16:07:01.361] [ERROR] accesslog - null
-[2018-02-18T16:07:01.363] [ERROR] accesslog - null
-[2018-02-18T16:07:01.364] [ERROR] accesslog - null
-[2018-02-18T16:07:01.365] [ERROR] accesslog - null
-[2018-02-18T16:07:01.366] [ERROR] accesslog - null
-[2018-02-18T16:07:01.366] [ERROR] accesslog - null
-[2018-02-18T16:07:01.367] [ERROR] accesslog - null
-[2018-02-18T16:07:01.394] [ERROR] accesslog - null
-[2018-02-18T16:07:01.400] [ERROR] accesslog - null
-[2018-02-18T16:07:01.406] [ERROR] accesslog - null
-[2018-02-18T16:07:01.412] [ERROR] accesslog - null
-[2018-02-18T16:07:01.414] [ERROR] accesslog - null
-[2018-02-18T16:07:01.417] [ERROR] accesslog - null
-[2018-02-18T16:07:01.420] [ERROR] accesslog - null
-[2018-02-18T16:07:01.423] [ERROR] accesslog - null
-[2018-02-18T16:07:01.425] [ERROR] accesslog - null
-[2018-02-18T16:07:01.429] [ERROR] accesslog - null
-[2018-02-18T16:07:01.492] [ERROR] accesslog - null
-[2018-02-18T16:07:01.493] [ERROR] accesslog - null
-[2018-02-18T16:07:20.761] [ERROR] accesslog - Conflicting in data posting!  409
-[2018-02-18T16:07:21.708] [ERROR] accesslog - Conflicting in data posting!  409
-[2018-02-18T16:07:21.711] [ERROR] accesslog - Conflicting in data posting!  409
-[2018-02-18T16:07:21.713] [ERROR] accesslog - Conflicting in data posting!  409
-[2018-02-18T16:07:21.715] [ERROR] accesslog - Conflicting in data posting!  409
-[2018-02-18T16:07:21.717] [ERROR] accesslog - Conflicting in data posting!  409
-[2018-02-18T16:07:21.718] [ERROR] accesslog - Conflicting in data posting!  409
-[2018-02-18T16:07:21.720] [ERROR] accesslog - Conflicting in data posting!  409
-[2018-02-18T16:07:21.722] [ERROR] accesslog - Conflicting in data posting!  409
-[2018-02-18T16:07:21.724] [ERROR] accesslog - Conflicting in data posting!  409
-[2018-02-18T16:07:21.727] [ERROR] accesslog - Conflicting in data posting!  409
-[2018-02-18T16:07:21.728] [ERROR] accesslog - Conflicting in data posting!  409
-[2018-02-18T16:07:21.730] [ERROR] accesslog - Conflicting in data posting!  409
-[2018-02-18T16:07:21.732] [ERROR] accesslog - Conflicting in data posting!  409
-[2018-02-18T16:11:22.294] [ERROR] accesslog - Cron job status: 1
-[2018-02-18T16:13:00.955] [ERROR] accesslog - null
-[2018-02-18T16:13:00.957] [ERROR] accesslog - null
-[2018-02-18T16:13:00.959] [ERROR] accesslog - null
-[2018-02-18T16:13:00.960] [ERROR] accesslog - null
-[2018-02-18T16:13:00.961] [ERROR] accesslog - null
-[2018-02-18T16:13:00.962] [ERROR] accesslog - null
-[2018-02-18T16:13:00.964] [ERROR] accesslog - null
-[2018-02-18T16:13:00.965] [ERROR] accesslog - null
-[2018-02-18T16:13:00.963] [ERROR] accesslog - null
-[2018-02-18T16:13:00.964] [ERROR] accesslog - null
-[2018-02-18T16:13:01.169] [ERROR] accesslog - null
-[2018-02-18T16:13:01.170] [ERROR] accesslog - null
-[2018-02-18T16:13:01.312] [ERROR] accesslog - null
-[2018-02-18T16:13:01.314] [ERROR] accesslog - null
-[2018-02-18T16:13:01.317] [ERROR] accesslog - null
-[2018-02-18T16:13:01.319] [ERROR] accesslog - null
-[2018-02-18T16:13:01.320] [ERROR] accesslog - null
-[2018-02-18T16:13:01.321] [ERROR] accesslog - null
-[2018-02-18T16:13:01.322] [ERROR] accesslog - null
-[2018-02-18T16:13:01.318] [ERROR] accesslog - null
-[2018-02-18T16:13:01.313] [ERROR] accesslog - null
-[2018-02-18T16:13:01.315] [ERROR] accesslog - null
-[2018-02-18T16:49:36.977] [ERROR] accesslog - Cron job status: 1
-[2018-02-18T16:49:47.646] [ERROR] accesslog - { Error: Not Found
-    at E:\DHIS2 Apps\middleware-apps-v1\app.js:47:16
+[2018-05-13T14:53:43.012] [ERROR] accesslog - Cron job status: 1
+[2018-05-13T14:54:29.777] [ERROR] accesslog - Cron job status: 1
+[2018-05-13T14:54:34.452] [ERROR] accesslog - Cron job status: 1
+[2018-05-13T15:02:59.607] [ERROR] accesslog - Cron job status: 1
+[2018-05-13T15:04:16.687] [ERROR] accesslog - Cron job status: 1
+[2018-05-13T15:04:43.814] [ERROR] accesslog - Cron job status: 1
+[2018-05-13T15:05:01.731] [ERROR] accesslog - Cron job status: 1
+[2018-05-13T15:05:10.656] [ERROR] accesslog - ERROR!  ReferenceError: sync_period is not defined
+    at db.tx.then.data (E:\DHIS2 Apps\middleware-apps-v1\src\app\controllers\QueuesController.js:83:17)
+    at <anonymous>
+    at process._tickCallback (internal/process/next_tick.js:188:7)
+[2018-05-13T15:05:33.944] [ERROR] accesslog - Cron job status: 1
+[2018-05-13T15:05:34.085] [ERROR] accesslog - ERROR!  ReferenceError: sync_period is not defined
+    at db.tx.then.data (E:\DHIS2 Apps\middleware-apps-v1\src\app\controllers\QueuesController.js:83:17)
+    at <anonymous>
+    at process._tickCallback (internal/process/next_tick.js:188:7)
+[2018-05-13T15:05:34.854] [ERROR] accesslog - ERROR!  ReferenceError: sync_period is not defined
+    at db.tx.then.data (E:\DHIS2 Apps\middleware-apps-v1\src\app\controllers\QueuesController.js:83:17)
+    at <anonymous>
+    at process._tickCallback (internal/process/next_tick.js:188:7)
+[2018-05-13T15:05:51.787] [ERROR] accesslog - Cron job status: 1
+[2018-05-13T15:05:51.819] [ERROR] accesslog - ERROR!  ReferenceError: sync_period is not defined
+    at db.tx.then.data (E:\DHIS2 Apps\middleware-apps-v1\src\app\controllers\QueuesController.js:83:17)
+    at <anonymous>
+    at process._tickCallback (internal/process/next_tick.js:188:7)
+[2018-05-13T15:06:03.835] [ERROR] accesslog - ERROR!  ReferenceError: sync_period is not defined
+    at db.tx.then.data (E:\DHIS2 Apps\middleware-apps-v1\src\app\controllers\QueuesController.js:83:17)
+    at <anonymous>
+    at process._tickCallback (internal/process/next_tick.js:188:7)
+[2018-05-13T15:06:45.804] [ERROR] accesslog - Cron job status: 1
+[2018-05-13T15:06:48.184] [ERROR] accesslog - Cron job status: 1
+[2018-05-13T15:09:59.968] [ERROR] accesslog - Cron job status: 1
+[2018-05-13T15:10:11.014] [ERROR] accesslog - TypeError: Cannot read property 'sync_period' of undefined
+    at exports.syncDurableMessages (E:\DHIS2 Apps\middleware-apps-v1\src\app\controllers\QueuesController.js:97:31)
+    at Layer.handle [as handle_request] (E:\DHIS2 Apps\middleware-apps-v1\node_modules\express\lib\router\layer.js:95:5)
+    at next (E:\DHIS2 Apps\middleware-apps-v1\node_modules\express\lib\router\route.js:137:13)
+    at Route.dispatch (E:\DHIS2 Apps\middleware-apps-v1\node_modules\express\lib\router\route.js:112:3)
+    at Layer.handle [as handle_request] (E:\DHIS2 Apps\middleware-apps-v1\node_modules\express\lib\router\layer.js:95:5)
+    at E:\DHIS2 Apps\middleware-apps-v1\node_modules\express\lib\router\index.js:281:22
+    at Function.process_params (E:\DHIS2 Apps\middleware-apps-v1\node_modules\express\lib\router\index.js:335:12)
+    at next (E:\DHIS2 Apps\middleware-apps-v1\node_modules\express\lib\router\index.js:275:10)
+    at Function.handle (E:\DHIS2 Apps\middleware-apps-v1\node_modules\express\lib\router\index.js:174:3)
+    at router (E:\DHIS2 Apps\middleware-apps-v1\node_modules\express\lib\router\index.js:47:12)
     at Layer.handle [as handle_request] (E:\DHIS2 Apps\middleware-apps-v1\node_modules\express\lib\router\layer.js:95:5)
     at trim_prefix (E:\DHIS2 Apps\middleware-apps-v1\node_modules\express\lib\router\index.js:317:13)
     at E:\DHIS2 Apps\middleware-apps-v1\node_modules\express\lib\router\index.js:284:7
     at Function.process_params (E:\DHIS2 Apps\middleware-apps-v1\node_modules\express\lib\router\index.js:335:12)
     at next (E:\DHIS2 Apps\middleware-apps-v1\node_modules\express\lib\router\index.js:275:10)
     at E:\DHIS2 Apps\middleware-apps-v1\node_modules\express\lib\router\index.js:635:15
-    at next (E:\DHIS2 Apps\middleware-apps-v1\node_modules\express\lib\router\index.js:260:14)
+[2018-05-13T15:10:41.078] [ERROR] accesslog - Cron job status: 1
+[2018-05-13T15:10:48.470] [ERROR] accesslog - Cron job status: 1
+[2018-05-13T15:10:50.799] [ERROR] accesslog - TypeError: Cannot read property 'sync_period' of undefined
+    at exports.syncDurableMessages (E:\DHIS2 Apps\middleware-apps-v1\src\app\controllers\QueuesController.js:97:31)
+    at Layer.handle [as handle_request] (E:\DHIS2 Apps\middleware-apps-v1\node_modules\express\lib\router\layer.js:95:5)
+    at next (E:\DHIS2 Apps\middleware-apps-v1\node_modules\express\lib\router\route.js:137:13)
+    at Route.dispatch (E:\DHIS2 Apps\middleware-apps-v1\node_modules\express\lib\router\route.js:112:3)
+    at Layer.handle [as handle_request] (E:\DHIS2 Apps\middleware-apps-v1\node_modules\express\lib\router\layer.js:95:5)
+    at E:\DHIS2 Apps\middleware-apps-v1\node_modules\express\lib\router\index.js:281:22
+    at Function.process_params (E:\DHIS2 Apps\middleware-apps-v1\node_modules\express\lib\router\index.js:335:12)
+    at next (E:\DHIS2 Apps\middleware-apps-v1\node_modules\express\lib\router\index.js:275:10)
     at Function.handle (E:\DHIS2 Apps\middleware-apps-v1\node_modules\express\lib\router\index.js:174:3)
-    at router (E:\DHIS2 Apps\middleware-apps-v1\node_modules\express\lib\router\index.js:47:12) status: 404 }
-[2018-02-18T16:49:47.784] [ERROR] accesslog - { Error: Not Found
-    at E:\DHIS2 Apps\middleware-apps-v1\app.js:47:16
+    at router (E:\DHIS2 Apps\middleware-apps-v1\node_modules\express\lib\router\index.js:47:12)
     at Layer.handle [as handle_request] (E:\DHIS2 Apps\middleware-apps-v1\node_modules\express\lib\router\layer.js:95:5)
     at trim_prefix (E:\DHIS2 Apps\middleware-apps-v1\node_modules\express\lib\router\index.js:317:13)
     at E:\DHIS2 Apps\middleware-apps-v1\node_modules\express\lib\router\index.js:284:7
     at Function.process_params (E:\DHIS2 Apps\middleware-apps-v1\node_modules\express\lib\router\index.js:335:12)
     at next (E:\DHIS2 Apps\middleware-apps-v1\node_modules\express\lib\router\index.js:275:10)
     at E:\DHIS2 Apps\middleware-apps-v1\node_modules\express\lib\router\index.js:635:15
-    at next (E:\DHIS2 Apps\middleware-apps-v1\node_modules\express\lib\router\index.js:260:14)
-    at Function.handle (E:\DHIS2 Apps\middleware-apps-v1\node_modules\express\lib\router\index.js:174:3)
-    at router (E:\DHIS2 Apps\middleware-apps-v1\node_modules\express\lib\router\index.js:47:12) status: 404 }
-[2018-02-18T16:49:47.841] [ERROR] accesslog - { Error: Not Found
-    at E:\DHIS2 Apps\middleware-apps-v1\app.js:47:16
-    at Layer.handle [as handle_request] (E:\DHIS2 Apps\middleware-apps-v1\node_modules\express\lib\router\layer.js:95:5)
-    at trim_prefix (E:\DHIS2 Apps\middleware-apps-v1\node_modules\express\lib\router\index.js:317:13)
-    at E:\DHIS2 Apps\middleware-apps-v1\node_modules\express\lib\router\index.js:284:7
-    at Function.process_params (E:\DHIS2 Apps\middleware-apps-v1\node_modules\express\lib\router\index.js:335:12)
-    at next (E:\DHIS2 Apps\middleware-apps-v1\node_modules\express\lib\router\index.js:275:10)
-    at E:\DHIS2 Apps\middleware-apps-v1\node_modules\express\lib\router\index.js:635:15
-    at next (E:\DHIS2 Apps\middleware-apps-v1\node_modules\express\lib\router\index.js:260:14)
-    at Function.handle (E:\DHIS2 Apps\middleware-apps-v1\node_modules\express\lib\router\index.js:174:3)
-    at router (E:\DHIS2 Apps\middleware-apps-v1\node_modules\express\lib\router\index.js:47:12) status: 404 }
-[2018-02-18T16:49:47.842] [ERROR] accesslog - { Error: Not Found
-    at E:\DHIS2 Apps\middleware-apps-v1\app.js:47:16
-    at Layer.handle [as handle_request] (E:\DHIS2 Apps\middleware-apps-v1\node_modules\express\lib\router\layer.js:95:5)
-    at trim_prefix (E:\DHIS2 Apps\middleware-apps-v1\node_modules\express\lib\router\index.js:317:13)
-    at E:\DHIS2 Apps\middleware-apps-v1\node_modules\express\lib\router\index.js:284:7
-    at Function.process_params (E:\DHIS2 Apps\middleware-apps-v1\node_modules\express\lib\router\index.js:335:12)
-    at next (E:\DHIS2 Apps\middleware-apps-v1\node_modules\express\lib\router\index.js:275:10)
-    at E:\DHIS2 Apps\middleware-apps-v1\node_modules\express\lib\router\index.js:635:15
-    at next (E:\DHIS2 Apps\middleware-apps-v1\node_modules\express\lib\router\index.js:260:14)
-    at Function.handle (E:\DHIS2 Apps\middleware-apps-v1\node_modules\express\lib\router\index.js:174:3)
-    at router (E:\DHIS2 Apps\middleware-apps-v1\node_modules\express\lib\router\index.js:47:12) status: 404 }
+[2018-05-13T15:11:00.067] [ERROR] accesslog - Cron job status: 1
+[2018-05-13T15:11:14.461] [ERROR] accesslog - Cron job status: 1
+[2018-05-13T15:12:16.466] [ERROR] accesslog - Cron job status: 1
+[2018-05-13T15:12:35.387] [ERROR] accesslog - Cron job status: 1
+[2018-05-13T15:13:29.616] [ERROR] accesslog - Cron job status: 1
+[2018-05-13T15:13:29.736] [ERROR] accesslog - ERROR!  TypeError: exchangePeiod.replace is not a function
+    at db.tx.then.data (E:\DHIS2 Apps\middleware-apps-v1\src\app\controllers\QueuesController.js:85:38)
+    at <anonymous>
+    at process._tickCallback (internal/process/next_tick.js:188:7)
+[2018-05-13T15:13:36.617] [ERROR] accesslog - ERROR!  TypeError: exchangePeiod.replace is not a function
+    at db.tx.then.data (E:\DHIS2 Apps\middleware-apps-v1\src\app\controllers\QueuesController.js:85:38)
+    at <anonymous>
+    at process._tickCallback (internal/process/next_tick.js:188:7)
+[2018-05-13T15:14:16.155] [ERROR] accesslog - Cron job status: 1
+[2018-05-13T15:14:16.166] [ERROR] accesslog - ERROR!  TypeError: exchangePeiod.replace is not a function
+    at db.tx.then.data (E:\DHIS2 Apps\middleware-apps-v1\src\app\controllers\QueuesController.js:85:38)
+    at <anonymous>
+    at process._tickCallback (internal/process/next_tick.js:188:7)
+[2018-05-13T15:14:32.954] [ERROR] accesslog - Cron job status: 1
+[2018-05-13T15:14:35.388] [ERROR] accesslog - Cron job status: 1
+[2018-05-13T15:23:33.812] [ERROR] accesslog - Cron job status: 1
+[2018-05-13T15:25:20.914] [ERROR] accesslog - Cron job status: 1
+[2018-05-13T15:25:20.926] [ERROR] accesslog - ERROR!  SyntaxError: Unexpected token o in JSON at position 1
+    at JSON.parse (<anonymous>)
+    at db.tx.then.data (E:\DHIS2 Apps\middleware-apps-v1\src\app\controllers\QueuesController.js:83:30)
+    at <anonymous>
+    at process._tickCallback (internal/process/next_tick.js:188:7)
+[2018-05-13T15:25:41.375] [ERROR] accesslog - Cron job status: 1
+[2018-05-13T15:26:24.392] [ERROR] accesslog - Cron job status: 1
+[2018-05-13T15:27:04.294] [ERROR] accesslog - Cron job status: 1
+[2018-05-13T15:27:19.231] [ERROR] accesslog - Cron job status: 1
+[2018-05-13T15:28:46.644] [ERROR] accesslog - Cron job status: 1
+[2018-05-13T15:29:26.186] [ERROR] accesslog - Cron job status: 1
+[2018-05-13T15:43:06.775] [ERROR] accesslog - Cron job status: 1
+[2018-05-13T15:43:55.662] [ERROR] accesslog - Cron job status: 1
+[2018-05-13T15:44:33.601] [ERROR] accesslog - Cron job status: 1
+[2018-05-13T15:44:41.893] [ERROR] accesslog - Cron job status: 1
+[2018-05-13T15:46:58.429] [ERROR] accesslog - Cron job status: 1
+[2018-05-13T15:47:58.522] [ERROR] accesslog - Cron job status: 1
+[2018-05-13T15:52:31.569] [ERROR] accesslog - Cron job status: 1
+[2018-05-13T15:54:51.751] [ERROR] accesslog - Cron job status: 1
+[2018-05-13T15:54:57.038] [ERROR] accesslog - Cron job status: 1
+[2018-05-13T15:56:35.806] [ERROR] accesslog - Cron job status: 1
+[2018-05-13T15:56:57.030] [ERROR] accesslog - Cron job status: 1
+[2018-05-13T15:57:17.682] [ERROR] accesslog - Cron job status: 1
+[2018-05-13T15:59:58.730] [ERROR] accesslog - Cron job status: 1
+[2018-05-13T16:00:26.677] [ERROR] accesslog - Cron job status: 1
+[2018-05-13T16:01:51.875] [ERROR] accesslog - Cron job status: 1
+[2018-05-13T16:13:48.027] [ERROR] accesslog - Cron job status: 1
+[2018-05-13T16:13:50.070] [ERROR] accesslog - Cron job status: 1
+[2018-05-13T16:13:56.193] [ERROR] accesslog - Cron job status: 1
+[2018-05-13T16:15:26.622] [ERROR] accesslog - Cron job status: 1
+[2018-05-13T16:16:33.994] [ERROR] accesslog - ERROR!  TypeError: Cannot read property 'message' of undefined
+    at db.tx.then.data (E:\DHIS2 Apps\middleware-apps-v1\src\app\controllers\QueuesController.js:104:48)
+    at <anonymous>
+    at process._tickCallback (internal/process/next_tick.js:188:7)
+[2018-05-13T16:17:33.999] [ERROR] accesslog - ERROR!  TypeError: Cannot read property 'message' of undefined
+    at db.tx.then.data (E:\DHIS2 Apps\middleware-apps-v1\src\app\controllers\QueuesController.js:104:48)
+    at <anonymous>
+    at process._tickCallback (internal/process/next_tick.js:188:7)
+[2018-05-13T16:18:07.755] [ERROR] accesslog - Cron job status: 1
+[2018-05-13T16:18:26.150] [ERROR] accesslog - Cron job status: 1
+[2018-05-13T16:21:35.187] [ERROR] accesslog - Cron job status: 1
+[2018-05-13T16:22:43.562] [ERROR] accesslog - ERROR!  TypeError: Cannot read property 'message' of undefined
+    at db.tx.then.data (E:\DHIS2 Apps\middleware-apps-v1\src\app\controllers\QueuesController.js:104:48)
+    at <anonymous>
+    at process._tickCallback (internal/process/next_tick.js:188:7)
+[2018-05-13T16:23:14.817] [ERROR] accesslog - Cron job status: 1
+[2018-05-13T16:37:49.208] [ERROR] accesslog - Cron job status: 1
+[2018-05-13T16:38:16.544] [ERROR] accesslog - Cron job status: 1
+[2018-05-13T16:38:28.146] [ERROR] accesslog - Cron job status: 1
+[2018-05-13T16:41:55.077] [ERROR] accesslog - ERROR!  TypeError: Cannot read property 'message' of undefined
+    at db.tx.then.data (E:\DHIS2 Apps\middleware-apps-v1\src\app\controllers\QueuesController.js:104:48)
+    at <anonymous>
+    at process._tickCallback (internal/process/next_tick.js:188:7)
+[2018-05-13T16:42:55.081] [ERROR] accesslog - ERROR!  TypeError: Cannot read property 'message' of undefined
+    at db.tx.then.data (E:\DHIS2 Apps\middleware-apps-v1\src\app\controllers\QueuesController.js:104:48)
+    at <anonymous>
+    at process._tickCallback (internal/process/next_tick.js:188:7)
+[2018-05-13T16:42:55.101] [ERROR] accesslog - ERROR!  TypeError: Cannot read property 'message' of undefined
+    at db.tx.then.data (E:\DHIS2 Apps\middleware-apps-v1\src\app\controllers\QueuesController.js:104:48)
+    at <anonymous>
+    at process._tickCallback (internal/process/next_tick.js:188:7)
+[2018-05-13T16:43:55.052] [ERROR] accesslog - ERROR!  TypeError: Cannot read property 'message' of undefined
+    at db.tx.then.data (E:\DHIS2 Apps\middleware-apps-v1\src\app\controllers\QueuesController.js:104:48)
+    at <anonymous>
+    at process._tickCallback (internal/process/next_tick.js:188:7)
+[2018-05-13T16:43:55.101] [ERROR] accesslog - ERROR!  TypeError: Cannot read property 'message' of undefined
+    at db.tx.then.data (E:\DHIS2 Apps\middleware-apps-v1\src\app\controllers\QueuesController.js:104:48)
+    at <anonymous>
+    at process._tickCallback (internal/process/next_tick.js:188:7)
+[2018-05-13T16:44:55.088] [ERROR] accesslog - ERROR!  TypeError: Cannot read property 'message' of undefined
+    at db.tx.then.data (E:\DHIS2 Apps\middleware-apps-v1\src\app\controllers\QueuesController.js:104:48)
+    at <anonymous>
+    at process._tickCallback (internal/process/next_tick.js:188:7)
+[2018-05-13T16:44:55.100] [ERROR] accesslog - ERROR!  TypeError: Cannot read property 'message' of undefined
+    at db.tx.then.data (E:\DHIS2 Apps\middleware-apps-v1\src\app\controllers\QueuesController.js:104:48)
+    at <anonymous>
+    at process._tickCallback (internal/process/next_tick.js:188:7)
+[2018-05-13T16:45:55.089] [ERROR] accesslog - ERROR!  TypeError: Cannot read property 'message' of undefined
+    at db.tx.then.data (E:\DHIS2 Apps\middleware-apps-v1\src\app\controllers\QueuesController.js:104:48)
+    at <anonymous>
+    at process._tickCallback (internal/process/next_tick.js:188:7)
+[2018-05-13T16:45:55.101] [ERROR] accesslog - ERROR!  TypeError: Cannot read property 'message' of undefined
+    at db.tx.then.data (E:\DHIS2 Apps\middleware-apps-v1\src\app\controllers\QueuesController.js:104:48)
+    at <anonymous>
+    at process._tickCallback (internal/process/next_tick.js:188:7)
+[2018-05-13T16:46:55.099] [ERROR] accesslog - ERROR!  TypeError: Cannot read property 'message' of undefined
+    at db.tx.then.data (E:\DHIS2 Apps\middleware-apps-v1\src\app\controllers\QueuesController.js:104:48)
+    at <anonymous>
+    at process._tickCallback (internal/process/next_tick.js:188:7)
+[2018-05-13T16:46:55.103] [ERROR] accesslog - ERROR!  TypeError: Cannot read property 'message' of undefined
+    at db.tx.then.data (E:\DHIS2 Apps\middleware-apps-v1\src\app\controllers\QueuesController.js:104:48)
+    at <anonymous>
+    at process._tickCallback (internal/process/next_tick.js:188:7)
+[2018-05-13T16:47:55.104] [ERROR] accesslog - ERROR!  TypeError: Cannot read property 'message' of undefined
+    at db.tx.then.data (E:\DHIS2 Apps\middleware-apps-v1\src\app\controllers\QueuesController.js:104:48)
+    at <anonymous>
+    at process._tickCallback (internal/process/next_tick.js:188:7)
+[2018-05-13T16:47:55.129] [ERROR] accesslog - ERROR!  TypeError: Cannot read property 'message' of undefined
+    at db.tx.then.data (E:\DHIS2 Apps\middleware-apps-v1\src\app\controllers\QueuesController.js:104:48)
+    at <anonymous>
+    at process._tickCallback (internal/process/next_tick.js:188:7)
