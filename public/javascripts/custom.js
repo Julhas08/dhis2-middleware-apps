@@ -1515,4 +1515,45 @@ $('.modal-auto-close').click(function(e) {
    
     $('#viewMessageSummary').modal('hide');
 });
+
+$('.syncDurableMessages').click(function(e) {
+   
+   // Loader		
+		$('#syncDurableMessages').after('<div class="loader"><img src="images/load.gif" alt="Searching......" /></div>');
+	// Ajax posting 
+			$.ajax({
+				type: 'POST',
+				cache: false,
+				data: "Julhas",
+    			dataType: "json",
+	            url: '/durable-queue-sync',						
+	            success: function(data) {
+	            	
+	            	if(data=='success'){
+	            		swal("Success!", "New queue has added successfully","success");
+	            	} else {
+	            		swal("Sorry!", "Queue creation problem","error");
+	            	}
+	// Close loader and set timeout callback function 
+				setTimeout(function(){	       
+	                $('#loader').slideUp(200,function(){        
+	               		$('#loader').remove();	   
+		            });
+		            $(".loader").fadeOut("slow"); 
+		             window.location.reload();		             
+	            }, 1000);  
+
+	            },
+	            error: function(err){
+	            	console.log(err);
+	// Close loader        
+	                $('#loader').slideUp(200,function(){        
+	               		$('#loader').remove();
+		            });
+		            $(".loader").fadeOut("slow");
+	            }
+	        });
+
+
+});
     			

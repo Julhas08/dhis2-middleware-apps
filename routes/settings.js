@@ -54,4 +54,8 @@ router.post('/rabbitmq-receiver', rabbitmq.rabbitMQReceiver);
 // Queues
 router.get('/queues', queuesRoutes.allQueues);
 router.post('/add-new-queue', queuesRoutes.addNewQueue);
+
+// Queue auto refresh
+router.post('/durable-queue-sync', queuesRoutes.syncDurableMessages);
+
 module.exports = router;
