@@ -23,11 +23,11 @@ html
                       th Queue ID
                       th Name
                       th Durability
+                      th Change Durability ?
                       th Auto Delete
                       th Auto Expire
                       th Max Length
                       th Routing Key
-                      th Created Date
                       th Message Summary
                       th Action
 
@@ -37,11 +37,21 @@ html
                           td= info.id   
                           td= info.name   
                           td= info.durability
+                          td 
+                            if(info.durability=='durable')           
+                              label.switch
+                                input(type='checkbox',id='isChangeDurability')
+                                span.slider.round  
+                              
+                            if(info.durability=='transient')
+                              label.switch
+                                input(type='checkbox',id='isChangeDurability', checked='')
+                                span.slider.round  
+
                           td= info.delete_status
                           td= info.expire_status
                           td= info.max_length
                           td= info.routing_key
-                          td= info.created_at
                           td 
                             button(type='button', data-toggle='modal', data-target='#viewMessageSummary' class="btn btn-small btn-info hover-ponter viewMessageSumary", id="viewMessageSumary"+info.id, value=info.id+"_queues") View Summary  
                           td 
@@ -59,6 +69,46 @@ html
                         div(class="queue-detail-body")
                           button(type='button', data-toggle='modal', data-target='#viewAllSuccessMessages' class="btn btn-warning btn-small hover-ponter viewMessageSumary", id="syncDurableMessages", value="_queues") Sync All  
                           each info in successQueueDetail
+                            table(class="table table-bordered table-hover table-header-bg")
+                              thead(class="table-header-bg thead")
+                                tr
+                                  th ID
+                                  th Name
+                                  th Durability
+                                  th Exchange Mode
+                                  th Response Code
+                                  th Destination
+                                  th Action
+                              tbody                                 
+                                  tr
+                                    td= info.id   
+                                    td= info.queue_name   
+                                    td= info.durability   
+                                    td= info.exchange_mode
+                                    td= info.response_code
+                                    td
+                                      a(target='_blank' href='view-channel-detail?id='+info.id) #{info.channel_name} 
+                                    td
+                                      button(type='button' class="btn btn-small btn-warning hover-ponter syncDurableMessages", id="syncDurableMessages", value=info.id+"_queues") Sync Now  
+                            h6 JSON Payload: #{info.message} 
+                            <br>
+
+
+                      .modal-footer
+                        button.btn.btn-default(type='button', data-dismiss='modal') Close               
+                
+                // View all Pending messages
+                #viewAllPendingsMessages.modal.fade(role='dialog')
+                  .modal-dialog.modal-lg
+                    // Modal content
+                    .modal-content
+                      .modal-header
+                        button.close(type='button', data-dismiss='modal') ×
+                        h4.modal-title View all messages
+                      .modal-body                        
+                        div(class="queue-detail-body")
+                          button(type='button', data-toggle='modal', data-target='#syncDurableMessages' class="btn btn-warning btn-small hover-ponter viewMessageSumary", id="syncDurableMessages", value="_queues") Sync All  
+                          each info in pendingQueueDetail
                             table(class="table table-bordered table-hover table-header-bg")
                               thead(class="table-header-bg thead")
                                 tr
@@ -137,7 +187,7 @@ html
                         h4.modal-title View all messages
                       .modal-body                        
                         div(class="queue-detail-body")
-                          button(type='button', data-toggle='modal', data-target='#viewMessageSummary' class="btn btn-warning btn-small hover-ponter viewMessageSumary", id="viewAllErrorMessages", value="_queues") Sync All  
+                          button(type='button', data-toggle='modal', data-target='#viewMessageSummary' class="btn btn-warning btn-small hover-ponter viewAllErrorMessages", id="viewAllErrorMessages", value="_queues") Sync All  
                           each info in errorQueueDetail
                             table(class="table table-bordered table-hover table-header-bg")
                               thead(class="table-header-bg thead")
@@ -177,7 +227,7 @@ html
                         h4.modal-title View all messages
                       .modal-body                        
                         div(class="queue-detail-body")
-                          button(type='button', data-toggle='modal', data-target='#viewMessageSummary' class="btn btn-warning btn-small hover-ponter viewMessageSumary", id="viewMessageSumary", value="_queues") Sync All  
+                          button(type='button', data-toggle='modal', data-target='#viewMessageSummary' class="btn btn-warning btn-small hover-ponter errorQueueDetail", id="errorQueueDetail", value="_queues") Sync All  
                           each info in errorQueueDetail
                             table(class="table table-bordered table-hover table-header-bg")
                               thead(class="table-header-bg thead")
@@ -220,6 +270,7 @@ html
                           thead(class="table-header-bg thead")
                             tr
                               th Response Type
+                              th Response Code
                               th Total Message
                               th Action
 
@@ -227,21 +278,31 @@ html
                             each info in queueSummary
                               if(info.response_code==201 || info.response_code==200)
                                 tr
-                                  td= 'Success'  
+                                  td= 'Success'    
+                                  td= info.response_code 
                                   td= info.totalmessage   
                                   td
-                                    button(type='button', data-toggle='modal', data-target='#viewAllSuccessMessages' class="btn btn-small btn-success hover-ponter modal-auto-close", id="viewQueues"+info.id, value=info.id+"_queues") View    
+                                    button(type='button', data-toggle='modal', data-target='#viewAllSuccessMessages' class="btn btn-small btn-success hover-ponter modal-auto-close", id="viewQueues"+info.id, value=info.id+"_queues") View 
+                              if(info.response_code==202)
+                                tr
+                                  td= 'Pending'     
+                                  td= info.response_code
+                                  td= info.totalmessage   
+                                  td
+                                    button(type='button', data-toggle='modal', data-target='#viewAllPendingsMessages' class="btn btn-small btn-warning hover-ponter modal-auto-close", id="viewQueues"+info.id, value=info.id+"_queues") View          
                               if(info.response_code==409)
                                 tr
-                                  td= 'Conflict/Failed'  
-                                  td= info.totalmessage   
+                                  td= 'Conflict/Failed'   
+                                  td= info.response_code 
+                                  td= info.totalmessage    
                                   td
                                     button(type='button', data-toggle='modal', data-target='#viewAllConflictMessages' class="btn btn-small btn-warning hover-ponter modal-auto-close", id="viewQueues"+info.id, value=info.id+"_queues") View    
                                     if(info.response_code==200)
                               if(info.response_code==500)  
                                 tr
-                                  td= 'Error'  
-                                  td= info.totalmessage   
+                                  td= 'Error'   
+                                  td= info.response_code   
+                                  td= info.totalmessage  
                                   td
                                     button(type='button', data-toggle='modal', data-target='#viewAllErrorMessages' class="btn btn-small btn-danger hover-ponter modal-auto-close", id="viewQueues"+info.id, value=info.id+"_queues") View    
                       .modal-footer

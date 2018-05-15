@@ -1556,4 +1556,61 @@ $('.syncDurableMessages').click(function(e) {
 
 
 });
-    			
+
+// Durability change from 
+
+// Enable or disable cron job 
+$('#isChangeDurability').on('change',function(e){
+
+		var durability;
+		if($('#isChangeDurability:checked').val()=='1'){
+			durability = 'durable'; 
+
+		} else if($('#isChangeDurability:checked').val()=='on') {
+			durability = 'durable';
+		} else {
+			durability = 'transient';
+		}
+        var paramInfo = '&durability='+durability;
+
+	// Loader		
+			$('#isChangeDurability').after('<div class="loader"><img src="images/load.gif" alt="Searching......" /></div>');
+	// Ajax posting 
+			$.ajax({
+				type: 'POST',
+				cache: false,
+				data: paramInfo,
+		        //contentType: 'application/json',
+	            url: '/durability-update',						
+	            success: function(data) {
+	            	if(data=='success'){
+	            		swal("Success!", "Durability has updated successfully.","success");
+	            		$('#isChangeDurability').val(' ');	
+	            	} else {
+	            		swal("Sorry!", "Durability was not updated.","error");
+	            		$('#isChangeDurability').val(' ');	
+	            	}
+	// Close loader and set timeout callback function 
+					setTimeout(function(){	       
+		                $('#loader').slideUp(200,function(){        
+		               		$('#loader').remove();	   
+			            });
+			            $(".loader").fadeOut("slow"); 
+			             window.location.reload();
+		            }, 1000);            		
+
+	            },
+	            error: function(err){
+	            	console.log(err);
+	// Close loader and set timeout callback function         
+	                setTimeout(function(){	       
+		                $('#loader').slideUp(200,function(){        
+		               		$('#loader').remove();	   
+			            });
+			            $(".loader").fadeOut("slow"); 
+			             window.location.reload();
+		            }, 3000);
+	            }
+	        });
+
+    });	    			

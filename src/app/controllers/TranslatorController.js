@@ -195,7 +195,8 @@ module.exports = {
 				if(apiData.durability=='durable' && modeType==0){
 			// Add in queue detail table
 				let status = 'pending';
-					db.query("INSERT into queue_detail (queue_id,durability,exchange_mode,operation_type,message,response_code,status,created_at) VALUES('"+apiData.queue+"','"+apiData.durability+"','"+exchangeMode+"','"+operationType+"','"+jsonPayload+"','"+response.statusCode+"','"+status+"','"+fn.getDateYearMonthDayMinSeconds()+"')").then(info => {	
+				let responseCode = 202; // pending
+					db.query("INSERT into queue_detail (queue_id,durability,exchange_mode,operation_type,message,response_code,status,created_at) VALUES('"+apiData.queue+"','"+apiData.durability+"','"+exchangeMode+"','"+operationType+"','"+jsonPayload+"','"+responseCode+"','"+status+"','"+fn.getDateYearMonthDayMinSeconds()+"')").then(info => {	
 						console.log("success");
 					}).catch(error => {
 				    	logger4js.getLoggerConfig().error("System log was not updated!",error);
@@ -212,9 +213,8 @@ module.exports = {
 				jsonArr = [];	     
 			// Transient Durability  
 				} else if (apiData.durability=='transient' && modeType==0){
-					let status = 'transferred';
 			// Call exchange controller
-					exchanger.exchangeMessages("destination",jsonPayload,orgCode,orgName,parentCode,exchangeMode,operationType,apiData.queue,apiData.durability,status);
+					exchanger.exchangeMessages("destination",jsonPayload,orgCode,orgName,parentCode,exchangeMode,operationType,apiData.queue,apiData.durability);
 				} else {
 			// Automatic Mode Message Transfer		
 

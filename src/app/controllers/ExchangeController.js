@@ -15,7 +15,7 @@ let db= dbConnect.getConnection();
 
 module.exports = {	
 	// This method is for processing source data into queues and automatic mode data exchange		
-	exchangeMessages: function(channelType,jsonPayload,orgCode,orgName,parentCode,exchangeMode,operationType,queueId,durability,status){
+	exchangeMessages: function(channelType,jsonPayload,orgCode,orgName,parentCode,exchangeMode,operationType,queueId,durability){
 	// Database API information		
 		function getChannelSettingsInformation(name) {
 		    return db.task('getChannelSettingsInformation', t => {
@@ -68,29 +68,35 @@ module.exports = {
 
 					//console.log(body);
 					let message = null;
-					let logType = null;									
+					let logType = null;	
+					let status  = null;
+													
 					if(response.statusCode == 409){
 						logger4js.getLoggerConfig().error("Conflicting in data posting! ",response.statusCode);
 						console.log("conflict");
 						message = "Conflicting in data posting!";
 						logType ="conflict";
+						status  ="conflict"; 
 					} else if (response.statusCode == 'undefined'){
 						logger4js.getLoggerConfig().error("Internal server error!",response.statusCode);
 						console.log("internal error");
 						message = "Internal server error!";
 						logType ="internal error";
+						status  ="internalError"; 
 					}else if(response.statusCode == 500){
 						logger4js.getLoggerConfig().error("Internal server error!",response.statusCode);
 						//res.end('500');
 						console.log("internal error");
 						message = "Internal server error!";
 						logType ="internal error";
+						status  ="internalError"; 
 					} else if(response.statusCode == 200 || response.statusCode == 201){
 						logger4js.getLoggerConfig().debug("Successfully submitted json payload! ",response.statusCode);
 						console.log("success");
 						//res.end('201');
 						message = "Successfully submitted json payload!";
 						logType ="success";
+						status  ="success"; 
 					}
 			// Add in queue detail table
 			

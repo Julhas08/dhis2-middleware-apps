@@ -58,4 +58,7 @@ router.post('/add-new-queue', queuesRoutes.addNewQueue);
 // Queue auto refresh
 router.post('/durable-queue-sync', queuesRoutes.syncDurableMessages);
 
+// Queue durability update
+router.post('/durability-update', queuesRoutes.durabilityUpdate);
+
 module.exports = router;

@@ -14,27 +14,54 @@ exports.allQueues = function (req, res) {
 	db.tx(t => {
         return t.batch([
             t.any('select * from queues'),
+            // Durable queue
+            t.any("select q.name,response_code, count(qd.id) as totalMessage from queues q inner join queue_detail qd on q.id=qd.queue_id where qd.durability='durable' group by qd.response_code,q.name"),
             
-            t.any('select q.name,response_code, count(qd.id) as totalMessage from queues q inner join queue_detail qd on q.id=qd.queue_id group by qd.response_code,q.name'),
+            t.any("select api.channel_name,q.name as queue_name,q.durability,q.delete_status,q.expire_status,q.max_length,q.routing_key,qd.* from queues q inner join queue_detail qd on q.id=qd.queue_id inner join api_settings as api on api.queue=q.id where api.channel_type='destination' and (qd.response_code=201 or qd.response_code=200) and qd.durability='durable' order by id asc"),
 
-            t.any("select api.channel_name,q.name as queue_name,q.durability,q.delete_status,q.expire_status,q.max_length,q.routing_key,qd.* from queues q inner join queue_detail qd on q.id=qd.queue_id inner join api_settings as api on api.queue=q.id where api.channel_type='destination' and (qd.response_code=201 or qd.response_code=200) and qd.durability='durable'"),
+            t.any("select api.channel_name,q.name as queue_name,q.durability,q.delete_status,q.expire_status,q.max_length,q.routing_key,qd.* from queues q inner join queue_detail qd on q.id=qd.queue_id inner join api_settings as api on api.queue=q.id where api.channel_type='destination' and qd.response_code=202 and qd.durability='durable' order by id asc"),
 
-            t.any("select api.channel_name,q.name as queue_name,q.durability,q.delete_status,q.expire_status,q.max_length,q.routing_key,qd.* from queues q inner join queue_detail qd on q.id=qd.queue_id inner join api_settings as api on api.queue=q.id where api.channel_type='destination' and (qd.response_code=409 or qd.response_code=409) and qd.durability='durable'"),
+            t.any("select api.channel_name,q.name as queue_name,q.durability,q.delete_status,q.expire_status,q.max_length,q.routing_key,qd.* from queues q inner join queue_detail qd on q.id=qd.queue_id inner join api_settings as api on api.queue=q.id where api.channel_type='destination' and (qd.response_code=409 or qd.response_code=409) and qd.durability='durable' order by id asc"),
 
-            t.any("select api.channel_name,q.name as queue_name,q.durability,q.delete_status,q.expire_status,q.max_length,q.routing_key,qd.* from queues q inner join queue_detail qd on q.id=qd.queue_id inner join api_settings as api on api.queue=q.id where api.channel_type='destination' and (qd.response_code=500 or qd.response_code=500) and qd.durability='durable'"),
+            t.any("select api.channel_name,q.name as queue_name,q.durability,q.delete_status,q.expire_status,q.max_length,q.routing_key,qd.* from queues q inner join queue_detail qd on q.id=qd.queue_id inner join api_settings as api on api.queue=q.id where api.channel_type='destination' and (qd.response_code=500 or qd.response_code=500) and qd.durability='durable' order by id asc"),
+
+            // Transient queue
+
+            t.any("select q.name,response_code, count(qd.id) as totalMessage from queues q inner join queue_detail qd on q.id=qd.queue_id where qd.durability='transient' group by qd.response_code,q.name"),
+            t.any("select api.channel_name,q.name as queue_name,q.durability,q.delete_status,q.expire_status,q.max_length,q.routing_key,qd.* from queues q inner join queue_detail qd on q.id=qd.queue_id inner join api_settings as api on api.queue=q.id where api.channel_type='destination' and (qd.response_code=201 or qd.response_code=200) and qd.durability='transient' order by id asc"),
+
+            t.any("select api.channel_name,q.name as queue_name,q.durability,q.delete_status,q.expire_status,q.max_length,q.routing_key,qd.* from queues q inner join queue_detail qd on q.id=qd.queue_id inner join api_settings as api on api.queue=q.id where api.channel_type='destination' and qd.response_code=202 and qd.durability='transient' order by id asc"),
+
+            t.any("select api.channel_name,q.name as queue_name,q.durability,q.delete_status,q.expire_status,q.max_length,q.routing_key,qd.* from queues q inner join queue_detail qd on q.id=qd.queue_id inner join api_settings as api on api.queue=q.id where api.channel_type='destination' and (qd.response_code=409) and qd.durability='transient' order by id asc"),
+
+            t.any("select api.channel_name,q.name as queue_name,q.durability,q.delete_status,q.expire_status,q.max_length,q.routing_key,qd.* from queues q inner join queue_detail qd on q.id=qd.queue_id inner join api_settings as api on api.queue=q.id where api.channel_type='destination' and (qd.response_code=500 or qd.response_code=501) and qd.durability='transient' order by id asc"),
+
         ]);
     }).then(data => {
-
+        let queueSummary, successQueueDetail, conflictQueueDetail, errorQueueDetail; 
     	let queueInfo    = JSON.parse(JSON.stringify(data[0]));
-        let queueSummary = JSON.parse(JSON.stringify(data[1]));
-        let successQueueDetail  = JSON.parse(JSON.stringify(data[2]));
-        let conflictQueueDetail  = JSON.parse(JSON.stringify(data[3]));
-    	let errorQueueDetail  = JSON.parse(JSON.stringify(data[4]));
+
+        if (queueInfo[0].durability=='durable') {
+            queueSummary       = JSON.parse(JSON.stringify(data[1]));
+            successQueueDetail = JSON.parse(JSON.stringify(data[2]));
+            pendingQueueDetail = JSON.parse(JSON.stringify(data[3]));
+            conflictQueueDetail= JSON.parse(JSON.stringify(data[4]));
+            errorQueueDetail   = JSON.parse(JSON.stringify(data[5]));
+
+        } else {
+            queueSummary       = JSON.parse(JSON.stringify(data[1]));
+            successQueueDetail = JSON.parse(JSON.stringify(data[6]));
+            pendingQueueDetail = JSON.parse(JSON.stringify(data[7]));
+            conflictQueueDetail= JSON.parse(JSON.stringify(data[8]));
+            errorQueueDetail   = JSON.parse(JSON.stringify(data[9]));
+        }
+  
 
 		res.render('queues',{
 	   		queueInfo   : queueInfo,
 	   		queueSummary : queueSummary,
             successQueueDetail: successQueueDetail,
+            pendingQueueDetail: pendingQueueDetail,
             conflictQueueDetail: conflictQueueDetail,
             errorQueueDetail: errorQueueDetail,
 	    })
@@ -101,7 +128,7 @@ exports.syncDurableMessages = function (req, res) {
                     ]);
                 }).then(data => {
                     let jsonPayload = JSON.parse(JSON.stringify(data[0]));
-                    console.log(jsonPayload[0].message);
+
             // Get destination         
                 getChannelSettingsInformation("destination").then(apiInfo => {
 
@@ -116,14 +143,25 @@ exports.syncDurableMessages = function (req, res) {
 
                             let url, parentUID, orgJsonListPost,objOfResponse,parentIdJSON,message =null ,logType = null;
                             let resourcePathAutomatic = "organisationUnits";
-                        // Base url development for data handling                   
-                                url  = baseUrl+resourcePath+jsonPayload[0].message.id;         
+                        // Extract JSON data  
+
+                            for (var i = 0; i <= jsonPayload.length; i++) { 
+                                                           
+                                let queueId = jsonPayload[i].id;
+                                let messageString = jsonPayload[i].message;
+                                let code = messageString.code;
+
+                                console.log("ID: ", jsonPayload[i].id);
+                                console.log("messageString: ", messageString);
+                                console.log("code: ",code);
+                                // Base url development for data handling                   
+                                url  = baseUrl+resourcePath+queueId;         
 
                         // JSON Payload options development         
                                 let options = {
                                     method: 'POST',
                                     url: url,
-                                    body: jsonPayload[0].message,
+                                    body: messageString,
                                     headers: { 
                                         'Authorization': auth,
                                         'Accept': 'application/json',
@@ -133,7 +171,7 @@ exports.syncDurableMessages = function (req, res) {
                                       mimeType: 'application/json'
                                     }
                                 }; // end of eoptions
-                                console.log("Options Post:",options);
+                                //console.log("Options Post:",options);
                         // Posting JSON payload to DHIS2            
                                 request(options, function(error, response, body) {
 
@@ -142,8 +180,8 @@ exports.syncDurableMessages = function (req, res) {
                                     let logType = null;
 
                             // Add in queue detail table
-                                let status ='transferred';
-                                db.query("update queue_detail set status='"+status+"'").then(info => {   
+                                let status ='success';
+                                db.query("update queue_detail set status='"+status+"', response_code='200' where id='"+queueId+"'").then(info => {   
                                         console.log("success");
                                     }).catch(error => {
                                         logger4js.getLoggerConfig().error("System log was not updated!",error);
@@ -156,8 +194,10 @@ exports.syncDurableMessages = function (req, res) {
                                     console.log(error);
                                 });  */       
                                     
-                            }); // End of request of posting data to dhis2
-                                                
+                                }); // End of request of posting data to dhis2
+                                 
+                            }
+                                       
 
                         }).catch(error => {
                             console.log(error);
@@ -180,4 +220,26 @@ exports.syncDurableMessages = function (req, res) {
     });    
 
 
+};
+
+// Update Durability
+exports.durabilityUpdate = function (req, res) {
+
+    let durabilityStatus = req.body.durability;
+
+    db.tx(t => {
+        return t.batch([
+            t.none('UPDATE queues SET durability = $1', [durabilityStatus])
+        ]);
+    })
+    .then(data => {
+        console.log("Durability has changed successfully: ",data); // print success;
+        res.send('success');
+        logger4js.getLoggerConfig().info("SUCCESS!");   
+    })
+    .catch(error => {
+       logger4js.getLoggerConfig().error("ERROR! ",error);
+        console.log(error); // print the error;
+        res.send('error');
+    });
 };
