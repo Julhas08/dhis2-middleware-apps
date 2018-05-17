@@ -67,7 +67,7 @@ html
                         h4.modal-title View all messages
                       .modal-body                        
                         div(class="queue-detail-body")
-                          button(type='button', data-toggle='modal', data-target='#viewAllSuccessMessages' class="btn btn-warning btn-small hover-ponter viewMessageSumary", id="syncDurableMessages", value="_queues") Sync All  
+                          button(type='button', class="btn btn-warning btn-small hover-ponter viewMessageSumary", id="syncDurableMessages", value="_queues") Sync All  
                           each info in successQueueDetail
                             table(class="table table-bordered table-hover table-header-bg")
                               thead(class="table-header-bg thead")
@@ -89,7 +89,7 @@ html
                                     td
                                       a(target='_blank' href='view-channel-detail?id='+info.id) #{info.channel_name} 
                                     td
-                                      button(type='button' class="btn btn-small btn-warning hover-ponter syncDurableMessages", id="syncDurableMessages", value=info.id+"_queues") Sync Now  
+                                      button(type='button' class="btn btn-small btn-warning hover-ponter", id="#", value=info.id+"_queues") Sync Now  
                             h6 JSON Payload: #{info.message} 
                             <br>
 
@@ -107,7 +107,7 @@ html
                         h4.modal-title View all messages
                       .modal-body                        
                         div(class="queue-detail-body")
-                          button(type='button', data-toggle='modal', data-target='#syncDurableMessages' class="btn btn-warning btn-small hover-ponter viewMessageSumary", id="syncDurableMessages", value="_queues") Sync All  
+                          button(type='button', class="btn btn-warning btn-small hover-ponter syncDurableMessages", id="syncDurableMessages", value="_queues") Sync All  
                           each info in pendingQueueDetail
                             table(class="table table-bordered table-hover table-header-bg")
                               thead(class="table-header-bg thead")
@@ -129,7 +129,7 @@ html
                                     td
                                       a(target='_blank' href='view-channel-detail?id='+info.id) #{info.channel_name} 
                                     td
-                                      button(type='button' class="btn btn-small btn-warning hover-ponter syncDurableMessages", id="syncDurableMessages", value=info.id+"_queues") Sync Now  
+                                      button(type='button' class="btn btn-small btn-warning hover-ponter", id="syncDurableMessages"+info.id, value=info.id+"_queues") Sync Now  
                             h6 JSON Payload: #{info.message} 
                             <br>
 
@@ -147,7 +147,7 @@ html
                         h4.modal-title View all messages
                       .modal-body                        
                         div(class="queue-detail-body")
-                          button(type='button', data-toggle='modal', data-target='#viewAllConflictMessages' class="btn btn-warning btn-small hover-ponter viewMessageSumary", id="viewMessageSumary", value="_queues") Sync All  
+                          button(type='button', class="btn btn-warning btn-small hover-ponter", id="syncDurableMessages", value="_queues") Sync All  
                           each info in conflictQueueDetail
                             table(class="table table-bordered table-hover table-header-bg")
                               thead(class="table-header-bg thead")
@@ -169,7 +169,7 @@ html
                                     td
                                       a(target='_blank' href='view-channel-detail?id='+info.id) #{info.channel_name} 
                                     td
-                                      button(type='button', data-toggle='modal', data-target='#viewMessageSummary' class="btn btn-small btn-warning hover-ponter viewMessageSumary", id="viewMessageSumary"+info.id, value=info.id+"_queues") Sync Now  
+                                      button(type='button', data-toggle='modal', data-target='#viewMessageSummary' class="btn btn-small btn-warning hover-ponter", id="syncDurableMessages"+info.id, value=info.id+"_queues") Sync Now  
                             h6 JSON Payload: #{info.message} 
                             <br>
 
@@ -187,7 +187,7 @@ html
                         h4.modal-title View all messages
                       .modal-body                        
                         div(class="queue-detail-body")
-                          button(type='button', data-toggle='modal', data-target='#viewMessageSummary' class="btn btn-warning btn-small hover-ponter viewAllErrorMessages", id="viewAllErrorMessages", value="_queues") Sync All  
+                          button(type='button',class="btn btn-warning btn-small hover-ponter", id="syncDurableMessages", value="_queues") Sync All  
                           each info in errorQueueDetail
                             table(class="table table-bordered table-hover table-header-bg")
                               thead(class="table-header-bg thead")
@@ -209,7 +209,7 @@ html
                                     td
                                       a(target='_blank' href='view-channel-detail?id='+info.id) #{info.channel_name} 
                                     td
-                                      button(type='button', data-toggle='modal', data-target='#viewMessageSummary' class="btn btn-small btn-warning hover-ponter viewMessageSumary", id="viewMessageSumary"+info.id, value=info.id+"_queues") Sync Now  
+                                      button(type='button', class="btn btn-small btn-warning hover-ponter", id="syncDurableMessages"+info.id, value=info.id+"_queues") Sync Now  
                             h6 JSON Payload: #{info.message} 
                             <br>
 

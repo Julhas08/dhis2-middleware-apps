@@ -131,7 +131,7 @@ getCronJobSettingsInformation("source").then(info => {
 								cron.schedule(''+minutes+' '+hours+' * * *', function(){ // 14:59 
 								  //console.log('running a task every minute');
 
-								  // Only Source is DHIS
+								// Only Source is DHIS
 								  //console.log("data.channel_type: ",data.channel_type);
 
 								  if(data.instance_type=='dhis2'){

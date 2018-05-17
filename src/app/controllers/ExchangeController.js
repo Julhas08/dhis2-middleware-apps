@@ -15,7 +15,7 @@ let db= dbConnect.getConnection();
 
 module.exports = {	
 	// This method is for processing source data into queues and automatic mode data exchange		
-	exchangeMessages: function(channelType,jsonPayload,orgCode,orgName,parentCode,exchangeMode,operationType,queueId,durability){
+exchangeMessages: function(channelType,jsonPayload,orgCode,orgName,parentCode,exchangeMode,operationType,queueId,durability){
 	// Database API information		
 		function getChannelSettingsInformation(name) {
 		    return db.task('getChannelSettingsInformation', t => {

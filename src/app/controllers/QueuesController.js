@@ -48,12 +48,13 @@ exports.allQueues = function (req, res) {
             conflictQueueDetail= JSON.parse(JSON.stringify(data[4]));
             errorQueueDetail   = JSON.parse(JSON.stringify(data[5]));
 
-        } else {
-            queueSummary       = JSON.parse(JSON.stringify(data[1]));
-            successQueueDetail = JSON.parse(JSON.stringify(data[6]));
-            pendingQueueDetail = JSON.parse(JSON.stringify(data[7]));
-            conflictQueueDetail= JSON.parse(JSON.stringify(data[8]));
-            errorQueueDetail   = JSON.parse(JSON.stringify(data[9]));
+        } else if (queueInfo[0].durability=='transient')  {
+
+            queueSummary       = JSON.parse(JSON.stringify(data[6]));
+            successQueueDetail = JSON.parse(JSON.stringify(data[7]));
+            pendingQueueDetail = JSON.parse(JSON.stringify(data[8]));
+            conflictQueueDetail= JSON.parse(JSON.stringify(data[9]));
+            errorQueueDetail   = JSON.parse(JSON.stringify(data[10]));
         }
   
 
@@ -128,9 +129,14 @@ exports.syncDurableMessages = function (req, res) {
                     ]);
                 }).then(data => {
                     let jsonPayload = JSON.parse(JSON.stringify(data[0]));
+                    //console.log(jsonPayload);
+                    // If no result found
+                    if(jsonPayload.toString()=='[]'){
+                        console.log("Sorry no pending data is found!");              
 
-            // Get destination         
-                getChannelSettingsInformation("destination").then(apiInfo => {
+                    } else {
+
+                        getChannelSettingsInformation("destination").then(apiInfo => {
 
                             let apiData      = JSON.parse(JSON.stringify(apiInfo));
                             let baseUrl      = apiData.base_url;
@@ -151,9 +157,9 @@ exports.syncDurableMessages = function (req, res) {
                                 let messageString = jsonPayload[i].message;
                                 let code = messageString.code;
 
-                                console.log("ID: ", jsonPayload[i].id);
+                                /*console.log("ID: ", jsonPayload[i].id);
                                 console.log("messageString: ", messageString);
-                                console.log("code: ",code);
+                                console.log("code: ",code);*/
                                 // Base url development for data handling                   
                                 url  = baseUrl+resourcePath+queueId;         
 
@@ -182,7 +188,7 @@ exports.syncDurableMessages = function (req, res) {
                             // Add in queue detail table
                                 let status ='success';
                                 db.query("update queue_detail set status='"+status+"', response_code='200' where id='"+queueId+"'").then(info => {   
-                                        console.log("success");
+                                        console.log("Successfully consumed pending message. Message Queue ID:", queueId);
                                     }).catch(error => {
                                         logger4js.getLoggerConfig().error("System log was not updated!",error);
                                         console.log(error);
@@ -201,12 +207,14 @@ exports.syncDurableMessages = function (req, res) {
 
                         }).catch(error => {
                             console.log(error);
-                        });  
+                        });
+                    }// end of empty checking                  
                     
-            }).catch(error => {
-                logger4js.getLoggerConfig().error("ERROR! ",error);
-                console.log(error); // print the error;
-            });
+                }).catch(error => {
+                    logger4js.getLoggerConfig().error("ERROR! ",error);
+                    console.log(error); // print the error;
+                });    
+           
 
               console.log("I am doing my 1 minute check....");
 

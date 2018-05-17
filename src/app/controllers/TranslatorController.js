@@ -197,7 +197,7 @@ module.exports = {
 				let status = 'pending';
 				let responseCode = 202; // pending
 					db.query("INSERT into queue_detail (queue_id,durability,exchange_mode,operation_type,message,response_code,status,created_at) VALUES('"+apiData.queue+"','"+apiData.durability+"','"+exchangeMode+"','"+operationType+"','"+jsonPayload+"','"+responseCode+"','"+status+"','"+fn.getDateYearMonthDayMinSeconds()+"')").then(info => {	
-						console.log("success");
+						console.log("Message queue added in pending list.");
 					}).catch(error => {
 				    	logger4js.getLoggerConfig().error("System log was not updated!",error);
 				    	console.log(error);
@@ -216,7 +216,8 @@ module.exports = {
 			// Call exchange controller
 					exchanger.exchangeMessages("destination",jsonPayload,orgCode,orgName,parentCode,exchangeMode,operationType,apiData.queue,apiData.durability);
 				} else {
-			// Automatic Mode Message Transfer		
+			// Automatic Mode Message Transfer
+					exchanger.automaticMessageSendExchanger("destination",jsonPayload,orgCode,orgName,parentCode,exchangeMode,operationType,apiData.queue,apiData.durability);		
 
 				}
 			jsonArr = [];	

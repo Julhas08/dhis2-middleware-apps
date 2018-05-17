@@ -1519,7 +1519,7 @@ $('.modal-auto-close').click(function(e) {
 $('.syncDurableMessages').click(function(e) {
    
    // Loader		
-		$('#syncDurableMessages').after('<div class="loader"><img src="images/load.gif" alt="Searching......" /></div>');
+		$('.syncDurableMessages').after('<div class="loader"><img src="images/load.gif" alt="Searching......" /></div>');
 	// Ajax posting 
 			$.ajax({
 				type: 'POST',
@@ -1530,9 +1530,11 @@ $('.syncDurableMessages').click(function(e) {
 	            success: function(data) {
 	            	
 	            	if(data=='success'){
-	            		swal("Success!", "New queue has added successfully","success");
+	            		swal("Success!", "All pending messages was successfully syncronized","success");
+	            	} else if(data=='pendingError'){
+	            		swal("Sorry!", "There is no pending queue found!","error");
 	            	} else {
-	            		swal("Sorry!", "Queue creation problem","error");
+	            		swal("Sorry!", "Unable to sync pending queues!","error");
 	            	}
 	// Close loader and set timeout callback function 
 				setTimeout(function(){	       

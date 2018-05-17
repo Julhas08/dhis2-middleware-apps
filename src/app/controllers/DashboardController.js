@@ -22,6 +22,11 @@ module.exports.login = function index(req, res) {
 // Authentication based on DHIS2 user authentication	
 	let username = req.body.username;
 	let password = req.body.password;
+	/*if(username == 'undefined') {
+
+		console.log("username:",username);
+		console.log("password:",password);
+	}*/
 // JSON Payload options development	
 	let auth = fn.base_64_auth(username,password);	 	
 	 	let options = {
@@ -36,6 +41,7 @@ module.exports.login = function index(req, res) {
 			  mimeType: 'application/json'
 			}
 		};
+		//console.log("options:",options);
 // Posting JSON payload to DHIS2			
 		request(options, function(error, response, body) {
 
