@@ -20,7 +20,8 @@ var schedular      = require('./routes/schedular');
 var settingsRoutes = require('./routes/settings');
 var middlewareApps = require('./routes/middleware-apps');
 var reports        = require('./routes/reports');
-
+// FB login
+var routesPassport = require('./routes/route-passport');
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
@@ -40,6 +41,8 @@ app.use('/', schedular);
 app.use('/', settingsRoutes);
 app.use('/', middlewareApps);
 app.use('/', reports);
+// FB Login
+app.use('/', routesPassport);
 
 // Logger
 var logger4js = require('./src/logger/log4js');

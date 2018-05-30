@@ -122,46 +122,48 @@ exports.syncDurableMessages = function (req, res) {
         exchangePeiod = JSON.parse(JSON.stringify(data[0]));
         //console.log(parseInt(exchangePeiod[0].sync_period));
         var minutes = parseInt(exchangePeiod[0].sync_period), the_interval = minutes * 60 * 1000;
-            setInterval(function() {
-                db.tx(t => {
-                    return t.batch([
-                        t.any('select id, message from queue_detail where status=$1',['pending'])          
-                    ]);
-                }).then(data => {
-                    let jsonPayload = JSON.parse(JSON.stringify(data[0]));
-                    //console.log(jsonPayload);
-                    // If no result found
-                    if(jsonPayload.toString()=='[]'){
-                        console.log("Sorry no pending data is found!");              
+        let refreshIntervalId = setInterval(function() {
 
-                    } else {
+            db.tx(t => {
+                return t.batch([
+                    t.any('select id, message from queue_detail where status=$1',['pending'])          
+                ]);
+            }).then(data => {
+                let jsonPayload = JSON.parse(JSON.stringify(data[0]));
+                // If no result found
+                if(jsonPayload=='[]' || jsonPayload=='' || jsonPayload==null){
+                    console.log("Sorry! No pending data found! Now stopping the internal check.");              
+                    clearInterval(refreshIntervalId); // Stop interval
+                } else {   
 
-                        getChannelSettingsInformation("destination").then(apiInfo => {
+                    getChannelSettingsInformation("destination").then(apiInfo => {
 
-                            let apiData      = JSON.parse(JSON.stringify(apiInfo));
-                            let baseUrl      = apiData.base_url;
-                            let resourcePath = apiData.resource_path;
-                            let username     = apiData.username;
-                            let password     = apiData.password;  
+                        let apiData      = JSON.parse(JSON.stringify(apiInfo));
+                        let baseUrl      = apiData.base_url;
+                        let resourcePath = apiData.resource_path;
+                        let username     = apiData.username;
+                        let password     = apiData.password;  
 
-                        // Base64 authentication, call from function.js         
-                            let auth = fn.base_64_auth(username,password);
+                    // Base64 authentication, call from function.js         
+                        let auth = fn.base_64_auth(username,password);
 
-                            let url, parentUID, orgJsonListPost,objOfResponse,parentIdJSON,message =null ,logType = null;
-                            let resourcePathAutomatic = "organisationUnits";
+                        let url, parentUID, orgJsonListPost,objOfResponse,parentIdJSON,message =null ,logType = null;
+                        let resourcePathAutomatic = "organisationUnits";
                         // Extract JSON data  
 
                             for (var i = 0; i <= jsonPayload.length; i++) { 
                                                            
                                 let queueId = jsonPayload[i].id;
                                 let messageString = jsonPayload[i].message;
-                                let code = messageString.code;
+                                let getCode = JSON.parse(messageString);
+                                let orgCode = getCode.code;
+                                let parentCode = getCode.parentCode;
 
                                 /*console.log("ID: ", jsonPayload[i].id);
                                 console.log("messageString: ", messageString);
-                                console.log("code: ",code);*/
+                                console.log("getCode: ",getCode.code);*/
                                 // Base url development for data handling                   
-                                url  = baseUrl+resourcePath+queueId;         
+                                url  = baseUrl+resourcePath+orgCode+'_'+parentCode;         
 
                         // JSON Payload options development         
                                 let options = {
@@ -176,7 +178,7 @@ exports.syncDurableMessages = function (req, res) {
                                     from: {
                                       mimeType: 'application/json'
                                     }
-                                }; // end of eoptions
+                                }; // end of options
                                 //console.log("Options Post:",options);
                         // Posting JSON payload to DHIS2            
                                 request(options, function(error, response, body) {
@@ -204,7 +206,7 @@ exports.syncDurableMessages = function (req, res) {
                                  
                             }
                                        
-
+                           
                         }).catch(error => {
                             console.log(error);
                         });
@@ -213,15 +215,13 @@ exports.syncDurableMessages = function (req, res) {
                 }).catch(error => {
                     logger4js.getLoggerConfig().error("ERROR! ",error);
                     console.log(error); // print the error;
-                });    
-           
+                });               
 
               console.log("I am doing my 1 minute check....");
 
+            }, the_interval); // End of schedular time interval
+        
 
-
-            }, the_interval);
-                
         }).catch(error => {
             logger4js.getLoggerConfig().error("ERROR! ",error);
             console.log(error); // print the error;

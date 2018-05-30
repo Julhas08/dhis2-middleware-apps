@@ -10,9 +10,9 @@ router.get('/blank-facility-update', blankFields.blankFieldsFacilityUpdateInfoDi
 router.post('/blank-fields-facility-update', blankFields.blankFieldsFacilityEdit);
 
 // Multiple DHIS Interoperability 
-let multipleDHISInteroperability = require('../src/app/controllers/MultipleDHISInteroperability');
+/*let multipleDHISInteroperability = require('../src/app/controllers/MultipleDHISInteroperability');
 router.get('/multiple-dhis-interoperability', multipleDHISInteroperability.multipleDhisInteroperabilityDashboard);
 router.post('/multiple-dhis-sync-type-search', multipleDHISInteroperability.multipleDHISSearchResultDisplay);
 router.post('/multiple-dhis-sync-submit', multipleDHISInteroperability.multipleDHISSearchResultSubmit);
-
+*/
 module.exports = router;

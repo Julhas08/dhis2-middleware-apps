@@ -84,7 +84,7 @@ module.exports.login = function index(req, res) {
 
 			//  Notification center data load
 				let notify;
-				db.query("select operation_type, count(id) from system_log where operation_type != '' and log_type= 'success' group by operation_type")
+				db.query("select operation_type, count(id) from system_log where operation_type != '' group by operation_type")
 				.then(notify => {
 
 					notificationSummary.push(notify);

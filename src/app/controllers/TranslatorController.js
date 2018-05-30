@@ -51,6 +51,16 @@ module.exports = {
 		    });
 		}
 
+		function dataValidator(data){
+
+			if (data==null || data=='undefined') {
+				return '';
+			} else {
+				return data;
+			}
+
+		}
+
 /**********************************************************************
 **********************Generate JSON Payload from source system ********
 **********************************************************************/	
@@ -101,14 +111,13 @@ module.exports = {
 				}		
 		// JSON Payload Generate from source, dynamic mapping
 			getTranslatorMapping().then(info => {
-				let mapInfo  = JSON.parse(JSON.stringify(info));
-
+				let mapInfo   = JSON.parse(JSON.stringify(info));
 				for(i = 0; i < json.length; i++) {
 
-					let level3Id,level3name,level4Id,level4Name;
+					let level3Id, level3name, level4Id, level4Name, level5Id,level5Name;
 					let openingDate  = (json[i].created_at).split(" "); 
 
-					if(json[i].union_code == null){
+					/*if(json[i].union_code == null){
 						level3Id   = '';
 						level3name = '';
 					} else {
@@ -124,53 +133,60 @@ module.exports = {
 						level4Name = json[i][mapInfo.level4_name] + " Upazila";
 					}
 
+					if(json[i][mapInfo.level5_id]=='null'){
+						level5Id = '';
+						level5Name = '';
+					}*/
+
 					let shortName = json[i].name.split(" ");
 				    let createdAt = json[i].created_at.split(" ");
 
 				    jsonArr.push({
-				        code       	:  json[i][mapInfo.code],
-				        name       	:  json[i][mapInfo.org_name],
-				        shortName  	:  shortName[0]+' '+shortName[1]+' '+shortName[2],
-				        displayName	:  json[i][mapInfo.org_name],
-				        displayShortName: json[i][mapInfo.org_name],
-				        openingDate	:  openingDate[0],
-				        level2Id 	:  json[i][mapInfo.level2_id],
-				        level2Name  :  json[i][mapInfo.level2_name],
-				        level3Id 	:  json[i][mapInfo.level3_id],
-				        level3Name  :  json[i][mapInfo.level3_name],
-				        level4Id  	:  level4Id,
-				        level4Name	:  json[i][mapInfo.level4_name],
-				        level5Id 	:  json[i][mapInfo.level5_id],
-				        level5Name	:  json[i][mapInfo.level5_name],
-				        latitude   	:  json[i][mapInfo.latitude],
-				        longitude  	:  json[i][mapInfo.longitude],
-				        phoneNumber	:  json[i][mapInfo.phone_number],
-				        contactPerson :  json[i][mapInfo.contact_person],
-				        address   	:  json[i][mapInfo.address],
-				        email   	:  json[i][mapInfo.email],
-				        latitude   	:  json[i][mapInfo.latitude],
-				        longitude   :  json[i][mapInfo.longitude],
-				        created 	:  createdAt[0],
-				        facilitytypeCode:  json[i].facilitytype_code,
-				        facilitytypeName:  json[i].facilitytype_name,
+				        code       	:  dataValidator(json[i][mapInfo.code]),
+				        name       	:  dataValidator(json[i][mapInfo.org_name]),
+				        shortName  	:  dataValidator(shortName[0])+' '+dataValidator(shortName[1])+' '+dataValidator(shortName[2]),
+				        displayName	:  dataValidator(json[i][mapInfo.org_name]),
+				        displayShortName: dataValidator(json[i][mapInfo.org_name]),
+				        openingDate	:  dataValidator(openingDate[0]),
+				        level2Id 	:  dataValidator(json[i][mapInfo.level2_id]),
+				        level2Name  :  dataValidator(json[i][mapInfo.level2_name]),
+				        level3Id 	:  dataValidator(json[i][mapInfo.level3_id]),
+				        level3Name  :  dataValidator(json[i][mapInfo.level3_name]),
+				        level4Id  	:  dataValidator(json[i][mapInfo.level4_id]),
+				        level4Name	:  dataValidator(json[i][mapInfo.level4_name]),
+				        level5Id 	:  dataValidator(json[i][mapInfo.level5_id]),
+				        level5Name	:  dataValidator(json[i][mapInfo.level5_name]),
+				        latitude   	:  dataValidator(json[i][mapInfo.latitude]),
+				        longitude  	:  dataValidator(json[i][mapInfo.longitude]),
+				        phoneNumber	:  dataValidator(json[i][mapInfo.phone_number]),
+				        contactPerson : dataValidator(json[i][mapInfo.contact_person]),
+				        address   	:  dataValidator(json[i][mapInfo.address]),
+				        email   	:  dataValidator(json[i][mapInfo.email]),
+				        created 	:  dataValidator(createdAt[0]),
+				        facilitytypeCode:  dataValidator(json[i].facilitytype_code),
+				        facilitytypeName:  dataValidator(json[i].facilitytype_name),
 				        status     	:  status,
 				        parent      : {
-				        				code:json[i][mapInfo.level2_id]+''+json[i][mapInfo.level3_id]+''+level4Id+''+level3Id,
-				        				name:json[i][mapInfo.level5_name],
+				        				code:dataValidator(json[i][mapInfo.level2_id])+''+dataValidator(json[i][mapInfo.level3_id])+''+dataValidator(json[i][mapInfo.level4_id]),
+				        				name:dataValidator(json[i][mapInfo.level5_name]),
+				        				level:5,
 				        				parent: {
-				        					code:json[i][mapInfo.level2_id]+''+json[i][mapInfo.level3_id]+''+level4Id,
-				        					name:json[i][mapInfo.level4_name],
+				        					code:dataValidator(json[i][mapInfo.level2_id])+''+dataValidator(json[i][mapInfo.level3_id])+''+dataValidator(json[i][mapInfo.level4_id]),
+				        					name:dataValidator(json[i][mapInfo.level4_name]),
+				        					level:4,
 				        					parent: {
-				        						code:json[i][mapInfo.level2_id]+''+json[i][mapInfo.level3_id],
-				        						name:json[i][mapInfo.level3_name],
+				        						code:dataValidator(json[i][mapInfo.level2_id])+''+dataValidator(json[i][mapInfo.level3_id]),
+				        						name:dataValidator(json[i][mapInfo.level3_name]),
+				        						level:3,
 				        						parent: {
-				        							code:json[i][mapInfo.level2_id],
-				        							name:json[i][mapInfo.level2_name]
+				        							code:dataValidator(json[i][mapInfo.level2_id]),
+				        							name:dataValidator(json[i][mapInfo.level2_name]),
+				        							level:2,
 				        						}
 				        					}
 				        				}
 				        			},  
-				        parentCode 	:  json[i][mapInfo.level2_id]+''+json[i][mapInfo.level3_id]+''+json[i][mapInfo.level4_id]+''+json[i][mapInfo.level5_id]
+				        parentCode 	:  dataValidator(json[i][mapInfo.level2_id])+''+ dataValidator(json[i][mapInfo.level3_id])+''+dataValidator(json[i][mapInfo.level4_id])+''+dataValidator(json[i][mapInfo.level5_id])
 				        
 				    });
 				//console.log("jsonArr: ",jsonArr);
@@ -179,7 +195,10 @@ module.exports = {
 
 				let orgCode	   = json[i].code;
 				let orgName    = json[i].name;
-				let parentCode = json[i][mapInfo.level2_id]+''+json[i][mapInfo.level3_id]+''+json[i][mapInfo.level4_id]+''+json[i][mapInfo.level5_id];
+				let parentCode = dataValidator(json[i][mapInfo.level2_id])+''+ dataValidator(json[i][mapInfo.level3_id])+''+dataValidator(json[i][mapInfo.level4_id])+''+dataValidator(json[i][mapInfo.level5_id]);
+				
+				//console.log("parentCode:", parentCode);
+				//console.log("parentCode: ",parentCode);
 				//console.log("jsonData:", jsonData);
 				var jsonData     = JSON.stringify(jsonArr);
 				var pdataSource  = jsonData.replace(/&quot;/g, '"');
@@ -197,14 +216,14 @@ module.exports = {
 				let status = 'pending';
 				let responseCode = 202; // pending
 					db.query("INSERT into queue_detail (queue_id,durability,exchange_mode,operation_type,message,response_code,status,created_at) VALUES('"+apiData.queue+"','"+apiData.durability+"','"+exchangeMode+"','"+operationType+"','"+jsonPayload+"','"+responseCode+"','"+status+"','"+fn.getDateYearMonthDayMinSeconds()+"')").then(info => {	
-						console.log("Message queue added in pending list.");
+						console.log("Message queue added in pending list. Queue ID",apiData.queue);
 					}).catch(error => {
 				    	logger4js.getLoggerConfig().error("System log was not updated!",error);
 				    	console.log(error);
 				    });	
 			// System log table updates
-				let logType=null,message=null;
-					db.query("INSERT into system_log (module_name,table_name,exchange_mode,operation_type,log_type,message,created_date,status_code,queue) VALUES('DHIS2 Data Send','schedular_info','"+exchangeMode+"','"+operationType+"','"+logType+"','"+message+''+parentCode+','+orgName+"','"+fn.getDateYearMonthDayMinSeconds()+"','"+response.statusCode+"','"+apiData.queue+"')").then(info => {
+				let logType="Message Transfer";
+					db.query("INSERT into system_log (module_name,table_name,exchange_mode,operation_type,log_type,message,created_date,status_code,queue) VALUES('DHIS2 Data Send','schedular_info','"+exchangeMode+"','"+operationType+"','"+logType+"','"+parentCode+','+orgName+"','"+fn.getDateYearMonthDayMinSeconds()+"','"+response.statusCode+"','"+apiData.queue+"')").then(info => {
 					}).catch(error => {
 				    	logger4js.getLoggerConfig().error("System log was not updated!",error);
 				    	console.log(error);
